@@ -1,5 +1,7 @@
 *.aux
+*.aux.orig
 *.log
+*.out
 *.pdf
 *.pdf.mk
 *.toc

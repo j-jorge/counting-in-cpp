@@ -1,0 +1,40 @@
+% -*- auto-fill -*-
+%-------------------------------------------------------------------------------
+\section{Range-based For Loops}
+
+Before \cpp11, if someone wanted to iterate over a container, he had
+to construct an iterator, of the correct type with respect to the
+container, and write the loop with the classical three steps:
+initialization (get an iterator on the begining of the container),
+stopping condition (the iterator is not at the end), and the loop
+increment.
+
+\begin{lstlisting}[language=c++]
+void foo(std::vector<int>& v, int c)
+{
+  // I'm going to iterate over v, so I need an iterator.
+  typedef std::vector<int>::iterator it_t;
+  const it_t end(v.end());
+
+  for (it_t it(v.begin()); it != end; ++it)
+    *it *= c;
+}
+\end{lstlisting}
+
+All of this was quite verbose and repetitive when using standard
+containers. Starting from \cpp11, all this administrative stuff can be
+avoided by using a ranged-based for loop.
+
+\begin{lstlisting}[language=c++]
+void foo(std::vector<int>& v, int c)
+{
+  // Just get all entries from v.
+  for (int& vi : v)
+    *it *= c;
+}
+\end{lstlisting}
+
+This format uniformizes iteration over anything having a begining and
+an end. Moreover, it handles the typical subtelties of for loops for
+you: the end of the container is guaranteed to be computed only once
+and the increment use the preincrement operator.

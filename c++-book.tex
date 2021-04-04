@@ -1,9 +1,16 @@
 \documentclass{book}
 
 \usepackage[english]{babel}
+\usepackage[colorlinks=true]{hyperref}
 
 \title{Counting from 98 to 20 in C++}
 \author{Julien Jorge}
+
+\input{style/code-listings}
+
+% Write C++XX using the format from cppreference.com: capital C, no
+% dash nor space.
+\newcommand{\cpp}[1]{C++{#1}}
 
 \begin{document}
 
@@ -11,8 +18,10 @@
 
 \tableofcontents
 
-\chapter{The Standard, The Community}
-\chapter{Nice Things from C++11}
+\input{parts/preface}
+\input{parts/cpp-general}
+\input{parts/11}
+
 \chapter{Nice Things from C++14}
 \chapter{Nice Things from C++17}
 \chapter{Nice Things from C++20}

@@ -1,0 +1,64 @@
+%-------------------------------------------------------------------------------
+\chapter{\cpp As a Whole}
+
+%-------------------------------------------------------------------------------
+\section{As Old As It Can Be}
+
+C++ is an old language (1982) initially thought as an improved C.
+
+Official specs were:
+\begin{itemize}
+\item {\it The C++ programming language} (1985),
+\item {\it The C++ programming language} (updated) and {\it The
+  Annotated C++ Reference Manual} (1991),
+\item The Standard (1998 and after)
+\end{itemize}
+
+The standard from 1998 set the ground for a new era of compilers.
+
+Theoretically, devs can switch easily from one compiler to the
+other. Clients are not tied to the vendor's compiler anymore.
+
+%-------------------------------------------------------------------------------
+\section{The Standard}
+
+The standard is defined by {\em The ISO C++ Commitee}, i.e. people from the
+industry: Google, HP, Oracle, Intel and many more.
+
+\begin{itemize}
+\item {\bf c++98} defined the core features: the syntax, the memory
+  model, templates, namespaces… And the Standard Template Library
+  (STL): {\tt std::vector}, {\tt std::string}, {\tt std::map}.
+\item {\bf c++03} fixes some wording and inconsistencies.
+\item {\bf c++11} the beginning of {\em modern c++}. Initially
+  expected during the 00's, the commitee had to kiss goodbye to some
+  awaited feature. Better done than perfect.
+\item {\bf c++14} mostly bug fixes but also nice features:
+  e.g. variable templates.
+\item {\bf c++17} nice new features: fold expressions, {\tt if
+  constexpr}, copy ellision, {\tt std::optional}, {\tt
+  string\_view}…
+\item {\bf c++20} {\tt std::span}, concepts, modules… Also: your
+  compiler still doesn't fully support C++17.
+\end{itemize}
+
+%-------------------------------------------------------------------------------
+\section{The Community}
+
+The C++ community is made of humans.
+
+Typical complaint \#1: ``The Standard does not even
+  contain {\em feature}. One has to use {\em libfeature} for it.''
+
+Typical complaint \#2: ``The specs for {\em same feature}
+  in the standard prevent efficient implementations.  One has to use
+  {\em libfeature} for it.''
+
+Typical behaviour: ``Here's a header-only library for {\em
+    feature} relying heavily on templates and metaprogramming
+  stuff.''
+
+Typical complaint \#3: ``Compilation times are too long!
+  The commitee should do something about that!''
+
+Humans…
