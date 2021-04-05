@@ -1,0 +1,90 @@
+%-------------------------------------------------------------------------------
+\section{Delegated Constructors}
+
+Before \cpp11, constructors cannot call other constructors, so if you
+want to share initialization code between multiple constructors,
+like in the example below:
+
+\begin{lstlisting}[language=c++]
+struct foo
+{
+  foo(bar* b, float f, int i)
+    : m_bar(b),
+      m_f(f),
+      m_i(i)
+  {}
+  
+  foo(bar* b, int i)
+    // can't I call foo(b, 0, i) directly?
+    : m_bar(b),
+      m_f(0),
+      m_i(i)
+    {}
+
+private:
+  bar* const m_bar;
+  const float m_f
+  const int m_i;
+};
+\end{lstlisting}
+
+Then you have to put it in some separate member function called by the
+constructor, like this:
+
+\begin{lstlisting}[language=c++,escapechar=!]
+struct foo
+{
+  foo(bar* b, float f, int i)
+  {
+    !\emcode{init}!(b, f, i);
+  }
+  
+  foo(bar* b, int i)
+  {
+    !\emcode{init}!(b, 0, i);
+  }
+
+private:
+  void !\emcode{init}!(bar* b, float f, int i)
+  {
+    m_bar = b;
+    m_f = f;
+    m_i = i;
+  }
+
+  // We cannot make any of these member const anymore.
+  bar* m_bar;
+  float m_f;  
+  int m_i;
+};
+\end{lstlisting}
+
+This approach was kind of error-prone. Stuff may happen before and
+after the call to the init function, and actually nothing prevent it
+to be called at any point in the life of the instance. Finally, this
+is incompatible with const members.
+
+
+Starting from \cpp11, a constructor can call another constructor:
+
+\begin{lstlisting}[language=c++,escapechar=!]
+struct foo
+{
+  foo(bar* b, float f, int i)
+    : m_bar(b),
+      m_f(f),
+      m_i(i)
+  {}
+  
+  foo(bar* b, int i)
+    : !\emcode{foo}!(b, 0, i)
+  {}
+
+private:
+  bar* const m_bar;
+  float m_f;
+  int m_i;
+};
+\end{lstlisting}
+
+This solves all problems.
