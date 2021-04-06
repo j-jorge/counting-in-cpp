@@ -1,0 +1,94 @@
+%-------------------------------------------------------------------------------
+\section{Deleted Constructors}
+
+Delegating constructors is a nice feature, but wat about totally
+removing a constructor?
+
+Consider the class below:
+
+\begin{lstlisting}[language=c++]
+struct scoped_listener
+{
+  scoped_listener(dispatcher& d, callback c)
+    : m_dispatcher(&d)
+  {
+    m_id = m_dispatcher->connect(c);
+  }
+
+  ~scoped_listener()
+  {
+    m_dispatcher->disconnect(m_id)
+  }
+
+private:
+  dispatcher* m_dispatcher;
+  int m_id;
+};
+\end{lstlisting}
+
+Creating copies of scoped\_listener does not make any sense, as all
+copies would share the same m\_id and will thus trigger the same call
+to disconnect(int) when destructed. See for example its usage below:
+
+\begin{lstlisting}[language=c++]
+void foo()
+{
+  /* ... */
+  scoped_listener listener(d, c1);
+  scoped_listener copy(listener);
+  scoped_listener other(d, c2);
+
+  {
+    // This assignment does not call disconnect(c2).
+    other = listener;
+    // disconnect(c1) is called here,
+    // when other goes out of scope.
+  }
+  // disconnect(c1) is called twice here: in the
+  // destruction of listener and copy.
+}
+\end{lstlisting}
+
+One would typically want to forbid copies of scoped\_listener by
+disabling its copy constructor.
+
+Before \cpp11, one solution you would find here and there was to
+declare the copy constructor and assignment operator as private. The
+problem was that it was still available for the class and its
+friends. So the programmer would then either implement an always
+failing body for this constructor, emitting an error at run time, or
+just don't implement the constructor, thus emitting an error at link
+time.
+
+These solutions were kind of weak, in the sense that the error, if
+any, was presented quite late for the programmer, and with a not
+obvious explanation.
+
+Now, starting with \cpp11, the constructor and operators can be
+explicitly deleted:
+
+\begin{lstlisting}[language=c++,escapechar=!]
+struct scoped_listener
+{
+  scoped_listener(const scoped_listener&)!\emcode{ = delete}!;
+  scoped_listener& operator=(const scoped_listener&)!\emcode{ = delete}!;
+
+  scoped_listener(dispatcher& d, callback c)
+    : m_dispatcher(&d)
+  {
+    m_id = m_dispatcher->connect(c);
+  }
+
+  ~scoped_listener()
+  {
+    m_dispatcher->disconnect(m_id)
+  }
+
+private:
+  dispatcher* m_dispatcher;
+  int m_id;
+};
+\end{lstlisting}
+
+Using a deleted function will trigger a clear error from the compiler
+when the call is encountered.
