@@ -6,7 +6,7 @@ removing a constructor?
 
 Consider the class below:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 struct scoped_listener
 {
   scoped_listener(dispatcher& d, callback c)
@@ -30,7 +30,7 @@ Creating copies of scoped\_listener does not make any sense, as all
 copies would share the same m\_id and will thus trigger the same call
 to disconnect(int) when destructed. See for example its usage below:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 void foo()
 {
   /* ... */
@@ -67,11 +67,11 @@ obvious explanation.
 Now, starting with \cpp11, the constructor and operators can be
 explicitly deleted:
 
-\begin{lstlisting}[language=c++,escapechar=!]
+\begin{lstlisting}
 struct scoped_listener
 {
-  scoped_listener(const scoped_listener&)!\emcode{ = delete}!;
-  scoped_listener& operator=(const scoped_listener&)!\emcode{ = delete}!;
+  scoped_listener(const scoped_listener&)@\emcode{ = delete}@;
+  scoped_listener& operator=(const scoped_listener&)@\emcode{ = delete}@;
 
   scoped_listener(dispatcher& d, callback c)
     : m_dispatcher(&d)

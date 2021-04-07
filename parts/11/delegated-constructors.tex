@@ -5,7 +5,7 @@ Before \cpp11, constructors cannot call other constructors, so if you
 want to share initialization code between multiple constructors,
 like in the example below:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 struct foo
 {
   foo(bar* b, float f, int i)
@@ -31,21 +31,21 @@ private:
 Then you have to put it in some separate member function called by the
 constructor, like this:
 
-\begin{lstlisting}[language=c++,escapechar=!]
+\begin{lstlisting}
 struct foo
 {
   foo(bar* b, float f, int i)
   {
-    !\emcode{init}!(b, f, i);
+    @\emcode{init}@(b, f, i);
   }
   
   foo(bar* b, int i)
   {
-    !\emcode{init}!(b, 0, i);
+    @\emcode{init}@(b, 0, i);
   }
 
 private:
-  void !\emcode{init}!(bar* b, float f, int i)
+  void @\emcode{init}@(bar* b, float f, int i)
   {
     m_bar = b;
     m_f = f;
@@ -67,7 +67,7 @@ is incompatible with const members.
 
 Starting from \cpp11, a constructor can call another constructor:
 
-\begin{lstlisting}[language=c++,escapechar=!]
+\begin{lstlisting}
 struct foo
 {
   foo(bar* b, float f, int i)
@@ -77,7 +77,7 @@ struct foo
   {}
   
   foo(bar* b, int i)
-    : !\emcode{foo}!(b, 0, i)
+    : @\emcode{foo}@(b, 0, i)
   {}
 
 private:

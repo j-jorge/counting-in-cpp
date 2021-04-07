@@ -7,7 +7,7 @@ situation where an implicit constructor would not have been created
 was the explicit declaration of a custom constructor by the
 programmer. For example:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 struct foo
 {
   foo(int) {}
@@ -31,7 +31,7 @@ Starting with \cpp11, the programmer can tell the compiler to
 implement the constructor with what would have been the default
 implementation if it was not deleted.
 
-\begin{lstlisting}[language=c++,escapechar=!]
+\begin{lstlisting}
 struct foo
 {
   foo()!\emcode{ = default}!;

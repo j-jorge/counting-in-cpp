@@ -8,7 +8,7 @@ initialization (get an iterator on the begining of the container),
 stopping condition (the iterator is not at the end), and the loop
 increment.
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 void foo(std::vector<int>& v, int c)
 {
   // I'm going to iterate over v, so I need an iterator.
@@ -24,7 +24,7 @@ All of this was quite verbose and repetitive when using standard
 containers. Starting from \cpp11, all this administrative stuff can be
 avoided by using a ranged-based for loop.
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 void foo(std::vector<int>& v, int c)
 {
   // Just get all entries from v.

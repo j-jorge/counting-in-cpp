@@ -4,7 +4,7 @@
 Before \cpp11, you could simply not declare a typedef with a
 parameterized type. For example, the following did not work:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 // You can't do that.
 template<typename T>
 typedef std::vector<T> collection;
@@ -17,7 +17,7 @@ typedef std::map<std::string, V> string_map;
 The alternative was to use a struct to receive the type, then declare
 the typedef inside the struct:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 // Workaround: nest the type.
 template<typename V>
 struct string_map
@@ -32,7 +32,7 @@ string_map<int>::type string_to_int;
 Starting with \cpp11, the using keywork allows to declare templated
 type aliases:
 
-\begin{lstlisting}[language=c++]
+\begin{lstlisting}
 // You can do that.
 template<typename T>
 using collection = std::vector<T>;

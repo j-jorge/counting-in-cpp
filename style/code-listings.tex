@@ -1,25 +1,17 @@
-%\usepackage{inconsolata}
-%\usepackage{courier}
+\usepackage{inconsolata}
 \usepackage{listings}
 \usepackage{xcolor}
-%\usepackage{ucs}
 
-\newcommand{\emcode}[1]{\color{red}{#1}}
-\lstset{literate={~} {$\sim$}{1}}
+\newcommand{\emcode}[1]{\bfseries\color{red}{#1}}
 
-%%\lstset{basicstyle=\ttfamily,
-  %% commentstyle=\ttfamily\color{purple!40!black},
-  %% stringstyle=\ttfamily\color{orange},
-  %% keywordstyle=\bfseries\color{green!40!black},
-  %% identifierstyle=\color{black},
-  %% showstringspaces=false,
-  %% numbers=left,
-  %% tabsize=2,
-  %% breaklines=true,
-  %% framexleftmargin=0mm,
-  %% captionpos=t,
-  %% xleftmargin=1mm,
-  %% extendedchars=\true,
-  %% inputencoding=utf8x,
-  %% emphstyle={\color{DarkRed}\bfseries}
-%%}
+\lstset{
+frame=single,
+backgroundcolor=\color{black!5},
+rulecolor=\color{black!20},
+basicstyle=\ttfamily\small,
+literate={~} {$\sim$}{1},
+language=c++,
+escapechar=@,
+extendedchars=\true,
+inputencoding=utf8x
+}
