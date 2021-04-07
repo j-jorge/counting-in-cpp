@@ -1,0 +1,163 @@
+%-------------------------------------------------------------------------------
+\section{Move semantics}
+
+Copies! Copies everywhere! And dynamic allocations too!
+
+So was the world before \cpp11. In these old days, if you had to pass
+a large object to a function that needed its own instance of it, then
+you would certainly had created a copy of it.
+
+\begin{lstlisting}
+struct foo
+{
+  foo(const std::vector<bar>& bars)
+    // Here we have one allocaction,
+    // plus copies of the vector elements.
+    : m_bars(bars)
+  {}
+
+private:
+  std::vector<bar> m_bars;
+};
+
+void baz(int n)
+{
+  // One allocation of n bars, plus their initialization.
+  std::vector<bar> bars(n);
+  
+  // ...
+  
+  foo f(bars);
+  // I don't need the bars anymore, but they are still here.
+}
+\end{lstlisting}
+
+\Cpp11 introduces the move semantics and the std::move() function. In
+practice it means far fewer copies, as the instances data are
+transfered from one place to another.
+
+\begin{lstlisting}
+struct foo
+{
+  // Note the pass-by-value
+  foo(std::vector<bar> bars)
+    // Explicit transfer into m_bars, no allocation.
+    : m_bars(@\emcode{std::move}@(bars))
+  {}
+
+private:
+  std::vector<bar> m_bars;
+};
+
+void baz(int n)
+{
+  // The single allocation in this program.
+  std::vector<bar> bars(n);
+
+  // ...
+
+  // I don't need the bars anymore, so I transfer them.
+  foo f(@\emcode{std::move}@(bars));
+}
+\end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{The Move Constructor and Assignment}
+
+In order to have this working, a new type of reference was added to
+the language, and classes can use this reference in constructors and
+assignment operators to implement the actual transfer of data from one
+instance to another.
+
+\begin{lstlisting}
+struct foo
+{
+  foo(foo@\emcode{\&\&}@ that)
+    : m_resource(that.m_resource)
+  {
+    that.m_resource = nullptr;
+  }
+
+  foo& operator=(foo@\emcode{\&\&}@ that)
+  {
+    std::swap(m_resource, that.m_resource);
+  }
+};
+
+// All of these call the constructor defined above.
+foo f(foo());
+foo f(construct_a_foo());
+foo f(std::move(g));
+
+// All of these call the assignment operator defined above.
+f = foo();
+f = construct_a_foo();
+f = std::move(g);
+\end{lstlisting}
+
+The parameter of such functions is considered a temporary on the call
+site. They are actually not restricted to constructors or assignment
+operators and can be used in any function.
+
+The semantics of such arguments must be interpreted as ``I {\em may}
+steal your data''. The {\em may} is important here, as there is no
+guarantee on the call site that the instance going through an
+std::move is actually moved.
+
+%-------------------------------------------------------------------------------
+\subsection{std::move, The Subtleties}
+
+Naming quality: \faStar\faStarO\faStarO\faStarO\faStarO. Would have
+put zero stars if I could.
+
+As a great example of ``naming things is hard'', std::move does not
+move anything. It actually just marks the value as transferable, by
+casting it to an rvalue-reference. See this actual implementation
+exctracted from GCC 9:
+
+\begin{lstlisting}
+template<typename _Tp>
+constexpr typename std::remove_reference<_Tp>::type&&
+move(_Tp&& __t) noexcept
+{
+  return static_cast
+  <
+    typename std::remove_reference<_Tp>::type&&
+  >(__t);
+}
+\end{lstlisting}
+
+As a rule of thumb of its usage, consider two use cases:
+
+\begin{enumerate}
+\item If callee \underline{always} takes ownership of the value:
+  prefer arguments passed by value.
+\item If callee \underline{may} take ownership of the value: use an
+  rvalue reference.
+\end{enumerate}
+
+\begin{lstlisting}
+// "I need my own bar."
+void foo_copy(bar b) { /* ... */ }
+
+// "I may take ownership of b...
+//  ...Unless I don't."
+void foo_rvalue(bar&& b) { /* ... */ }
+
+void baz()
+{
+  bar b1;
+  // Valid, b1 is unchanged in baz.
+  foo_copy(b1);
+
+  // Valid, you can forget about b1 now.
+  foo_copy(std::move(b1));
+  
+  bar b2;
+  // Invalid, b2 is not an rvalue
+  // foo_rvalue(b2);
+
+  // Valid, but is b2 actually moved?
+  foo_rvalue(std::move(b2));
+}
+\end{lstlisting}
