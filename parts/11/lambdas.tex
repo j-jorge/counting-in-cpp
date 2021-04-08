@@ -1,0 +1,133 @@
+\section{Lambdas}
+
+How would you pass a custom comparator to std::max\_elment before
+\cpp11, say to compare strings by increasing size? Certainly by
+writing a free or static function taking two strings as arguments and
+returning the result of the comparison.
+
+\begin{lstlisting}
+// Comparator for strings by increasing size.
+// Declared as a free function.
+static bool string_size_less_equal
+(const std::string& lhs, const std::string& rhs)
+{
+  return lhs.size() < rhs.size();
+}
+
+std::size_t
+largest_string_size(const std::vector<std::string>& strings)
+{
+  // The comparator is outside the scope of this function.
+  return
+    std::max_element
+      (strings.begin(), strings.end(), &string_size_less_equal)
+    ->size();
+}
+\end{lstlisting}
+
+Now what if you needed a parameterized comparator, for example to call
+std::find\_if to search for a string of a specific size? The free
+function would not allow to store the size, so you would certainly
+write a functor object, i.e. a struct storing the size parameter and
+defining an operator() receiving a string and returning the result of
+the comparison.
+
+\begin{lstlisting}
+// Need a function object if the comparator has parameters.
+struct string_size_equals
+{
+  std::size_t size;
+    
+  bool operator()(const std::string& string) const
+  {
+    return string.size() == size;
+  }
+};
+  
+bool has_string_of_size
+(const std::vector<std::string>& strings, std::size_t s)
+{
+  string_size_equals comparator = {s};
+
+  return
+    std::find_if(strings.begin(), strings.end(), comparator)
+      != strings.end();
+}
+\end{lstlisting}
+
+Having the comparators as independent objects or functions is nice if
+they are used in many places, but for a single use it is undoubtedly
+too verbose. And confusing too. Don't you think it would be clearer if
+the single-use comparator was declared next to where it is used?
+Hopefully this is something we can use with lambdas, starting with
+\cpp11:
+
+\begin{lstlisting}
+bool has_string_of_size
+(const std::vector<std::string>& strings, std::size_t s)
+{
+  // Only three lines for the equivalent of the type
+  // declaration, definition and the instantiation.
+  return std::find_if
+    (strings.begin(), strings.end(),
+     [=](const std::string& string) -> bool
+     {
+       return string.size() == s;
+     })
+    != strings.end();
+}
+\end{lstlisting}
+
+Protip: Mind the next reader: keep your lambdas small.
+
+%-------------------------------------------------------------------------------
+\subsection{The Internals of Lambdas}
+
+A declaration like
+
+\begin{lstlisting}
+[a, b, c]( /* arguments */ ) -> T { /* statements */ }
+\end{lstlisting}
+
+is totally equivalent to
+
+\begin{lstlisting}
+struct something
+{
+  T operator( /* arguments */ ) const { /* statements */ }
+
+  /* deduced type */ a;
+  /* deduced type */ b;
+  /* deduced type */ c;
+}
+\end{lstlisting}
+
+More conceptually, the parts of a lambda are the following:
+
+\bigskip
+
+\indent [{\it capture}]({\it arguments}) {\it specifier} -\textgreater
+        {\it return\_type} \{ {\it body} \}
+
+\bigskip
+
+Where:
+
+\begin{itemize}
+\item {\it capture} is a list of variables from the parent scope that
+  must be accessible inside the lambda. Use [=] to tell the compiler
+  to automatically copy any variable used by the lambda, or [\&] to
+  keep a reference to the used variables from the parent
+  scope. Variables can also be captured in a fine-grained way,
+  e.g. [=a, \&b] to copy the value of a but store a reference to b.
+\item {\it arguments} are the arguments of the function.
+\item By default the variables captured by value cannot be assigned to
+  in the body, unless you put the mutable keyword in {\it
+    specifier}. In effect, it removes the const from operator().
+\item {\it return\_type} is the type of the value returned by this
+  function, if any, or void otherwise. Contrarry to any other
+  function, the return type appear after the argument list instead of
+  before.
+\item {\it body} is the body of the function.
+\end{itemize}
+
