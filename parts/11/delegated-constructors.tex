@@ -60,10 +60,9 @@ private:
 \end{lstlisting}
 
 This approach was kind of error-prone. Stuff may happen before and
-after the call to the init function, and actually nothing prevent it
-to be called at any point in the life of the instance. Finally, this
-is incompatible with const members.
-
+after the call to the \code{init()} function, and actually nothing
+prevent it to be called at any point in the life of the
+instance. Finally, this is incompatible with \code{const} members.
 
 Starting from \cpp11, a constructor can call another constructor:
 

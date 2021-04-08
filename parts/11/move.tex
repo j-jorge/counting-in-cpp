@@ -32,9 +32,9 @@ void baz(int n)
 }
 \end{lstlisting}
 
-\Cpp11 introduces the move semantics and the std::move() function. In
-practice it means far fewer copies, as the instances data are
-transfered from one place to another.
+\Cpp11 introduces the move semantics and the \code{std::move()}
+function. In practice it means far fewer copies, as the instances data
+are transfered from one place to another.
 
 \begin{lstlisting}
 struct foo
@@ -102,17 +102,17 @@ operators and can be used in any function.
 The semantics of such arguments must be interpreted as ``I {\em may}
 steal your data''. The {\em may} is important here, as there is no
 guarantee on the call site that the instance going through an
-std::move is actually moved.
+\code{std::move} is actually moved.
 
 %-------------------------------------------------------------------------------
-\subsection{std::move, The Subtleties}
+\subsection{\code{std::move}, The Subtleties}
 
 Naming quality: \faStar\faStarO\faStarO\faStarO\faStarO. Would have
 put zero stars if I could.
 
-As a great example of ``naming things is hard'', std::move does not
-move anything. It actually just marks the value as transferable, by
-casting it to an rvalue-reference. See this actual implementation
+As a great example of ``naming things is hard'', \code{std::move} does
+not move anything. It actually just marks the value as transferable,
+by casting it to an rvalue-reference. See this actual implementation
 exctracted from GCC 9:
 
 \begin{lstlisting}

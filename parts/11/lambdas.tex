@@ -1,7 +1,7 @@
 \section{Lambdas}
 
-How would you pass a custom comparator to std::max\_elment before
-\cpp11, say to compare strings by increasing size? Certainly by
+How would you pass a custom comparator to \code{std::max\_element}
+before \cpp11, say to compare strings by increasing size? Certainly by
 writing a free or static function taking two strings as arguments and
 returning the result of the comparison.
 
@@ -26,11 +26,11 @@ largest_string_size(const std::vector<std::string>& strings)
 \end{lstlisting}
 
 Now what if you needed a parameterized comparator, for example to call
-std::find\_if to search for a string of a specific size? The free
-function would not allow to store the size, so you would certainly
-write a functor object, i.e. a struct storing the size parameter and
-defining an operator() receiving a string and returning the result of
-the comparison.
+\code{std::find\_if} to search for a string of a specific size? The
+free function would not allow to store the size, so you would
+certainly write a functor object, i.e. a \code{struct} storing the
+size parameter and defining an \code{operator()} receiving a string
+and returning the result of the comparison.
 
 \begin{lstlisting}
 // Need a function object if the comparator has parameters.
@@ -115,17 +115,19 @@ Where:
 
 \begin{itemize}
 \item {\it capture} is a list of variables from the parent scope that
-  must be accessible inside the lambda. Use [=] to tell the compiler
-  to automatically copy any variable used by the lambda, or [\&] to
-  keep a reference to the used variables from the parent
-  scope. Variables can also be captured in a fine-grained way,
-  e.g. [=a, \&b] to copy the value of a but store a reference to b.
+  must be accessible inside the lambda. Use \code{[=]} to tell the
+  compiler to automatically copy any variable used by the lambda, or
+  \code{[\&]} to keep a reference to the used variables from the
+  parent scope. Variables can also be captured in a fine-grained way,
+  e.g. \code{[=a, \&b]} to copy the value of \code{a} but store a
+  reference to \code{b}.
 \item {\it arguments} are the arguments of the function.
 \item By default the variables captured by value cannot be assigned to
   in the body, unless you put the mutable keyword in {\it
-    specifier}. In effect, it removes the const from operator().
+    specifier}. In effect, it removes the \code{const} from
+  \code{operator()}.
 \item {\it return\_type} is the type of the value returned by this
-  function, if any, or void otherwise. Contrarry to any other
+  function, if any, or void otherwise. Contrary to any other
   function, the return type appear after the argument list instead of
   before.
 \item {\it body} is the body of the function.

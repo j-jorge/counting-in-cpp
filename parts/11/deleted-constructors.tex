@@ -26,9 +26,10 @@ private:
 };
 \end{lstlisting}
 
-Creating copies of scoped\_listener does not make any sense, as all
-copies would share the same m\_id and will thus trigger the same call
-to disconnect(int) when destructed. See for example its usage below:
+Creating copies of \code{scoped\_listener} does not make any sense, as
+all copies would share the same \code{m\_id} and will thus trigger the
+same call to \code{disconnect(int)} when destructed. See for example
+its usage below:
 
 \begin{lstlisting}
 void foo()
@@ -49,7 +50,7 @@ void foo()
 }
 \end{lstlisting}
 
-One would typically want to forbid copies of scoped\_listener by
+One would typically want to forbid copies of \code{scoped\_listener} by
 disabling its copy constructor.
 
 Before \cpp11, one solution you would find here and there was to
