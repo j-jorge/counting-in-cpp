@@ -3,6 +3,7 @@
 \usepackage[english]{babel}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{fontawesome}
+\usepackage{mdframed}
 
 \title{Counting from 98 to 20 in C++}
 \author{Julien Jorge}
@@ -13,8 +14,23 @@
 % dash nor space.
 \newcommand{\cpp}[1]{C++{#1}}
 \newcommand{\Cpp}[1]{C++{#1}}
+
 \newcommand{\code}[1]{{\tt #1}}
 
+\newenvironment{guideline}
+               {
+                 \begin{mdframed}[
+                     topline=false,
+                     rightline=false,
+                     bottomline=false,
+                     linewidth=1pt,
+                     frametitle={Guideline}
+                     ]
+               }
+               {
+                 \end{mdframed}
+               }
+               
 \begin{document}
 
 \maketitle

@@ -127,14 +127,16 @@ move(_Tp&& __t) noexcept
 }
 \end{lstlisting}
 
-As a rule of thumb of its usage, consider two use cases:
+\begin{guideline}
+  As a rule of thumb of its usage, consider two use cases:
 
-\begin{enumerate}
-\item If callee \underline{always} takes ownership of the value:
-  prefer arguments passed by value.
-\item If callee \underline{may} take ownership of the value: use an
-  rvalue reference.
-\end{enumerate}
+  \begin{enumerate}
+  \item If callee \underline{always} takes ownership of the value:
+    prefer arguments passed by value.
+  \item If callee \underline{may} take ownership of the value: use an
+    rvalue reference.
+  \end{enumerate}
+\end{guideline}
 
 \begin{lstlisting}
 // "I need my own bar."
