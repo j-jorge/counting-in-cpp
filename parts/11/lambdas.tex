@@ -84,6 +84,7 @@ bool has_string_of_size
 
 %-------------------------------------------------------------------------------
 \subsection{The Internals of Lambdas}
+\label{lambdas-internals}
 
 A declaration like
 
@@ -103,6 +104,9 @@ struct something
   /* deduced type */ c;
 }
 \end{lstlisting}
+
+Actually the compiler will create a unique type like this struct for
+every lambda you write.
 
 More conceptually, the parts of a lambda are the following:
 
