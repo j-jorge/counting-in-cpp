@@ -1,0 +1,62 @@
+\section{Type Deduction with \code{decltype}}
+\label{decltype}
+
+During the pre-\cpp11 every variable, member, argument, etc. has to be
+exactly typed. For example, if you were writing a template function
+receiving another function as an argument, how could you store the
+result of a call of this function in a local variable?
+
+\begin{lstlisting}
+template
+<
+  typename InputIt,
+  typename OutputIt,
+  typename Predicate,
+  typename Transform,
+>
+void transform_if
+(InputIt first, InputIt last, OutputIt out,
+ Predicate& predicate, Transform& transform)
+{
+  for (; first != last; ++first)
+  {
+    /* some_type */ v = *first;
+    if (predicate(v))
+    {
+      *out = transform(v);
+      ++out;
+    }
+  }
+}
+\end{lstlisting}
+
+Getting the correct type to put in place of \code{some\_type} was not
+obvious, and required a fair share of template metaprogramming. Now,
+with the \code{decltype} specifier introduced in \cpp11, the
+programmer can tell the compiler to use ``the type of this
+expression''.
+
+
+\begin{lstlisting}
+template
+<
+  typename InputIt,
+  typename OutputIt,
+  typename Predicate,
+  typename Transform,
+>
+void transform_if
+(InputIt first, InputIt last, OutputIt out,
+ Predicate& predicate, Transform& transform)
+{
+  for (; first != last; ++first)
+  {
+    @\emcode{decltype(*first)}@& v = *first;
+    if (predicate(v))
+    {
+      *out = transform(v);
+      ++out;
+    }
+  }
+}
+\end{lstlisting}

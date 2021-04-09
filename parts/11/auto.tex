@@ -1,21 +1,8 @@
 \section{Auto}
 
-During the pre-\cpp11 every variable, member, argument, etc. has to be
-exactly typed. For example, if you were writing a template function
-receiving another function as an argument, how could you store the
-result of a call of this function in a local variable?
-
-\begin{lstlisting}
-template<typename F>
-void foo(F& f)
-{
-  /* some_type */ r = f();
-}
-\end{lstlisting}
-
-Getting the correct type to put in place of \code{some\_type} was not
-obvious, and required a fair share of template metaprogramming. But at
-least it was feasible.
+Section \ref{decltype} explained how one could deduce the type of an
+expression with \code{decltype} to set the type of a local variable
+to match the type of an expression.
 
 Now what about storing a lambda in a local variable, what would be the
 type of the variable? As seen in \ref{lambdas-internals}, the type of
