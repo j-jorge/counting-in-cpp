@@ -1,0 +1,43 @@
+\section{Beginning and end of sequence}
+
+All containers from the STL have a \code{begin()} and \code{end()}
+member function to get an iterator on the first element in the
+sequence or, respectively, just after the last element. Unfortunately,
+there is no such function for the most basic sequences, i.e. C-like
+arrays, so code like that was sure to fail before \cpp11:
+
+\begin{lstlisting}
+template<typename Sequence, typename T>
+void replace_existing
+(Sequence& s, const T& old_value, const T& new_value)
+{
+  *std::find(s.begin(), s.end(), old_value) = new_value;
+}
+
+void foo()
+{
+  int a[] = { 1, 4, 3 };
+  replace_existing(a, 4, 2);
+}
+\end{lstlisting}
+
+Fortunately, \cpp11 introduces the \code{std::begin()} and
+\code{std::end()} free functions which accepts a C-like
+array\footnote{as long as you include
+  \code{\textless{}array\textgreater}}. Now, this code will work in
+all cases:
+
+\begin{lstlisting}
+template<typename Sequence, typename T>
+void replace_existing
+(Sequence& s, const T& old_value, const T& new_value)
+{
+  *std::find(@\emcode{std::begin(s)}@, @\emcode{std::end(s)}@, old_value) = new_value;
+}
+
+void foo()
+{
+  int a[] = { 1, 4, 3 };
+  replace_existing(a, 4, 2);
+}
+\end{lstlisting}
