@@ -1,0 +1,50 @@
+\section{Iterator successors and predecessors}
+
+There are many kind of iterators: forward iterators, that can be
+incremented one step at a time with \code{operator++}, bidirectional
+iterators, that can additionally be decremented with
+\code{operator--}, and random access iterators, that can be
+incremented or decremented by any amount at once.
+
+When writing a function taking an iterator whose type is templated,
+incrementing an iterator by more than one unit cannot be done
+directly, as it would fail for non-random iterators. Prior to \cpp11,
+this was done with \code{std::advance()}.
+
+\begin{lstlisting}
+template<typename Iterator, typename F>
+void every_n_items
+(Iterator it, std::size_t count, std::size_t step, F f)
+{
+  for (; count > step; count -= step)
+  {
+    f(*it);
+    std::advance(it, step);
+  }
+}
+\end{lstlisting}
+
+\code{std::advance()} accepts a negative distance, in which case it
+will advance… hum… backwards.
+
+\cpp11 introduces the replacement functions \code{std::prev()} and
+\code{std::next()}, which are mostly here to make things clear. The
+former is to be used to move the iterator backwards, while the latter
+is used to move it forward. If no distance is passed, then it defaults
+to one.
+
+Note that they return a copy of the new iterator, instead of modifying
+the one received as a parameter.
+
+\begin{lstlisting}
+template<typename Iterator, typename F>
+void every_n_items
+(Iterator it, std::size_t count, std::size_t step, F f)
+{
+  for (; count > step; count -= step)
+  {
+    f(*it);
+    it = @\emcode{std::next}@(it, step);
+  }
+}
+\end{lstlisting}
