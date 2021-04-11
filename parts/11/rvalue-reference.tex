@@ -1,0 +1,67 @@
+\section{Rvalue References}
+
+In the function \code{bar()} below, a temporary string is created by
+the code \code{s + "def"}, then a reference to this string is passed
+to the constructor of \code{foo}, where it is then copied in
+\code{foo::m\_s}.
+
+\begin{lstlisting}
+struct foo
+{
+  foo(const std::string& s)
+    : m_s(s)
+  {}
+
+  std::string m_s;
+};
+
+void bar()
+{
+  std::string s("abc");
+  foo f(s + "def");
+}
+\end{lstlisting}
+
+Temporaries have the interesting property that they have no use but to
+be consumed by an expression building another value. In other words,
+in the example above, the purpose of the result of \code{s + "def"} is
+to end up in \code{foo::m\_s}. So why do we need a copy? It would be
+more efficient to just pass the instance created by the concatenation
+directly to the final variable.
+
+To solve this problem, \cpp11 introduces the concept of rvalue
+references, which are, to put it simply, references to
+temporaries. These references are denoted with a double ampersand
+\code{\&\&}. See the updated example, below:
+
+\begin{lstlisting}
+struct foo
+{
+  foo(@\emcode{std::string\&\&}@ s)
+    : m_s(s)
+  {}
+
+  std::string m_s;
+};
+
+void bar()
+{
+  std::string s("abc");
+  foo f(s + "def");
+}
+\end{lstlisting}
+
+The signature of the constructor indicates that it accept temporaries
+as arguments. This code is not enough to avoid copies of the string
+yet, as the instruction \code{m\_s(s)} does copy the string. The next
+step is to replace this instruction with \code{m\_s(std::move(s))},
+and then we will have no copy. This is the topic of section
+\ref{move}.
+
+Note that if the constructor's argument was \code{foo}, like in
+\code{foo(foo\& that)}, then this would declare what is called a
+move-constructor. This is a distinct constructor than the
+copy-constructor and it is explicitly allowed to steal the internals
+of its argument, as long as the instance behind the argument stays in
+a valid state.
+
