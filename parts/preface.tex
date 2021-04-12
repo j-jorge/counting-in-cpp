@@ -5,12 +5,13 @@
 \section{About This Book}
 The goal of this document is to list most, if not all, features
 introduced in the \cpp language since the first well-known deep update
-in the language, also known as \cpp11.
+in the language, also known as \cpp11, up to the most recent version
+of the standard, which is \cpp20 by the time I am writing this.
 
 These features are presented following a systematic format where the
-old way is reminded to the reader, with a short explanation of why it
-may have been problematic or inefficient, then the new way of doing
-things is presented.
+pre-\cpp11 way is reminded to the reader, with a short explanation of
+why it may have been problematic or inefficient, then the new way of
+doing things is presented.
 
 Some parts of the language will probably be silenced, mostly the parts
 for which I don't know much. Some parts will be presented with harsh
@@ -27,8 +28,34 @@ complete is knowledge by reading other material. For example, the
 website \url{https://en.cppreference.com} has everything you need to
 know about anything from the language.
 
-Remember the basis of learning: read to acquire the experience of
-other, practice to build your own experience.
+\bigskip
+
+While this book is about \cpp, one should remember that \cpp{} itself
+is just a tool in the programmer's toolbox. If you are learning \cpp{}
+to become a programmer, a good programmer, I would suggest to rethink
+your plan and learn programming on a larger scale: algorithms, data
+structures, project management, packaging, dependency management,
+coding style, reviews, testing… There are many aspects to master in
+the life of a programmer.
+
+As a good starting point, every programmer should read Code Complete
+by Steve McConnell. This book goes in detail in all aspects of
+software development, over decades of projects, so if you read it you
+will also gain part of the knowledge from these people who tried and
+failed before you.
+
+Clean Code by Robert C. Martin is a good second book to read, even
+though I would not approve all suggestions. For example, intensive
+factorization and the tendency to use object-oriented programming
+everywhere are things I have learnt to avoid. Still, the book is a
+reference in software development, so you should read it at least to
+make yourself an opinion and to know what is going on in the business.
+
+\bigskip
+
+Finally, remember these two steps of learning and mastering: read to
+acquire the experience of others, practice to build your own
+experience.
 
 %-------------------------------------------------------------------------------
 \section{About The Author}
@@ -39,7 +66,7 @@ of, but maybe are you wondering if I am relevant on the topics from
 this book? See by yourself.
 
 I write code as a hobby since 1994, and professionally since 2005. I
-have at least 600000 lines of \cpp behind me, just counting alive
+have at least 600'000 lines of \cpp behind me, just counting alive
 lines of code from past projects I could find. I did not go into the
 history of each project, so this does not include lines that have been
 overwritten.
@@ -51,12 +78,21 @@ under DOS. I did also a bit of Objective-C.
 Actually, a good share of this code was crap.
 
 Some code did end up well, though. One project I am proud of is a
-mobile game written in \cpp, which was played by X people every day
-during more than Y years. Apart from that, I also took part on
-projects that were struggling to start and brought them into a viable
-product. So I guess I made stuff that do not suck.
+mobile game written in \cpp, which was played by more than 500'000
+people every day during more than three years. Aside from that, I also
+took part on projects that were struggling to start and brought them
+into a viable product. So I guess I made stuff that do not suck.
 
 When I code I tend to think about long term and architecture. I try
 not to take any shortcut and to answer the problem without expecting
 to solve the future. I code in small boxes, many, with the intent that
 they can be broken, removed, replaced, without changing everything.
+
+Finally, I am certainly not the type to rush for the new thing. I like
+tools and practices that have been well tested, so you probably won't
+hear me telling you to use this new thing from \cpp{}42 because it's
+new and it will show you are modern and blah blah blah.
+
+\bigskip
+
+That being said, I hope you will find something useful in this book :)
