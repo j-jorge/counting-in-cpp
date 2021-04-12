@@ -164,3 +164,54 @@ void baz()
   foo_rvalue(std::move(b2));
 }
 \end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{\code{std::forward} And Universal References}
+
+When \code{\&\&} is used in association with a type to be deduced,
+like in the function below:
+
+\begin{lstlisting}
+template<typename T>
+void foo(T&& arg)
+{
+  /* … */
+}
+\end{lstlisting}
+
+Then it refers neither to an rvalue-reference nor a reference. In this
+context, it is called a \emph{universal reference}. Depending on how
+the function is called then \code{T\&\&} will be either deduced to an
+rvalue-reference, if the argument is an rvalue, or else the references
+are collapsed and \code{T\&\&} becomes an lvalue-reference, just like
+\code{T\&}.
+
+\begin{lstlisting}
+void bar()
+{
+  std::string s;
+
+  // calls foo(std::string&)
+  foo(s);
+
+  // calls foo(std::string&&)
+  foo(s + "abc");
+}
+\end{lstlisting}
+
+Now how one should pass to another function an argument received as a
+universal reference? If it is deduced as an rvalue-reference, then
+\code{std::move()} should be used, otherwise it should be passed as
+is.
+
+Fortunately \cpp11 provides \code{std::forward()} to do the check for
+us:
+
+\begin{lstlisting}
+template<typename T>
+void foo(T&& arg)
+{
+  // Pass as an rvalue-reference or by address, whichever fits.
+  foobar(std::forward<T>(arg));
+}
+\end{lstlisting}
