@@ -1,0 +1,144 @@
+\section{Smart Pointers}
+
+Memory allocation in \cpp{} is a tough subject, dynamic allocation
+being the hardest part.
+
+Before \cpp11, the programmer had to be very careful with the life
+span of dynamically allocated memory in order to, first, be sure that
+it is released at some point and, second, that no access is made to it
+once it has been released, not even another release.
+
+See how many problems could occur with this short snippet:
+
+\begin{lstlisting}
+struct foo
+{
+  foo(int* p)
+    : m_p(p)
+  {}
+
+  ~foo()
+  {
+    delete p;
+  }
+
+private:
+  int* m_p;
+};
+
+void bar()
+{
+  foo f1(new int);
+  foo f2(f1);
+
+  int* p1(new int);
+}
+\end{lstlisting}
+
+There are two problems with this code. First, \code{foo} does not
+define nor disable its copy constructor, so, by default, its
+\code{m\_p} pointer will be copied to the new instance. Then, when the
+original instance and its copy will be destroyed, both will call
+\code{delete} on the same pointer. This is what will happen with
+\code{f1} and its copy \code{f2}. In the best scenario the program
+would crash here.
+
+The second problem is \code{p1}. This pointer points to a dynamically
+allocated \code{int} for which no \code{delete} is written. When the
+pointer will go out of scope then there will be no way to release the
+allocated memory.
+
+%-------------------------------------------------------------------------------
+\subsection{\code{std::unique\_ptr}}
+
+\Cpp11 introduces a pointer wrapper named \code{std::unique\_ptr},
+which has the merit of automatically calling \code{delete} on the
+pointer upon destruction. Applied to the previous example, it would
+solve one problem and force us to find a solution for the other:
+
+\begin{lstlisting}
+struct foo
+{
+  foo(std::unique_ptr<int> p)
+    : m_p(std::move(p))
+  {}
+
+  // The default destructor does the job.
+
+private:
+  std::unique_ptr<int> m_p;
+};
+
+void bar()
+{
+  std::unique_ptr<int> p1(new int);
+
+  foo f1(std::unique_ptr<int>(new int));
+  foo f2(std::move(f1));
+}
+\end{lstlisting}
+
+This program is undoubtedly safer than the previous one. The copy
+constructor of \code{foo} is still not defined, but it is for sure
+deleted since \code{std::unique\_ptr} has no copy constructor
+neither. So, by default, we cannot share the resource between two
+instances, which is great. The only solution here is to either
+allocate a new int for \code{f2} or steal the one from {f1}. The
+latter is implemented here.
+
+Then, for the release of \code{p1}, it is automatically done when the
+variable leaves the scope, so no memory is leaked.
+
+\bigskip
+
+One of the best features of \code{std::unique\_ptr} is the possibility
+to use a custom deleter to release the pointer. This makes this smart
+pointer a tool of choice when using C-like resources.
+
+Check for example the use case of libavcodec's
+\code{AVFormatContext}. The format context is obtained via a call to
+\code{avformat\_open\_input(AVFormatContext**, const char*,
+  AVInputFormat*, AVDictionary**)} and must be released by a call to
+\code{avformat\_close\_input(AVFormatContext**)}. With the help of
+\code{std::unique\_ptr} this could be done as follows:
+
+\begin{lstlisting}
+namespace detail
+{
+  static void close_format_context(AVFormatContext* context);
+}
+
+void foo(const char* path)
+{
+  AVFormatContext* raw_context_pointer(nullptr);
+
+  const int open_result =
+    avformat_open_input
+      (&raw_context_pointer, path, nullptr, nullptr);
+
+  std::unique_ptr
+  <
+    AVFormatContext,
+    decltype(&detail::close_format_context)
+  >
+  context_pointer
+  (raw_context_pointer, &detail::close_format_context);
+
+  // …
+}
+\end{lstlisting}
+
+
+With this approach, the format context will be released via a call to
+\code{detail::close\_format\_context} as soon as
+\code{context\_pointer} leaves the scope. Do we know if the memory
+pointed by \code{raw\_context\_pointer}? We do not, and it does not
+matter. What we have here is a simple robust way to attach a release
+function to an acquired resource.
+
+%-------------------------------------------------------------------------------
+\subsection{\code{shared\_ptr}}
+
+%-------------------------------------------------------------------------------
+\subsection{\code{weak\_ptr}}
+
