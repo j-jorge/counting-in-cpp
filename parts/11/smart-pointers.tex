@@ -128,7 +128,6 @@ void foo(const char* path)
 }
 \end{lstlisting}
 
-
 With this approach, the format context will be released via a call to
 \code{detail::close\_format\_context} as soon as
 \code{context\_pointer} leaves the scope. Do we know if the memory
@@ -137,8 +136,152 @@ matter. What we have here is a simple robust way to attach a release
 function to an acquired resource.
 
 %-------------------------------------------------------------------------------
-\subsection{\code{shared\_ptr}}
+\subsection{\code{std::shared\_ptr}}
+
+I have a hard time trying to find a use case where
+\code{std::shared\_ptr} is the best solution, so let's just focus on a
+good-enough solution.
+
+This smart pointer is the answer to the problem of having a
+dynamically allocated resource that may outlive its creator, and that
+may also be accessed from two independent owners. In this case, the
+ownership of the resource is unclear, as it is \emph{shared}, so the
+idea is to keep the resource alive until all its owner release it.
+
+For example, let's say you have a function whose role is to dispatch a
+message to multiple listeners, whom will not process it right now. For
+some reason the message cannot be copied, so you cannot send a copy of
+it to everyone:
+
+\begin{lstlisting}
+void dispatch_message
+(const std::vector<listener*>& listeners,
+ const std::string& raw)
+{
+  message m = parse_message(raw);
+  std::shared_ptr<message> p
+    (std::make_shared<message>(std::move(m)));
+
+  for(listener* l : listeners)
+    listener->add_to_queue(m);
+}
+\end{lstlisting}
+
+With this implementation the message outlives the scope of
+\code{dispatch\_message()} and will remain in memory until all
+listeners have released it.
+
+Is it the best solution for this problem? Honestly I doubt
+that. Actually, most uses of \code{std::shared\_ptr} I have seen,
+including mine, looked a bit like a lack of reasoning about resource
+management.
+
+Wouldn't it have been better if the dispatching and the listeners were
+scheduled in a loop and if the dispatcher would own the messages for
+some iterations, or until they would be marked as processed by the
+listeners? Do we really have to pay for dynamic allocations here?
+
+\begin{guideline}
+When you find yourself thinking that a shared resource with no clear
+life span — a \code{std::shared\_ptr} — is a good answer to your
+problem, please double check your solution, and ask for a second
+opinion.
+\end{guideline}
+
+\begin{pitfall}
+Many documentations declare, rightfully, that \code{std::shared\_ptr}
+is thread-safe, and I have seen people using it to \emph{safely}
+access the allocated resource in a concurrent way.
+
+\bigskip
+
+It must be said that the only thread-safe part in a
+\code{std::shared\_ptr} is its reference counter.
+
+\bigskip
+
+Nothing is done — nothing can be done — to provide an automatic
+thread-safe access to the allocated resource. Actually, even having
+two threads doing respectively a copy (i.e.\ \code{std::shared\_ptr<T>
+  p(sp)}) and a deletion (i.e.\ \code{sp.release()}), for the same
+shared pointer \code{sp}, has no defined outcome without additional
+synchronization. The only guarantee is that the increment of the
+counter in the copy won't be done between the decrement and the
+deletion from the release.
+
+\end{pitfall}
 
 %-------------------------------------------------------------------------------
-\subsection{\code{weak\_ptr}}
+\subsection{\code{std::weak\_ptr}}
 
+What happens when the instance pointed by a \code{std::shared\_ptr}
+owns a \code{std::shared\_ptr} pointing to the owner of the former?
+Then we have a cycle and none of the instances will be released.
+
+\begin{lstlisting}
+struct foo;
+
+struct bar
+{
+  std::shared_ptr<foo> m_foo;
+};
+
+struct foo
+{
+  std::shared_ptr<bar> m_bar;
+};
+
+void foobar()
+{
+  std::shared_ptr<foo> f(std::make_shared<foo>());
+  std::shared_ptr<bar> b(std::make_shared<bar>());
+  b->m_foo = f;
+  f->m_bar = b;
+
+  // The instances pointed by foo and foo->bar won't be deleted.
+}
+\end{lstlisting}
+
+In order to break this kind of dependency loop, one pointer should be
+declared as an \code{std::weak\_ptr}. Just like
+\code{std::shared\_ptr}, this smart pointer is here to point to a
+shared resource, except that it does not count as an owner of the
+resource. Additionally, it provides a way to test if the resource is
+still available via the \code{std::weak\_ptr::lock()} function, which
+returns a shared pointer on the resource if it is available, or
+\code{nullptr} otherwise.
+
+\begin{lstlisting}
+struct foo;
+
+struct bar
+{
+  @\emcode{std::weak\_ptr}@<foo> m_foo;
+};
+
+struct foo
+{
+  std::shared_ptr<bar> m_bar;
+};
+
+void foobar()
+{
+  std::shared_ptr<foo> f(std::make_shared<foo>());
+  std::shared_ptr<bar> b(std::make_shared<bar>());
+  b->m_foo = f;
+  f->m_bar = b;
+
+  {
+    std::shared_ptr<foo> resource(b->m_foo.lock());
+    if (resource)
+      printf("This message is printed.\n");
+  }
+
+  f.reset();
+
+  std::shared_ptr<foo> resource(b->m_foo.lock());
+
+  if (resource)
+    printf("This message is not.\n");
+}
+\end{lstlisting}
