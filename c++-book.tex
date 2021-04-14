@@ -31,7 +31,21 @@
                {
                  \end{mdframed}
                }
-               
+
+\newenvironment{pitfall}
+               {
+                 \begin{mdframed}[
+                     topline=false,
+                     rightline=false,
+                     bottomline=false,
+                     linewidth=1pt,
+                     frametitle={It's a trap}
+                     ]
+               }
+               {
+                 \end{mdframed}
+               }
+
 \begin{document}
 
 \maketitle
