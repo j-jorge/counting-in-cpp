@@ -1,0 +1,79 @@
+\section{Anonymous Namespaces}
+
+In the pre \cpp11{} era we could tell the compiler that a given global
+variable or free function was only used in the current translation
+unit by preceding its declaration with the keyword \code{static}:
+
+\begin{lstlisting}
+static int global_int;
+static void some_function() { /* … */ }
+\end{lstlisting}
+
+Thanks to this keyword the same symbol (variable or function) could
+appear in multiple translation units without problems.
+
+However, this keyword is not applicable to type declarations. So what
+happened if you needed a class definition at file scope but happened
+to use the same name in different files, like with \code{struct foo}
+below?
+
+\lstinputlisting[title=foo.cpp]{examples/anonymous-namespace/foo.cpp}
+\lstinputlisting[title=main.cpp]{examples/anonymous-namespace/main.cpp}
+
+If you try to compile the these files for example with \code{g++
+  foo.cpp main.cpp} then run the program, you would expect to have the
+following output:
+
+\begin{lstlisting}{language=bash}
+$ ./a.out
+foo.cpp 1
+main.cpp 1
+\end{lstlisting}
+
+Instead, you may have the following output:
+
+\begin{lstlisting}{language=bash}
+$ ./a.out
+foo.cpp 1
+foo.cpp 1
+\end{lstlisting}
+
+I say ``may'' because this program violates the one definition rule,
+which states that a symbol cannot have more than one definition in the
+program. Here, however, the \code{struct foo} has two definitions, one
+in each cpp file. We are thus entering the territory of undefined
+behavior.
+
+\bigskip
+
+\Cpp11{} introduces the anonymous namespaces, which can totally solve
+this issue. Any symbol defined in an anonymous namespace has internal
+linkage. That means that it cannot conflict with anything defined
+outside the current compilation unit. Its usage is as you would
+expect:
+
+\begin{lstlisting}
+// No identifier following the keyword.
+namespace
+{
+  // Everything declared here is available in the current
+  // compilation unit.
+}
+\end{lstlisting}
+
+Concretely, when the code above is modified as follows, the program
+is well defined and the output matches the expectations.
+
+\lstinputlisting[
+  title=foo-anonymous.cpp,
+  emph=namespace
+]{%
+  examples/anonymous-namespace/foo-anonymous.cpp%
+}
+
+\lstinputlisting[
+  title=main-anonymous.cpp,
+  emph=namespace
+]{%
+  examples/anonymous-namespace/main-anonymous.cpp%
+}
