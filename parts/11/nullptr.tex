@@ -1,0 +1,27 @@
+\section{\code{std::nullptr\_t} and \code{nullptr}}
+
+The traditional way to set a pointer to zero before \cpp11 was via the
+\code{NULL} macro. So what would happen if you tried to compile the
+following program?
+
+\lstinputlisting{examples/nullptr/nullptr-98.cpp}
+
+Did you expect the program to compile well and \code{foo(int*)} to be
+called? Too bad, we are in a good old ambiguous call situation:
+
+\begin{lstlisting}[language=bash]
+error: call of overloaded ‘foo(NULL)’ is ambiguous
+\end{lstlisting}
+
+Since \code{NULL} is often defined as the integral value zero, the
+compiler cannot distinguish it from an integer. Thus the error.
+
+\bigskip
+
+As an answer to this problem, \cpp11 introduces the \code{nullptr}
+keyword, which exactly represents a zero pointer. Its type is
+\code{std::nullptr\_t} and it is implicitly convertible to any
+pointer. Consequently, the previous code, if converted as below,
+compiles as expected.
+
+\lstinputlisting[emph=nullptr]{examples/nullptr/nullptr-11.cpp}

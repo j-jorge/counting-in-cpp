@@ -26,7 +26,7 @@ function(add_example)
 
   foreach(file ${example_FILES})
     set(file_path "examples/${example_ROOT}/${file}")
-    set(latex_example_files ${latex_example_files} ${file_path})
+    set(latex_example_files ${latex_example_files} ${file_path} PARENT_SCOPE)
     set(files ${files} ${file_path})
   endforeach()
 
@@ -45,6 +45,11 @@ add_example(
   FILES foo-anonymous.cpp main-anonymous.cpp
   STANDARD 11
   )
+add_example(
+  ROOT nullptr
+  FILES nullptr-11.cpp
+  STANDARD 11
+  )
 
 add_latex_document(
   c++-book.tex
@@ -54,6 +59,7 @@ add_latex_document(
 
   INPUTS
   ${latex_example_files}
+  examples/nullptr/nullptr-98.cpp
 
   parts/11.tex
   parts/cpp-general.tex
@@ -68,6 +74,7 @@ add_latex_document(
   parts/11/free-begin.tex
   parts/11/lambdas.tex
   parts/11/move.tex
+  parts/11/nullptr.tex
   parts/11/prev-next.tex
   parts/11/range-based-for-loops.tex
   parts/11/rvalue-reference.tex
