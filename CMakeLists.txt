@@ -24,8 +24,10 @@ function(add_example)
     ${ARGN}
     )
 
+  set(source_root "examples/${example_ROOT}")
+
   foreach(file ${example_FILES})
-    set(file_path "examples/${example_ROOT}/${file}")
+    set(file_path "${source_root}/${file}")
     set(latex_example_files ${latex_example_files} ${file_path} PARENT_SCOPE)
     set(files ${files} ${file_path})
   endforeach()
@@ -33,6 +35,7 @@ function(add_example)
   set(target_name ${example_ROOT}-${example_STANDARD})
   add_executable(${target_name} ${files})
   set_property(TARGET ${target_name} PROPERTY CXX_STANDARD ${example_STANDARD})
+  target_include_directories(${target_name} PRIVATE ${source_root})
 endfunction()
 
 add_example(
@@ -50,6 +53,16 @@ add_example(
   FILES nullptr-11.cpp
   STANDARD 11
   )
+add_example(
+  ROOT extern-template
+  FILES main.cpp bar-98.cpp foo-98.cpp
+  STANDARD 98
+  )
+add_example(
+  ROOT extern-template
+  FILES main.cpp  bar-11.cpp foo-11.cpp some_template-11.cpp
+  STANDARD 11
+  )
 
 add_latex_document(
   c++-book.tex
@@ -59,6 +72,8 @@ add_latex_document(
 
   INPUTS
   ${latex_example_files}
+  examples/extern-template/some_template-11.hpp
+  examples/extern-template/some_template-98.hpp
   examples/nullptr/nullptr-98.cpp
 
   parts/11.tex
@@ -71,6 +86,7 @@ add_latex_document(
   parts/11/defaulted-constructors.tex
   parts/11/delegated-constructors.tex
   parts/11/deleted-constructors.tex
+  parts/11/extern-template.tex
   parts/11/free-begin.tex
   parts/11/lambdas.tex
   parts/11/move.tex
