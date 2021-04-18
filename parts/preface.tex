@@ -1,5 +1,6 @@
 %-------------------------------------------------------------------------------
 \chapter{Preface}
+\renewcommand*\thesection{\arabic{section}}
 
 %-------------------------------------------------------------------------------
 \section{About This Book}
@@ -20,36 +21,37 @@ the subject? Probably not. Am I experimented? I tend to think I am,
 but you are the judge. Anyway, it is ok if you dismiss these critics,
 just know that there are pros and cons for anything.
 
-This book won't go into the details and subtleties of any feature,
-nor into compiler-specific stuff. The reason being mostly time (I have
-a limited time to dedicate to this book) and space (it is already
-large enough). The reader is invited to satisfy his curiosity and
-complete is knowledge by reading other material. For example, the
-website \url{https://en.cppreference.com} has everything you need to
-know about anything from the language.
+This book won't go into the details and subtleties of any feature, nor
+into compiler-specific stuff. The reason being mostly time (I have a
+limited time to dedicate to this book) and space (it is already large
+enough). The reader is invited to satisfy his curiosity and complete
+is knowledge by reading other material. For example, the website
+\url{https://en.cppreference.com} has everything you need to know
+about any feature of the language.
 
 \bigskip
 
 While this book is about \cpp, one should remember that \cpp{} itself
 is just a tool in the programmer's toolbox. If you are learning \cpp{}
 to become a programmer, a good programmer, I would suggest to rethink
-your plan and learn programming on a larger scale: algorithms, data
-structures, project management, packaging, dependency management,
-coding style, reviews, testing… There are many aspects to master in
-the life of a programmer.
+your plan and learn programming on a larger scale: computer
+architecture, algorithms, data structures, project management,
+packaging, dependency management, coding style, reviews, testing…
+There are many aspects to master in the life of a programmer.
 
 As a good starting point, every programmer should read Code Complete
-by Steve McConnell. This book goes in detail in all aspects of
-software development, over decades of projects, so if you read it you
+\cite{code-complete}. This book goes in detail in all aspects of
+software development over decades of projects, so if you read it you
 will also gain part of the knowledge from these people who tried and
 failed before you.
 
-Clean Code by Robert C. Martin is a good second book to read, even
+Clean Code \cite{clean-code} is a good second book to read, even
 though I would not approve all suggestions. For example, intensive
 factorization and the tendency to use object-oriented programming
-everywhere are things I have learnt to avoid. Still, the book is a
-reference in software development, so you should read it at least to
-make yourself an opinion and to know what is going on in the business.
+everywhere are rather things I have learnt use parsimoniously. Still,
+the book is a reference in software development, so you should read it
+at least to make yourself an opinion and to know what is going on in
+the business.
 
 \bigskip
 
@@ -60,10 +62,11 @@ experience.
 %-------------------------------------------------------------------------------
 \section{About The Author}
 
-I'm just some guy who write stuff not to think about the
-meaninglessness of existence. My intent is not to compete nor to show
-of, but maybe are you wondering if I am relevant on the topics from
-this book? See by yourself.
+Should you take this book's content at face? Maybe am I just some guy
+who write stuff not to think about the meaninglessness of
+existence. My intent here is not to compete nor to show of, but maybe
+are you wondering if I am relevant on the topics from this book? Judge
+by yourself.
 
 I write code as a hobby since 1994, and professionally since 2005. I
 have at least 600'000 lines of \cpp behind me, just counting alive
@@ -71,13 +74,13 @@ lines of code from past projects I could find. I did not go into the
 history of each project, so this does not include lines that have been
 overwritten.
 
-I also have coded on Java projects, some Pascal and Delphi ones,
-Visual Basic too, BASIC a long time ago, on a Commodore 128 and later
-under DOS. I did also a bit of Objective-C.
+I also have coded on Java projects, ActionScript ones, some Pascal and
+Delphi ones, Visual Basic too, BASIC a long time ago, on a Commodore
+128 and later under DOS. I did also a bit of Objective-C.
 
-Actually, a good share of this code was crap.
+Let's face it though, a good share of this code was crap.
 
-Some code did end up well, though. One project I am proud of is a
+Some code did end up well nonetheles. One project I am proud of is a
 mobile game written in \cpp, which was played by more than 500'000
 people every day during more than three years. Aside from that, I also
 took part on projects that were struggling to start and brought them
@@ -91,8 +94,10 @@ they can be broken, removed, replaced, without changing everything.
 Finally, I am certainly not the type to rush for the new thing. I like
 tools and practices that have been well tested, so you probably won't
 hear me telling you to use this new thing from \cpp{}42 because it's
-new and it will show you are modern and blah blah blah.
+new and it will show that you are modern and blah blah blah.
 
 \bigskip
 
 That being said, I hope you will find something useful in this book :)
+
+\renewcommand*\thesection{\arabic{chapter}.\arabic{section}}

@@ -67,6 +67,9 @@ add_example(
 add_latex_document(
   c++-book.tex
 
+  BIBFILES
+  bibliography.bib
+
   CONFIGURE
   c++-book.tex
 

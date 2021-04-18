@@ -1,64 +1,102 @@
 %-------------------------------------------------------------------------------
-\chapter{\cpp As a Whole}
+\chapter{The \Cpp Language And Its Community}
 
-%-------------------------------------------------------------------------------
-\section{As Old As It Can Be}
+\Cpp is a quite old programming language: it was created by Bjarne Stroustrup
+in 1982. It initially thought as an improved C.
 
-C++ is an old language (1982) initially thought as an improved C.
+The first official specifications were \emph{The C++ Programming
+  Language} \cite{the-cpp-programming-language-1st}. This book was
+then updated multiple times \cite{the-cpp-programming-language-2nd},
+\cite{the-cpp-programming-language-3rd},
+\cite{the-cpp-programming-language-se}, and
+\cite{the-cpp-programming-language-4th}.
 
-Official specs were:
-\begin{itemize}
-\item {\it The C++ programming language} (1985),
-\item {\it The C++ programming language} (updated) and {\it The
-  Annotated C++ Reference Manual} (1991),
-\item The Standard (1998 and after)
-\end{itemize}
-
-The standard from 1998 set the ground for a new era of compilers.
-
-Theoretically, devs can switch easily from one compiler to the
-other. Clients are not tied to the vendor's compiler anymore.
+Starting from 1998, the official specifications are described in
+\emph{The Standard}.
 
 %-------------------------------------------------------------------------------
 \section{The Standard}
 
-The standard is defined by {\em The ISO C++ Commitee}, i.e. people from the
-industry: Google, HP, Oracle, Intel and many more.
+The standard from 1998 set the ground for a new era of compilers by
+defining how \cpp{} programs should behave, and by describing the
+content of the standard library as well as the constraints on its
+implementation.
+
+The standard is defined by {\em The ISO C++ Committee}, i.e. people
+from the industry: Google, HP, Oracle, Intel and many more.
+
+It is worth noting that no code is provided by the committee. The
+standard just describes the language, then independent developers
+(mostly compiler vendors) provide the implementation. Theoretically,
+devs can switch easily from one compiler to the other. Clients are not
+tied to the vendor's compiler anymore.
+
+As I write there are six revisions for this document, informally
+identified by the year they came out:
 
 \begin{itemize}
-\item {\bf c++98} defined the core features: the syntax, the memory
+\item {\bf \Cpp98} defined the core features: the syntax, the memory
   model, templates, namespaces… And the Standard Template Library
-  (STL): {\tt std::vector}, {\tt std::string}, {\tt std::map}.
-\item {\bf c++03} fixes some wording and inconsistencies.
-\item {\bf c++11} the beginning of {\em modern c++}. Initially
-  expected during the 00's, the commitee had to kiss goodbye to some
-  awaited feature. Better done than perfect.
-\item {\bf c++14} mostly bug fixes but also nice features:
+  (STL): \code{std::vector}, \code{std::string}, \code{std::map}…
+\item {\bf \Cpp03} fixed some wording and inconsistencies.
+\item {\bf \Cpp11} the beginning of what is called \emph{modern
+  \cpp}. Initially expected during the 00's, the committee had to kiss
+  goodbye to some awaited feature. Better done than perfect.
+\item {\bf \Cpp14} mostly bug fixes but also nice features:
   e.g. variable templates.
-\item {\bf c++17} nice new features: fold expressions, {\tt if
-  constexpr}, copy ellision, {\tt std::optional}, {\tt
+\item {\bf \Cpp17} nice new features: fold expressions, \code{if
+  constexpr}, copy ellision, \code{std::optional}, \code{
   string\_view}…
-\item {\bf c++20} {\tt std::span}, concepts, modules… Also: your
-  compiler still doesn't fully support C++17.
+\item {\bf \Cpp20} \code{std::span}, concepts, modules… Also: your
+  compiler still doesn't fully support \cpp17.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
 \section{The Community}
 
-The C++ community is made of humans.
+The \cpp{} community is made of humans, so it is naturally composed of
+a lot of good things and many problems. Sometimes simultaneously. And
+since the language allows several paradigms and provides multiple
+tools, there are approximately as many programming styles than there
+are \cpp{} programmers.
 
-Typical complaint \#1: ``The Standard does not even
-  contain {\em feature}. One has to use {\em libfeature} for it.''
+Two typical behaviours appeared very common to me in the recent
+years. The first one is about the tools provided by the standard
+library. First you hear people complaining: ``The standard does not
+even contain {\em feature}. One has to use {\em libfeature} for it.''
+Cue to the release of the aforementioned feature, and suddenly: ``The
+specs for {\em feature} in the standard prevent efficient
+implementations. One has to use {\em libfeature} for it.''
 
-Typical complaint \#2: ``The specs for {\em same feature}
-  in the standard prevent efficient implementations.  One has to use
-  {\em libfeature} for it.''
+The second behaviour is about build times. \Cpp{} is well known for
+being the language of quite long to compile programs, especially when
+the program contains templates or other metaprogramming
+techniques. This is a topic that regularly comes as a major pain; it
+was even listed as the second most frustrating thing in the 2021
+Annual C++ Developer Survey
+\cite{2021-annual-cpp-developer-survey}. Nevertheless, once you are on
+the field you will meet developers being like ``Here's a header-only
+library for {\em feature} relying heavily on templates and
+metaprogramming stuff.'' Then you will hear complaints like
+``Compilation times are too long!  The commitee should do something
+about that!''. Finally, there will be even other developers asking for
+more header-only libraries because it is easy to integrate in a
+project\footnote{Dependency management in \cpp{} is the main
+  frustrating thing according to the aforementioned survey.}.
 
-Typical behaviour: ``Here's a header-only library for {\em
-    feature} relying heavily on templates and metaprogramming
-  stuff.''
+\bigskip
 
-Typical complaint \#3: ``Compilation times are too long!
-  The commitee should do something about that!''
+In one case, people's demands are ignored and they complain about
+it. Then they receive what they asked for, and they still complain
+about it.
+
+The second case is more about resource management. People have a
+limited computing power, and they use every drop of it until it
+becomes unbearable. Then they ask others to solve their problem. They
+also buy even more computing power, and still use every drop of
+it. Doesn't it look suspiciously like some other real-life important
+resource management problems?
+
+\bigskip
 
 Humans…
