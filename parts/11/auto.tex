@@ -27,7 +27,7 @@ bool has_string_of_size
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsubsection{Auto As A Type Placeholder}
+\subsubsection{Auto as a Type Placeholder}
 
 The \code{auto} keyword tells the compiler to deduce the actual type
 of a variable from whatever is assigned to it. It can be used every
@@ -67,7 +67,7 @@ auto foo(F&& f) -> decltype(f())
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsubsection{When Not To Use \code{auto}}
+\subsubsection{When not to Use \code{auto}}
 
 It is tempting to use the \code{auto} keyword everywhere, especially
 for programmers coming from loosely typed languages such as Python or
@@ -82,7 +82,7 @@ load to pass to the next reader.
 
 \begin{guideline}
 Mind the next reader; write what you mean.
-  
+
 Declaring a variable or a function as \code{auto} is like writing an
 innuendo, and innuendos make the communication more difficult; if you
 see what I mean.
