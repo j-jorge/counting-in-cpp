@@ -1,4 +1,4 @@
-\section{Auto}
+\subsection{Auto}
 
 Section \ref{decltype} explained how one could deduce the type of an
 expression with \code{decltype} to set the type of a local variable
@@ -27,7 +27,7 @@ bool has_string_of_size
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsection{Auto As A Type Placeholder}
+\subsubsection{Auto As A Type Placeholder}
 
 The \code{auto} keyword tells the compiler to deduce the actual type
 of a variable from whatever is assigned to it. It can be used every
@@ -67,7 +67,7 @@ auto foo(F&& f) -> decltype(f())
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsection{When Not To Use \code{auto}}
+\subsubsection{When Not To Use \code{auto}}
 
 It is tempting to use the \code{auto} keyword everywhere, especially
 for programmers coming from loosely typed languages such as Python or

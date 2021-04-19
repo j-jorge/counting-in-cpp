@@ -1,4 +1,4 @@
-\section{Smart Pointers}
+\subsection{Smart Pointers}
 
 Memory allocation in \cpp{} is a tough subject, dynamic allocation
 being the hardest part.
@@ -49,7 +49,7 @@ pointer will go out of scope then there will be no way to release the
 allocated memory.
 
 %-------------------------------------------------------------------------------
-\subsection{\code{std::unique\_ptr}}
+\subsubsection{\code{std::unique\_ptr}}
 
 \Cpp11 introduces a pointer wrapper named \code{std::unique\_ptr},
 which has the merit of automatically calling \code{delete} on the
@@ -136,7 +136,7 @@ matter. What we have here is a simple robust way to attach a release
 function to an acquired resource.
 
 %-------------------------------------------------------------------------------
-\subsection{\code{std::shared\_ptr}}
+\subsubsection{\code{std::shared\_ptr}}
 
 I have a hard time trying to find a use case where
 \code{std::shared\_ptr} is the best solution, so let's just focus on a
@@ -212,7 +212,7 @@ deletion from the release.
 \end{pitfall}
 
 %-------------------------------------------------------------------------------
-\subsection{\code{std::weak\_ptr}}
+\subsubsection{\code{std::weak\_ptr}}
 
 What happens when the instance pointed by a \code{std::shared\_ptr}
 owns a \code{std::shared\_ptr} pointing to the owner of the former?
