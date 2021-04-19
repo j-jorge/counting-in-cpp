@@ -25,9 +25,9 @@ void baz(int n)
 {
   // One allocation of n bars, plus their initialization.
   std::vector<bar> bars(n);
-  
+
   // ...
-  
+
   foo f(bars);
   // I don't need the bars anymore, but they are still here.
 }
@@ -63,7 +63,7 @@ void baz(int n)
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsection{The Move Constructor and Assignment}
+\subsection{The Move Constructor and Assignment Operator}
 
 In order to have this working, a new type of reference was added to
 the language, and classes can use this reference in constructors and
@@ -106,7 +106,7 @@ guarantee on the call site that the instance going through an
 \code{std::move} is actually moved.
 
 %-------------------------------------------------------------------------------
-\subsection{\code{std::move}, The Subtleties}
+\subsection{\code{std::move}, the Subtleties}
 
 Naming quality: \faStar\faStarO\faStarO\faStarO\faStarO. Would have
 put zero stars if I could.
@@ -155,7 +155,7 @@ void baz()
 
   // Valid, you can forget about b1 now.
   foo_copy(std::move(b1));
-  
+
   bar b2;
   // Invalid, b2 is not an rvalue
   // foo_rvalue(b2);
@@ -166,7 +166,7 @@ void baz()
 \end{lstlisting}
 
 %-------------------------------------------------------------------------------
-\subsection{\code{std::forward} And Universal References}
+\subsection{\code{std::forward} and Universal References}
 
 When \code{\&\&} is used in association with a type to be deduced,
 like in the function below:
