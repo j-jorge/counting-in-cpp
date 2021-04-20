@@ -99,6 +99,7 @@ add_latex_document(
   parts/11/range-based-for-loops.tex
   parts/11/rvalue-reference.tex
   parts/11/template-aliases.tex
+  parts/11/scoped-enumerations.tex
   parts/11/smart-pointers.tex
 
   style/code-listings.tex
