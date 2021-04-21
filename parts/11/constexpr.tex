@@ -1,0 +1,47 @@
+\subsection{\code{constexpr}}
+
+Let's say you have some complex computation, like for example counting
+the number of bits set to one in an integer:
+
+\begin{lstlisting}
+int popcount(unsigned n)
+{
+  return (n == 0) ? 0 : ((n & 1) + popcount(n >> 1));
+}
+\end{lstlisting}
+
+What happens when you want to be able to call this function both with
+run-time values and compile-time constant as arguments? In the code
+below we would want the size of the array to be a constant, but as it
+is written its size will be computed at run-time, which makes it a non
+constant-sized array, which is not standard compliant.
+
+\begin{lstlisting}
+int main(int argc, char**)
+{
+  int array[popcount(45)];
+  printf("%d\n", popcount(argc));
+}
+\end{lstlisting}
+
+A typical solution for this problem is to implement the computation
+via template classes and meta-programming:
+
+\lstinputlisting{examples/constexpr/constexpr-98.cpp}
+
+This implementation works but has two major problems: first it is
+incredibly verbose, second it forces us to implement the same
+algorithm twice, doubling the risk of bugs and errors.
+
+\bigskip
+
+The \code{constexpr} keyword introduced in \cpp11 allows us to use the
+same implementation for both compile-time and run-time computations.
+
+\lstinputlisting[emph=constexpr]{examples/constexpr/constexpr-11.cpp}
+
+This keyword can be applied to a variable or a function to explicitly
+tell the compiler that it can and should be computed at compile-time
+when it appears in constant expressions. It is for example totally
+possible to call the \code{constexpr popcount()} function as a
+template argument, like in \code{popcount<popcount<42>>()}.

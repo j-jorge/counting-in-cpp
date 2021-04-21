@@ -49,8 +49,13 @@ add_example(
   STANDARD 11
   )
 add_example(
-  ROOT nullptr
-  FILES nullptr-11.cpp
+  ROOT constexpr
+  FILES constexpr-98.cpp
+  STANDARD 98
+  )
+add_example(
+  ROOT constexpr
+  FILES constexpr-11.cpp
   STANDARD 11
   )
 add_example(
@@ -61,6 +66,11 @@ add_example(
 add_example(
   ROOT extern-template
   FILES main.cpp  bar-11.cpp foo-11.cpp some_template-11.cpp
+  STANDARD 11
+  )
+add_example(
+  ROOT nullptr
+  FILES nullptr-11.cpp
   STANDARD 11
   )
 
@@ -85,6 +95,7 @@ add_latex_document(
 
   parts/11/anonymous-namespace.tex
   parts/11/auto.tex
+  parts/11/constexpr.tex
   parts/11/decltype.tex
   parts/11/defaulted-constructors.tex
   parts/11/delegated-constructors.tex
