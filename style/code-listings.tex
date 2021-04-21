@@ -1,13 +1,33 @@
-\usepackage{inconsolata}
+\usepackage{couriers}
 \usepackage{listings}
 \usepackage{xcolor}
+
+\newcommand{\lstinputlistinghl}[3][]{%
+  \lstinputlisting[%
+    belowskip=0pt,
+    lastline=\number\numexpr#2-1\relax,
+    showlines=true,
+    #1
+  ]{#3}%
+  \lstinputlisting[%
+    aboveskip=0pt,
+    belowskip=0pt,
+    backgroundcolor=\color{blue!15},
+    firstline=#2,
+    lastline=#2
+  ]{#3}
+  \lstinputlisting[%
+    aboveskip=0pt,
+    firstline=\number\numexpr#2+1\relax
+  ]{#3}
+}
 
 \newcommand{\emcode}[1]{\bfseries\color{red}{#1}}
 
 \lstset{
 backgroundcolor=\color{black!5},
 basicstyle=\ttfamily\small,
-emphstyle=\bfseries\color{red},
+emphstyle=\bfseries\color{blue},
 escapechar=@,
 extendedchars=\true,
 frame=single,
