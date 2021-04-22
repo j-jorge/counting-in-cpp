@@ -27,7 +27,7 @@ int main(int argc, char**)
 A typical solution for this problem is to implement the computation
 via template classes and meta-programming:
 
-\lstinputlistinghl{31}{examples/constexpr/constexpr-98.cpp}
+\lstinputlistinghl{28}{examples/constexpr/constexpr-98.cpp}
 
 This implementation works but has two major problems: first it is
 incredibly verbose, second it forces us to implement the same
@@ -38,10 +38,64 @@ algorithm twice, doubling the risk of bugs and errors.
 The \code{constexpr} keyword introduced in \cpp11 allows us to use the
 same implementation for both compile-time and run-time computations.
 
-\lstinputlisting[emph=constexpr]{examples/constexpr/constexpr-11.cpp}
+\lstinputlistinghl[emph=constexpr]{10}{examples/constexpr/constexpr-11.cpp}
 
 This keyword can be applied to a variable or a function to explicitly
 tell the compiler that it can and should be computed at compile-time
 when it appears in constant expressions. It is for example totally
 possible to call the \code{constexpr popcount()} function as a
 template argument, like in \code{popcount<popcount<42>>()}.
+
+Finally, as an extra bonus, while compilers typically put limits on
+the template instantiations depth, i.e. the number of times a template
+can be instantiated recursively, there is no such limit to
+constexpr functions.
+
+\subsubsection{Impact of \code{constexpr} on the build duration}
+
+Template instantiations are quite expensive for the compiler. Can we
+save some build time by using constexpr functions instead?
+
+I wrote two short programs to measure the impact of each approach on
+build times. The first one uses template metaprogramming to increment
+a counter:
+
+\lstinputlisting[title=count-98.cpp]{benchmarks/constexpr/count-98.cpp}
+
+The second program uses a constexpr function to do the same
+computations:
+
+\lstinputlisting[title=count-11.cpp]{benchmarks/constexpr/count-11.cpp}
+
+Then I measured the time it took to compile each file 50 to 500
+times using the command \code{g++ --std=c++{98,11} -c <filename> -o
+  /dev/null}. The compiler is G++ 9.3, running on Ubuntu 20.10 on an
+Intel(R) Core(TM) i5-3210M CPU @ 2.50GHz. The results are shown in
+Figure~\ref{fig:constexpr-benchmark}.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \datavisualization data group {curves} = {
+        data [ set = 11, read from file = {figures/constexpr/11.data}]
+        data [ set = 98, read from file = {figures/constexpr/98.data} ]
+    };
+
+    \datavisualization
+        [
+          data/headline = {x,y},
+          scientific axes,
+          style sheet = strong colors,
+          visualize as smooth line/.list = {11,98},
+          x axis = {label={{Number of compilations}}},
+          y axis = {label={{User time (seconds)}}},
+          legend = north outside,
+          11 = {label in legend = {text={\cpp11 constexpr}}},
+          98 = {label in legend = {text={\cpp98 templates}}}
+        ]
+        data group {curves};
+  \end{tikzpicture}
+  \caption{Time needed to compile a compile-time counting algorithm
+    using either templates or a constexpr function.}
+  \label{fig:constexpr-benchmark}
+\end{figure}

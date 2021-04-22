@@ -14,10 +14,7 @@ struct popcount_t
 {
   enum
     {
-      value =
-        (N == 0)
-        ? 0
-        : ((N & 1) + popcount_t<N >> 1>::value)
+      value = (N & 1) + popcount_t<(N >> 1)>::value
     };
 };
 
