@@ -25,12 +25,15 @@ function(add_example)
     )
 
   set(source_root "examples/${example_ROOT}")
+  set(examples)
 
   foreach(file ${example_FILES})
     set(file_path "${source_root}/${file}")
-    set(latex_example_files ${latex_example_files} ${file_path} PARENT_SCOPE)
+    set(examples ${examples} "${file_path}")
     set(files ${files} ${file_path})
   endforeach()
+
+  set(latex_example_files ${latex_example_files} ${examples} PARENT_SCOPE)
 
   set(target_name ${example_ROOT}-${example_STANDARD})
   add_executable(${target_name} ${files})
