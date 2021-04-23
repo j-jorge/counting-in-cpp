@@ -92,6 +92,8 @@ add_latex_document(
   examples/extern-template/some_template-11.hpp
   examples/extern-template/some_template-98.hpp
   examples/nullptr/nullptr-98.cpp
+  examples/static-assert/even_sized_array-11.cpp
+  examples/static-assert/even_sized_array-98.cpp
 
   parts/11.tex
   parts/cpp-general.tex
@@ -116,6 +118,7 @@ add_latex_document(
   parts/11/template-aliases.tex
   parts/11/scoped-enumerations.tex
   parts/11/smart-pointers.tex
+  parts/11/static-assert.tex
 
   style/code-listings.tex
   )

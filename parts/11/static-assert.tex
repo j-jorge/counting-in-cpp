@@ -1,0 +1,38 @@
+\subsection{Compile-Time Assertions}
+
+Compile-time assertions, declared with a \code{static\_assert}, are a
+way to verify a property at compile time.
+
+For example, the code below declares a type with an array whose size
+must be even:
+
+\begin{lstlisting}
+template<typename T, unsigned N>
+struct even_sized_array
+{
+  typedef T type[N];
+};
+\end{lstlisting}
+
+How can we ensure that \code{N} is always even? Before \cpp11 a
+solution to that would have been to enter some template dance such
+that passing an odd value would instantiate an incomplete type.
+
+\lstinputlisting{examples/static-assert/even_sized_array-98.cpp}
+
+Not only is the code verbose, but these kind of template instantiation
+errors are well known for producing kilometer-long unbearable error
+messages.
+
+\bigskip
+
+Enters \code{static\_assert} in \cpp11. Just like the good old
+\code{assert(condition)} would check that the given condition is true
+at run time, \code{static\_assert(condition, message)} will check the
+condition during the compilation.
+
+\lstinputlisting{examples/static-assert/even_sized_array-11.cpp}
+
+This is very less verbose than previously and it actually carries the
+intent. The error message is also clearer, as it is just something
+like ``static assertion failed: the message''.
