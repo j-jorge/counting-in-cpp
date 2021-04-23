@@ -86,15 +86,9 @@ add_latex_document(
   INPUTS
   ${latex_example_files}
 
-  benchmarks/constexpr/count-11.cpp
-  benchmarks/constexpr/count-98.cpp
-
   examples/extern-template/some_template-11.hpp
   examples/extern-template/some_template-98.hpp
   examples/nullptr/nullptr-98.cpp
-
-  figures/constexpr/11.data
-  figures/constexpr/98.data
 
   parts/11.tex
   parts/cpp-general.tex
