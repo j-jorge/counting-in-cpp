@@ -76,6 +76,11 @@ add_example(
   FILES nullptr-11.cpp
   STANDARD 11
   )
+add_example(
+  ROOT uniform-initialization
+  FILES struct.cpp
+  STANDARD 11
+  )
 
 add_latex_document(
   c++-book.tex
@@ -119,6 +124,7 @@ add_latex_document(
   parts/11/scoped-enumerations.tex
   parts/11/smart-pointers.tex
   parts/11/static-assert.tex
+  parts/11/uniform-initialization.tex
 
   style/code-listings.tex
   )
