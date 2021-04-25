@@ -103,6 +103,7 @@ add_latex_document(
   parts/11.tex
   parts/cpp-general.tex
   parts/preface.tex
+  parts/title-page.tex
 
   parts/11/anonymous-namespace.tex
   parts/11/auto.tex

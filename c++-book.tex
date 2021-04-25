@@ -1,24 +1,26 @@
 \documentclass{book}
 
 \usepackage[english]{babel}
+\usepackage[normalem]{ulem}
 \usepackage{cite}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fontawesome}
+\usepackage[nomarginpar]{geometry}
 \usepackage[colorlinks=true,allcolors=Blue]{hyperref}
-%\usepackage{ucs}
+\usepackage{bookmark}
 \usepackage[T1]{fontenc}
 \usepackage{mdframed}
-
-\title{Counting from 98 to 20 in C++}
-\author{Julien Jorge}
-\date{Version @CMAKE_PROJECT_VERSION@}
-
-\input{style/code-listings}
 
 % Write C++XX using the format from cppreference.com: capital C, no
 % dash nor space.
 \newcommand{\cpp}[1]{C++{#1}}
 \newcommand{\Cpp}[1]{C++{#1}}
+
+\title{Counting from 98 to 20 \\ in \Cpp{}}
+\author{Julien Jorge}
+\newcommand{\version}{@CMAKE_PROJECT_VERSION@}
+
+\input{style/code-listings}
 
 \newcommand{\code}[1]{{\tt #1}}
 
@@ -52,14 +54,17 @@
 
 \begin{document}
 
-\maketitle
+\frontmatter
+\input{parts/title-page}
 
+\cleardoublepage
+\pdfbookmark{\contentsname}{toc}
 \tableofcontents
 
-\frontmatter
 \input{parts/preface}
-\mainmatter
 
+
+\mainmatter
 \input{parts/cpp-general}
 \input{parts/11}
 
