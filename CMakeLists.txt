@@ -81,6 +81,11 @@ add_example(
   FILES struct.cpp
   STANDARD 11
   )
+add_example(
+  ROOT variadic-template
+  FILES main-98.cpp callbacks.cpp
+  STANDARD 98
+  )
 
 add_latex_document(
   c++-book.tex
@@ -99,6 +104,9 @@ add_latex_document(
   examples/nullptr/nullptr-98.cpp
   examples/static-assert/even_sized_array-11.cpp
   examples/static-assert/even_sized_array-98.cpp
+  examples/variadic-template/dispatcher-98.hpp
+  examples/variadic-template/dispatcher_impl_1.hpp
+  examples/variadic-template/dispatcher_impl_2.hpp
 
   parts/11.tex
   parts/cpp-general.tex
@@ -126,6 +134,7 @@ add_latex_document(
   parts/11/smart-pointers.tex
   parts/11/static-assert.tex
   parts/11/uniform-initialization.tex
+  parts/11/variadic-template.tex
 
   style/code-listings.tex
   )

@@ -1,0 +1,51 @@
+\subsection{Variadic Templates}
+
+Let's design a some kind of message dispatcher using features
+available before \cpp11. The use case is presented by the code below.
+
+\lstinputlisting[firstline=3]{examples/variadic-template/main-98.cpp}
+
+The idea is to have a \code{dispatcher} whose role is to store
+functions to be called with arguments provided later. It is
+parameterized by the type of the arguments. If we want to accept any
+kind of function, we must accept from zero to $n$ arguments.
+
+A typical solution for that would have been to declare the type with
+multiple template parameters and to default these parameters to a type
+representing the state of not being used. Then the actual
+implementation is selected by template specialization of a super
+type. In order to keep this example short we are going to limit our
+implementation to functions with up to two arguments.
+
+Here is the dispatcher with the defaulted parameters.
+
+\lstinputlisting[firstline=7]{examples/variadic-template/dispatcher-98.hpp}
+
+Let's have a look at the dispatcher implementation with two arguments.
+
+\lstinputlisting[firstline=7]{examples/variadic-template/dispatcher_impl_2.hpp}
+
+Nothing special here. Let's look at the implementation with one
+argument.
+
+\lstinputlisting[firstline=7]{examples/variadic-template/dispatcher_impl_1.hpp}
+
+This is very similar to the previous implementation. We could
+factorize some parts (\code{queue()} and \code{m\_scheduled}) by
+moving them in a parent class parameterized with
+\code{function\_type}, but for now let's just keep it as is.
+
+The \code{dispatch()} function cannot be factorized though, as its
+signature and the \code{m\_scheduled[i](/*args*/)} line is specific to
+each version.
+
+The implementation with no arguments is equivalently similar, so I
+won't include it here. I think you got the point: this is a lot of
+code, redundant code, for a feature limited to only three use cases
+amongst many. Wouldn't it be better if we could put all of that in a
+single implementation that would handle any number of arguments?
+
+\bigskip
+
+The variadic template syntax introduced in \Cpp11 provides a solution
+to this problem.
