@@ -19,7 +19,7 @@ function(add_example)
   cmake_parse_arguments(
     example
     ""
-    "ROOT;STANDARD"
+    "ROOT;STANDARD;TARGET"
     "FILES"
     ${ARGN}
     )
@@ -35,7 +35,12 @@ function(add_example)
 
   set(latex_example_files ${latex_example_files} ${examples} PARENT_SCOPE)
 
-  set(target_name ${example_ROOT}-${example_STANDARD})
+  if(example_TARGET)
+    set(target_name "${example_TARGET}")
+  else()
+    set(target_name ${example_ROOT}-${example_STANDARD})
+  endif()
+
   add_executable(${target_name} ${files})
   set_property(TARGET ${target_name} PROPERTY CXX_STANDARD ${example_STANDARD})
   target_include_directories(${target_name} PRIVATE ${source_root})
@@ -83,8 +88,19 @@ add_example(
   )
 add_example(
   ROOT variadic-template
+  FILES main-11.cpp callbacks.cpp
+  STANDARD 11
+  )
+add_example(
+  ROOT variadic-template
   FILES main-98.cpp callbacks.cpp
   STANDARD 98
+  )
+add_example(
+  TARGET variadic-template-array
+  ROOT variadic-template
+  FILES collect_type_names.cpp
+  STANDARD 11
   )
 
 add_latex_document(
@@ -104,6 +120,7 @@ add_latex_document(
   examples/nullptr/nullptr-98.cpp
   examples/static-assert/even_sized_array-11.cpp
   examples/static-assert/even_sized_array-98.cpp
+  examples/variadic-template/dispatcher-11.hpp
   examples/variadic-template/dispatcher-98.hpp
   examples/variadic-template/dispatcher_impl_1.hpp
   examples/variadic-template/dispatcher_impl_2.hpp
