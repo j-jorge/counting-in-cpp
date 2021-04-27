@@ -34,13 +34,13 @@ implementation if it was not deleted.
 \begin{lstlisting}
 struct foo
 {
-  foo()!\emcode{ = default}!;
+  foo()@\emcode{ = default}@;
   foo(int) {}
 };
 
 int main()
 {
-  foo f1;     !\emcode{// ok}!
+  foo f1;     @\emcode{// ok}@
   foo f2(24); // ok
   foo f3(f2); // ok
 }

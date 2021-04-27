@@ -59,7 +59,7 @@ and then we will have no copy. This is the topic of section
 \ref{move}.
 
 Note that if the constructor's argument was \code{foo}, like in
-\code{foo(foo\& that)}, then this would declare what is called a
+\code{foo(foo\&\& that)}, then this would declare what is called a
 move-constructor. This is a distinct constructor than the
 copy-constructor and it is explicitly allowed to steal the internals
 of its argument, as long as the instance behind the argument stays in
