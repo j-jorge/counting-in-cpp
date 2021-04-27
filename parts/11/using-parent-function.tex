@@ -1,0 +1,149 @@
+\subsection{Using parent functions}
+
+Here is an actual problem I encountered when developing mobile games
+in \cpp{}. When targeting Android devices, the application has to do
+some calls from the \cpp{} part to the Java part. These calls are done
+via the Java Native Interface (JNI), which is accessed via an object
+of type \code{JNIEnv}.
+
+Calling a Java method from Java requires the identifier of the class,
+of type \code{jclass}, and the identifier of the method, of type
+\code{jmethodID}. When all of them are known, we can call for example
+a static method returning an integer as follows:
+
+\begin{lstlisting}
+JNIenv* env = /* … */;
+jclass the_class = /* … */;
+jmethodID the_method = /* … */;
+
+const jint result =
+  env->CallStaticIntMethod(the_class, the_method, /* arguments */);
+\end{lstlisting}
+
+I certainly did not want to write this stuff everywhere and was hoping
+for something more like:
+
+\begin{lstlisting}
+// This variable represents the function to call.
+static_method<jint> method = /* … */;
+
+// Then we call it like a function.
+const jint result = method(/* arguments */);
+\end{lstlisting}
+
+Since all method calls need the same parameters (i.e. the JNI
+environment, the class, and the method), I put them in a base class
+from which specialization for the returned type would be
+created\footnote{This is simplified for the example. Check
+  \url{https://github.com/IsCoolEntertainment/iscool-core/} for the
+  actual code.}:
+
+\begin{lstlisting}
+class static_method_base
+{
+public:
+  static_method_base
+  ( JNIEnv* env, jclass class_id, jmethodID method_id );
+
+protected:
+  JNIEnv* m__env;
+  jclass m__class;
+  jmethodID m__method;
+};
+\end{lstlisting}
+
+Then I would inherit from this class to create a function object for
+each supported return type. Here for a static method returning an
+integer:
+
+\begin{lstlisting}
+template< typename R >
+class static_method;
+
+template<>
+class static_method<jint>:
+  public static_method_base
+{
+public:
+  // This constructor seems useless, doesn't it?
+  static_method_base
+  (JNIEnv* env, jclass class_id, jmethodID method_id)
+    : static_method_base(env, class_id, method_id)
+  {}
+
+  template<typename... Arg>
+  jint operator()(Arg&&... args) const;
+};
+\end{lstlisting}
+
+At this point we have something weird: the only reason we have defined
+a constructor in \code{static\_method\textless{}jint\textgreater} is
+to be pass its argument to the parent class. Wouldn't it be better if
+we could just say ``reuse the constructor from the parent''?
+
+\bigskip
+
+This is possible thanks to the \code{using} keyword from \cpp{}:
+
+\begin{lstlisting}
+template< typename R >
+class static_method;
+
+template<>
+class static_method<jint>:
+  public static_method_base
+{
+public:
+  // This is concise and precise.
+  @\emcode{using static\_method\_base::static\_method\_base;}@
+
+  template<typename... Arg>
+  jint operator()(Arg&&... args) const;
+};
+\end{lstlisting}
+
+When used like this, the \code{using} keyword imports the function
+into the current class. It is also a way to solve the problem of
+parent functions hidden by overloads in the child class:
+
+\begin{lstlisting}
+struct base
+{
+  void foo();
+};
+
+struct derived: base
+{
+  // This declaration hides base::foo().
+  void foo(int);
+};
+
+void bar()
+{
+  derived d;
+  // This fails, derived::foo requires an int argument.
+  d.foo();
+}
+\end{lstlisting}
+
+With the \code{using} keyword:
+
+\begin{lstlisting}
+struct base
+{
+  void foo();
+};
+
+struct derived: base
+{
+  @\emcode{using base::foo;}@
+  void foo(int);
+};
+
+void bar()
+{
+  derived d;
+  // This is ok, foo is a member function in derived.
+  d.foo();
+}
+\end{lstlisting}

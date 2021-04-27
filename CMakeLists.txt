@@ -151,6 +151,7 @@ add_latex_document(
   parts/11/smart-pointers.tex
   parts/11/static-assert.tex
   parts/11/uniform-initialization.tex
+  parts/11/using-parent-function.tex
   parts/11/variadic-template.tex
 
   style/code-listings.tex
