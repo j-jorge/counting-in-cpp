@@ -1,0 +1,101 @@
+\subsection{Initializer list}
+\label{initializer-list}
+
+Initializing a container like \code{std::vector} with a predefined
+sequence of values was quite verbose before \cpp11, as we had to
+insert the values one by one:
+
+\begin{lstlisting}
+void transform
+(std::vector<int>& values, const std::vector<int>& multipliers);
+
+void up_down_transform(std::vector<int>& values)
+{
+  // Pfff it is not even const.
+  std::vector<int> pattern(4);
+  pattern[0] = 0;
+  pattern[1] = 1;
+  pattern[2] = 0;
+  pattern[3] = -1;
+
+  // Can't we have simple initialization, like we have for arrays?
+  // const int pattern[4] = {0, 1, 0, -1};
+
+  transform(values, pattern);
+}
+\end{lstlisting}
+
+However, thanks to the the introduction of
+\code{std::initialize\_list} in \cpp11, we can now initialize our
+containers wich bracket enclosed values:
+
+\begin{lstlisting}
+void transform
+(std::vector<int>& values, const std::vector<int>& multipliers);
+
+void up_down_transform(std::vector<int>& values)
+{
+  const std::vector<int> pattern = {0, 1, 0, -1};
+  transform(values, pattern);
+
+  // This one also works:
+  // transform(values, {0, 1, 0, -1});
+}
+\end{lstlisting}
+
+It's just like uniform initialization \aref{uniform-initialization}!
+Or is it?
+
+\subsubsection{The Problem with \code{std::initializer\_list}}
+
+Instances of \code{std::initializer\_list} are created by the compiler
+when it encounters a list of values between brackets and if the target
+to which these values are assigned is, or can be constructed from, an
+\code{std::initializer\_list}.
+
+In the example above, we can create a vector from the values because
+\code{std::vector} defines a constructor taking an
+\code{std::initializer\_list} as it sole argument. This constructor
+then copies the values from the list into the vector.
+
+\bigskip
+
+I think it is important to emphasize that: the constructor
+\emph{copies} the values from the list. There is no way it can move
+them, let alone wrap them.
+
+\bigskip
+
+So we have something that looks surreptitiously like the good old
+simple and efficient aggregate initialization, that is consequently
+identical in its syntax to uniform initialization
+\aref{uniform-initialization}, and that is actually a quite
+inefficient way to initialize something as soon as the element type is
+non trivial.
+
+The worse part is that bracket initialization is pushed by the
+so-called ``modern'' \cpp{} trend, propagating this inefficiency
+everywhere.
+
+\begin{guideline}
+  Avoid \code{std::initializer\_list}.
+
+  If you really, really, want the target container to be const, then
+  use an immediately invoked lambda to construct it:
+
+  \begin{lstlisting}
+    const std::vector<int> pattern =
+      []() -> std::vector<int>
+      {
+        std::vector<int> result(4);
+        result[0] = 0;
+        result[1] = 1;
+        result[2] = 0;
+        result[3] = -1;
+
+        return result;
+      }(); // Watch out for the parentheses here,
+           // it is a call to the lambda.
+  \end{lstlisting}
+\end{guideline}
+

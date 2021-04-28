@@ -139,6 +139,7 @@ add_latex_document(
   parts/11/deleted-constructors.tex
   parts/11/extern-template.tex
   parts/11/free-begin.tex
+  parts/11/initializer-list.tex
   parts/11/lambdas.tex
   parts/11/move.tex
   parts/11/nullptr.tex
