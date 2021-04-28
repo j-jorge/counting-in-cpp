@@ -1,0 +1,32 @@
+\subsection{Threads}
+
+Before \cpp11 there was just nothing in the standard library to
+execute a thread, so we had to either go native with pthreads, Windows
+threads, or whatever fit our need, or else we could use an independent
+library that would do the system abstraction for us, like Boost.Thread.
+
+\bigskip
+
+Thankfully, \cpp11 came with \code{std::thread}, which does the system
+abstraction for us and allows us to write portable threaded
+code\footnote{When the targeted platform supports it. I'm looking at
+  you WebAssembly!}. Launching a thread is as simple as this:
+
+\begin{lstlisting}
+auto expensive_computation =
+  []() -> void
+  {
+    // This infinite loop takes forever to complete! It slows down
+    // our awesome app, better put it in a thread.
+    while (true);
+  };
+
+@\emcode{std::thread t(expensive\_computation);}@
+// Here we go, the thread is running.
+\end{lstlisting}
+
+With the threads come the mutexes, condition variables, and more, that
+will help us write synchronization points. Here is a more complete
+example with two threads accessing shared data:
+
+\lstinputlisting{examples/thread/flood.cpp}

@@ -12,6 +12,7 @@ set(
   )
 
 include(UseLATEX)
+find_package(Threads)
 
 set(latex_example_files)
 
@@ -20,7 +21,7 @@ function(add_example)
     example
     ""
     "ROOT;STANDARD;TARGET"
-    "FILES"
+    "FILES;LINKS"
     ${ARGN}
     )
 
@@ -44,6 +45,10 @@ function(add_example)
   add_executable(${target_name} ${files})
   set_property(TARGET ${target_name} PROPERTY CXX_STANDARD ${example_STANDARD})
   target_include_directories(${target_name} PRIVATE ${source_root})
+
+  if(example_LINKS)
+    target_link_libraries(${target_name} PRIVATE ${example_LINKS})
+  endif()
 endfunction()
 
 add_example(
@@ -80,6 +85,12 @@ add_example(
   ROOT nullptr
   FILES nullptr-11.cpp
   STANDARD 11
+  )
+add_example(
+  ROOT thread
+  FILES flood.cpp
+  STANDARD 11
+  LINKS Threads::Threads
   )
 add_example(
   ROOT uniform-initialization
@@ -151,6 +162,7 @@ add_latex_document(
   parts/11/scoped-enumerations.tex
   parts/11/smart-pointers.tex
   parts/11/static-assert.tex
+  parts/11/thread.tex
   parts/11/uniform-initialization.tex
   parts/11/using-parent-function.tex
   parts/11/variadic-template.tex

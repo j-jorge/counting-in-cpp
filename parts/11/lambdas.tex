@@ -1,4 +1,5 @@
 \subsection{Lambdas}
+\label{sec:lambda}
 
 How would you pass a custom comparator to \code{std::max\_element}
 before \cpp11, say to compare strings by increasing size? Certainly by
@@ -37,13 +38,13 @@ and returning the result of the comparison.
 struct string_size_equals
 {
   std::size_t size;
-    
+
   bool operator()(const std::string& string) const
   {
     return string.size() == size;
   }
 };
-  
+
 bool has_string_of_size
 (const std::vector<std::string>& strings, std::size_t s)
 {
