@@ -93,6 +93,11 @@ add_example(
   LINKS Threads::Threads
   )
 add_example(
+  ROOT tuple
+  FILES binding.cpp
+  STANDARD 11
+  )
+add_example(
   ROOT uniform-initialization
   FILES struct.cpp
   STANDARD 11
@@ -163,6 +168,7 @@ add_latex_document(
   parts/11/smart-pointers.tex
   parts/11/static-assert.tex
   parts/11/thread.tex
+  parts/11/tuple.tex
   parts/11/uniform-initialization.tex
   parts/11/using-parent-function.tex
   parts/11/variadic-template.tex

@@ -1,0 +1,125 @@
+\subsection{Tuple}
+
+The type \code{std::pair} is a nice utility class available in the STL
+since forever. It is a struct accepting two template parameters and
+defining two fields of these types, named ``first'' and
+``second''. Approximately like:
+
+\begin{lstlisting}
+template<typename T1, typename T2>
+struct pair
+{
+  T1 first;
+  T2 second;
+};
+\end{lstlisting}
+
+It is for example the value type of associative containers like
+\code{std::map}, and now we are stuck with map entries with fields
+named ``first'' and ``second'' while something like ``key'' and
+``value'' would have carried the semantics better. Meh. Well, it may
+not be the most expressive but at least we are reusing code via this
+hyper generic reusable type, hooray!
+
+Sorry, I inadvertently switched the rant-mode button on\footnote{That
+  being said, I actually love the fact that even for small types like
+  that effort is made by \cpp{} developers to build more efficient
+  implementations. Search for \emph{compressed pair} or \emph{tight
+    pair} for example.}.
+
+\bigskip
+
+Generalizing this structure to any number of fields/types was quite
+complex, as before the arrival of variadic templates
+\ref{variadic-template} in \cpp11 we had to go through some type lists
+and other metaprogramming dances.
+
+Thanks to their introduction, generalizing \code{std::pair} to any
+number of elements is now somewhat simpler, and it is already done in
+the STL via \code{std::tuple}. Additionally, \code{std::make\_tuple()}
+is a utility function that can create a tuple from its values,
+deducing the actual tuple type from its arguments. Finally, the last
+key function when using tuples is \code{std::get()}, which allows to
+access a tuple element by its index.
+
+\begin{lstlisting}
+// Creating a tuple explicitly.
+std::tuple<int, float, bool> t(24, 42.f, true);
+
+// Creating a tuple from its values.
+t = std::make_tuple(24, 42.f, true);
+
+// Accessing the elements in a tuple.
+printf("%f\n", std::get<1>(t));
+std::get<2>(t) = false;
+\end{lstlisting}
+
+Using tuple in a \cpp{} program typically happen for few reasons:
+\begin{itemize}
+\item By laziness where a struct could have been used\footnote{Don't
+  do that.},
+\item To return multiple values from a function:
+  \code{std::tuple<int, int> get\_dimensions()}\footnote{Don't do
+    that either, just write a meaningful type.}.
+\item To lure Python developers into writing \cpp{}\footnote{But… why
+  should we lure them if it's not their kind of stuff?}.
+\item To group types, to carry type lists, in metaprogramming context.
+\end{itemize}
+
+\begin{guideline}
+If you ever end up in a situation where \code{std::tuple} seems to be
+the best type for an aggregate value, please reconsider.
+
+Naming things is hard, but having a named struct will be better to
+carry the meaning to the next readers than presenting them a bunch of
+data thrown in a bag.
+\end{guideline}
+
+It is thus quite difficult to find a good short example for
+\code{std::tuple}. One good example could be argument binding, but
+it's a quite long example that needs many extra features. Another
+example is found in one constructor of \code{std::pair}, which allows
+to directly pass the arguments to use to construct its fields:
+
+\begin{lstlisting}
+template<typename T, typename U>
+struct pair
+{
+  // Simplified for the example.
+  template<typename... FirstArgs, typename... SecondArgs>
+  pair
+  (std::tuple<FirstArgs...> first_args, std::tuple<SecondArgs...> second_args)
+    : first(/* here we pass the content of first_args */),
+      second(/* here we pass the content of second_args */)
+  {}
+\end{lstlisting}
+
+Yet another example is a metaprogramming use case where multiple
+parameter packs must be passed to a type or function:
+
+\begin{lstlisting}
+// This won't work since the compiler cannot tell where to split the
+// As and Bs
+template<typename... As, typename... Bs>
+struct failing_multi_pack
+{};
+
+// The code below will work though.
+
+// This one is just the base template declaration, not defined.
+template<typename As, typename Bs>
+struct working_multi_pack;
+
+// And we can specialize it for tuples. Now the compiler can split As
+// and Bs.
+template<typename... As, typename... Bs>
+struct working_multi_pack<std::tuple<As>, std::tuple<Bs>>
+{};
+\end{lstlisting}
+
+Well, I can see that you are a bit disappointed. Let's have a look at
+the binding stuff:
+
+\lstinputlisting{examples/tuple/binding.cpp}
+
+

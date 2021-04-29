@@ -47,8 +47,8 @@ int main()
          }
      });
 
-  // std::thread::join() wait until the thread is over (which will not happen in
-  // our case as nothing breaks outside the infinite loops.
+  // std::thread::join() waits until the thread is over (which will not happen
+  // in our case as nothing breaks outside the infinite loops.
   increase.join();
   decrease.join();
 }
