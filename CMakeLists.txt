@@ -128,6 +128,9 @@ add_latex_document(
   CONFIGURE
   c++-book.tex
 
+  IMAGE_DIRS
+  assets
+
   INPUTS
   ${latex_example_files}
 
@@ -143,6 +146,7 @@ add_latex_document(
 
   parts/11.tex
   parts/cpp-general.tex
+  parts/license.tex
   parts/preface.tex
   parts/title-page.tex
 
