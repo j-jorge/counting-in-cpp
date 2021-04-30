@@ -87,6 +87,11 @@ add_example(
   STANDARD 11
   )
 add_example(
+  ROOT reference-wrapper
+  FILES capacity_tracker.cpp
+  STANDARD 11
+  )
+add_example(
   ROOT thread
   FILES flood.cpp
   STANDARD 11
@@ -169,6 +174,7 @@ add_latex_document(
   parts/11/override-and-final.tex
   parts/11/prev-next.tex
   parts/11/range-based-for-loops.tex
+  parts/11/reference-wrapper.tex
   parts/11/rvalue-reference.tex
   parts/11/template-aliases.tex
   parts/11/scoped-enumerations.tex

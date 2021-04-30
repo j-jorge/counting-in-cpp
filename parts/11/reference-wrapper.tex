@@ -1,0 +1,40 @@
+\subsection{Reference Wrapper}
+
+Be it \cpp11 or before, template argument deduction never pick a
+reference. So, for example, if we wanted to create an
+\code{std::pair<int, int\&>}, we could not use \code{std::make\_pair}:
+
+\begin{lstlisting}
+int a;
+int b;
+
+// Ok in C++11, not before. The members of the pair are references to
+// a and b.
+std::pair<int, int&> pair_1(a, b);
+
+// Not ok, std::make_pair returns an std::pair<int, int>.
+std::pair<int, int&> pair_2 = std::make_pair(a, b);
+
+// Not ok in C++11 and before, for different reasons.
+std::pair<int, int&> pair_3 = std::make_pair<int, int&>(a, b);
+\end{lstlisting}
+
+The \code{std::ref()} function (as well as \code{std::cref()})
+introduced in \cpp11 will help us with this problem. They both create
+a reference wrapper for their argument (non const or const,
+respectively), that is implicitly convertible to a raw reference.
+
+\begin{lstlisting}
+int a;
+int b;
+
+// Ok, std::make_pair returns an
+// std::pair<int, std::reference_wrapper<int>>, which is itself
+// convertible to std::pair<int, int&>.
+std::pair<int, int&> pair_make = std::make_pair(a, @\emcode{std::ref(b)}@);
+\end{lstlisting}
+
+This is especially useful when binding variables that we don't want
+to copy.
+
+\lstinputlisting{examples/reference-wrapper/capacity_tracker.cpp}
