@@ -1,0 +1,61 @@
+\subsection{Argument Bindings}
+
+The bindings example from \ref{tuple} was quite complex, and it does
+not even handle member functions. Since it is already using \cpp11
+features, it is left to the reader to consider how to implement
+something equivalent with pre-\cpp11 features.
+
+However, a better implementation of a binding is available in \cpp11,
+via \code{std::bind()}. This function creates a function object, of an
+unspecified type, that will forward its arguments to the bound
+function. This is something I would typically use in event handling.
+
+\begin{lstlisting}
+struct message_queue { /* … */ };
+
+struct message_counter
+{
+  void count_message();
+};
+
+void connect_handlers(message_queue& queue)
+{
+  message_counter counter;
+
+  // Here std::bind() creates a function object that calls
+  // counter.process_message() when invoked.
+  //
+  // Note that the arguments of the function object are deduced from
+  // the signature of message_dispatcher::count_message.
+  queue.on_message(@\emcode{std::bind}@(&message_counter::process_message, &counter));
+}
+\end{lstlisting}
+
+Interestingly, it is also possible to either force the value of an
+argument, or to redirect an argument from the caller to a specific
+argument of the called.
+
+\begin{lstlisting}
+struct message_queue { /* … */ };
+
+void log_error(int queue_id, error e);
+
+void connect_error_handler(message_queue& queue, int queue_id)
+{
+  // This one creates a function object accepting a single argument,
+  // that calls log_error(queue_id, e), for a given argument e.
+  //
+  // Note that we must explicitly tell what to do with the argument
+  // given by the caller here, via the placeholder.
+  queue.on_message(@\emcode{std::bind}@(&log_error, queue_id, std::placeholders::_1));
+}
+\end{lstlisting}
+
+In the above code, \code{std::placeholders::\_1} tells
+\code{std::bind} to pass whatever is received as the first argument
+(because the \_1) to the second argument of \code{log\_error} (second
+because it is the second following the function when the binding is
+created).
+
+Note that the standard does not define how many placeholders must be
+defined.

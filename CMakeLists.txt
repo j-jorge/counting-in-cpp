@@ -153,6 +153,7 @@ add_latex_document(
   parts/11/anonymous-namespace.tex
   parts/11/array.tex
   parts/11/auto.tex
+  parts/11/bind.tex
   parts/11/constexpr.tex
   parts/11/decltype.tex
   parts/11/defaulted-constructors.tex
