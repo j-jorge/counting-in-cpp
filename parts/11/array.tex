@@ -1,0 +1,86 @@
+\subsection{Arrays}
+
+How do we usually pass a raw array to a function in \cpp? By passing
+both a pointer to the first element and the number of elements, that
+is how.
+
+And when we need to copy such array, or to return such array from a
+function, it becomes quite tricky.
+
+\begin{lstlisting}
+void replace_zeros_copy(int* out, int* in, std::size_t size, int r)
+{
+  // Can I trust the caller that the target array is large enough to
+  // store the result? Is it a valid use case to pass null pointers
+  // here? So many questions :(
+
+  std::transform
+    (in, in + size, out,
+     [r](int v) -> int
+     {
+       return (v == 0) ? r : v;
+     });
+}
+
+// We certainly cannot properly return a raw array unless we use
+// some dynamic allocation or other techniques with their own
+// problems.
+int* replace_zeros_copy(int* array, std::size_t size, int r) { /* … */ }
+\end{lstlisting}
+
+With \cpp11 came \code{std::array} a template type to be used as an
+alternative to raw arrays, with two parameters: the type of the
+elements and their count.
+
+\begin{lstlisting}
+template<std::size_t N>
+void replace_zeros_copy
+(@\emcode{std::array<int, N>}@& out, const @\emcode{std::array<int, N>}@& in, int r)
+{
+  // Forget about the null pointers problem and the size issues,
+  // everything fits perfectly here.
+
+  std::transform
+    (in.begin(), in.end(), out.begin(),
+     [r](int v) -> int
+     {
+       return (v == 0) ? r : v;
+     });
+}
+
+// We can also directly return the array.
+template<std::size_t N>
+@\emcode{std::array<int, N>}@ replace_zeros_copy(const @\emcode{std::array<int, N>}@& array, int r)
+{
+  std::array<int, N> result;
+  replace_zeros_copy(result, array, r);
+  return result;
+}
+\end{lstlisting}
+
+An \code{std::array} is as cheap as a raw array. It has no fancy
+constructor or any subtleties, and I can think of only two downsides
+to using it:
+\begin{enumerate}
+\item the cost of including an extra header \cite{compile-health}, not
+  negligible in this case as \cppheader{array} pulls
+  \cppheader{utility} and more,
+\item the need to carry the size as a template parameter.
+\end{enumerate}
+
+\begin{guideline}
+  Because of the downsides associated with the type and its header,
+  using \code{std::array} should always be preceded by two
+  considerations:
+
+  \begin{enumerate}
+  \item Will the header propagate to many files?
+  \item Will I have to templatize everything?
+  \item Should I implement iterator-based algorithms instead?
+  \end{enumerate}
+\end{guideline}
+
+Also, note that \code{std::array} is not a fixed-capacity vector. All
+its entries are default initialized as soon as the array is
+constructed. So if it contains complex types, it means that the
+default constructor of this type is called for each entry.

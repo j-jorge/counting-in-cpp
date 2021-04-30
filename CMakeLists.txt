@@ -151,6 +151,7 @@ add_latex_document(
   parts/title-page.tex
 
   parts/11/anonymous-namespace.tex
+  parts/11/array.tex
   parts/11/auto.tex
   parts/11/constexpr.tex
   parts/11/decltype.tex
