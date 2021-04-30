@@ -1,0 +1,86 @@
+\subsection{Functions}
+
+Storing functions in a variable in \cpp{} used to be a pain. For
+example, how would you implement \code{callable} such that the code
+below works?
+
+\begin{lstlisting}
+void foo();
+void bar(int arg);
+
+struct some_object
+{
+  void some_method();
+};
+
+void test();
+{
+  std::vector<callable> scheduled;
+
+  scheduled.push_back(&foo);
+  scheduled.push_back(std::bind(&5));
+
+  some_object c;
+  scheduled.push_back(std::bind(&some_object::some_method, &c));
+
+  // All stored functions can be called as if they were void().
+  scheduled[0]();
+  scheduled[1]();
+  scheduled[2]();
+}
+\end{lstlisting}
+
+Having a working type for all these use cases is a huge task, and
+before \cpp11 our only hope were Boost.Function, some other
+libraries\footnote{Search for FastDelegate, the Impossibly Fast C++
+  Delegates, More Fasterest Delegates, and Ultimate Fast C++ Delegates
+  II'. Some of them may not exist.}, or and homemade solution.
+
+A binding like presented in Section~\ref{tuple} is a partial answer to
+that but first, it does not even handle member functions, and two, it
+is already \cpp11.
+
+\bigskip
+
+The \code{std::function} type introduced in \cpp11, in combination
+with \code{std::bind} \aref{bind}, is exactly what we
+need to fix our previous example. The former is an object that represents a
+function, and that can be called to invoke this function. It can be a
+function object or a free function, everything works.
+
+\begin{lstlisting}
+void foo();
+void bar(int arg);
+
+struct some_object
+{
+  void some_method();
+};
+
+void test();
+{
+  std::vector<@\emcode{std::function<void()>}@> scheduled;
+
+  scheduled.push_back(&foo);
+  // bar with arg = 5.
+  scheduled.push_back(std::bind(&bar, 5));
+
+  some_object c;
+  scheduled.push_back(std::bind(&some_object::some_method, &c));
+
+  // All stored functions can be called as if they were void().
+  scheduled[0]();
+  scheduled[1]();
+  scheduled[2]();
+}
+\end{lstlisting}
+
+As far as can tell there is only one downside to \code{std::function},
+it is that every call begins with a test checking if a function is
+set. If you care about performance, it can be an issue\footnote{This
+  test is used to throw an \code{std::bad\_function\_call} if the
+  invocation is done on an empty instance. If you wonder why
+  \code{std::function} does not reference by default a function that
+  throws the exception, such that no test is done and the exception is
+  still thrown when an empty function is invoked, know that I wonder
+  too. If you have insight about it, I would love to know.}.

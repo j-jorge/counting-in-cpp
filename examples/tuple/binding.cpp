@@ -46,6 +46,9 @@ struct call_helper<integer_sequence<I...>>
   {
     // Here we unpack I... to get the arguments from the tuple.
     // See @\aref{variadic-template}@.
+    //
+    // Note that it does not work with member functions, as they require another
+    // call syntax. This is left as an exercise for the reader.
     function(std::get<I>(arguments)...);
   }
 };
