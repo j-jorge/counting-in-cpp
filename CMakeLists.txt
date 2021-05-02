@@ -167,6 +167,7 @@ add_latex_document(
   parts/11/extern-template.tex
   parts/11/free-begin.tex
   parts/11/function.tex
+  parts/11/hash-table.tex
   parts/11/initializer-list.tex
   parts/11/lambdas.tex
   parts/11/move.tex

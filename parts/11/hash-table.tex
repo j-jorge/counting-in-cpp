@@ -1,0 +1,189 @@
+\subsection{Hash Tables}
+
+There were two main associative containers in \cpp{} before \cpp11:
+\code{std::vector} and the likes, to associate integer keys with
+almost any value type, and \code{std::map}, to use any key type whose
+values can be strictly ordered. Similar to the latter, \code{std::set}
+is an ordered set of values. In practice, \code{std::map} is an
+\code{std::set} where the value type is \code{std::pair}, with the key
+as the first field (with a const modifier), and the value as the
+second field.
+
+These last two collections had several problems, the main one being
+that they require a total order on their entries. However, it is not
+exceptional to have a type for which \code{operator<()} is not defined
+and where providing one would be weird.
+
+\begin{lstlisting}
+struct color
+{
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+
+  // Does it make sense to say that a color is less than another color?
+  bool operator<(const color& that) const
+  {
+    if (red != that.red)
+      return red < that.red;
+
+    if (green != that.green)
+      return green < that.green;
+
+    return blue < that.blue;
+  }
+};
+\end{lstlisting}
+
+A way to avoid the weird operator is to declare the comparison
+operator outside the type, as an independent function object. It has
+the effect of not pretending that there is a meaningful order on the
+given type. The type of the function object is then passed to
+\code{std::set} or \code{std::map}; it becomes a property of the
+container (i.e. the way its entries are ordered) instead of a property
+of the data.
+
+\begin{lstlisting}
+struct color
+{
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+};
+
+// This is one way to order, amongst many. The advantage here is that
+// there is no inherent ordering attached to color.
+struct color_lexicographical_order
+{
+  bool operator()(const color& left, const color& right) const
+  {
+    if (left.red != right.red)
+      return left.red < right.red;
+
+    if (left.green != right.green)
+      return left.green < right.green;
+
+    return left.blue < right.blue;
+  }
+};
+
+std::set<color, color_lexicographical_order> used_colors;
+\end{lstlisting}
+
+Another problem with \code{std::set} and \code{std::map} is that they
+are implemented as a balanced tree, typically a red-black tree, where
+the nodes are dynamically allocated. This is not very
+performance-friendly since the data ends up scattered in memory, with
+an additional cost of three pointers per entry. Additionally, look-up
+is logarithmic.
+
+\bigskip
+
+Since \cpp11, these containers are advantageously replaced by
+\code{std::unordered\_set} and \code{std::unordered\_map}, which
+provide the same service but with an implementation based on hash
+tables. Now, look-up is more often constant-time than anything
+else. The difficulty being to find a good hash function for the stored
+type.
+
+\begin{lstlisting}
+struct color
+{
+  // Both std::unordered_set and std::unordered_map need a way to tell
+  // if two instances are equal, in case of a hash collision.
+  bool operator==(const color& that) const
+
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+};
+
+namespace std
+{
+  // We can specialize std::hash for our own types. It is one of the
+  // few symbols from the STL that we are allowed to specialize.
+  template<>
+  struct hash<color>
+  {
+    std::size_t operator()(const color& c) const
+    {
+      return
+        ((std::size_t)c.red << 16)
+        | ((std::size_t)c.green << 8)
+        | (std::size_t)c.blue;
+    }
+  };
+}
+
+// No need to define the hash since we defined it via
+// std::hash. Alternatively, we could have set the second template
+// parameter std::unordered_set<color, some_hash_type>.
+std::unordered_set<color> used_colors;
+\end{lstlisting}
+
+Moreover, a new way to insert elements in a set or a map has been
+introduced, via the \code{emplace()} method. This method will create
+the item in-place, without copies, while the previous \code{insert()}
+approach would copy its argument into the container. It is available
+both for the ordered and unordered variants:
+
+\begin{lstlisting}
+struct color
+{
+  color(uint8_t r, uint8_t g, uint8_t b);
+
+  bool operator==(const color& that) const
+
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+};
+
+std::unordered_set<color> used_colors;
+
+// The arguments are forwarded to the constructor of color.
+used_colors.emplace(218, 13, 13);
+\end{lstlisting}
+
+For the map version, since the entries are instances of
+\code{std::pair}, we cannot pass all parameters in a single argument
+list, as the compiler would not know where the constructor arguments
+for \code{std::pair::first} would end and where the ones for
+\code{std::pair::second} would start. Consequently, we must use tuples
+\aref{tuple} and the piecewise constructor:
+
+\begin{lstlisting}
+std::unordered_map<color, unsigned> color_count;
+
+// The std::piecewise_construct is here to select the corresponding
+// constructor from std::pair. The triplet argument will be forwarded
+// directly to the construction of the first member; The second
+// singleton argument will be forwarded to the second member.
+color_count.emplace
+  (std::piecewise_construct,
+   std::forward_as_tuple(218, 13, 13),
+   std::forward_as_tuple(1));
+\end{lstlisting}
+
+The main problem with \code{std::unordered\_set} and
+\code{std::unordered\_map} is that they perform quite
+poorly. Unfortunately, due to the constraints imposed by the standard,
+they cannot be implemented in another way.
+
+\begin{guideline}
+If you need an hash table in the internals of your application or
+library, i.e. it won't be visible by anything outside, then you
+probably want to switch to another implementation. Otherwise, if your
+library or application exposes a hash table, you have to consider:
+
+\begin{enumerate}
+\item if it makes sense to pass the exposed table as-is to another
+  third-party application, then use the standard containers,
+\item if the exposed table is expected not to go anywhere, then use a
+  better container.
+\end{enumerate}
+
+So far, I have been quite satisfied with the robin hood hashing from
+Martin Ankerl, a.k.a martinus, at
+\url{https://github.com/martinus/robin-hood-hashing}.
+\end{guideline}
