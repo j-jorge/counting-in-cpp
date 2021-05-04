@@ -100,3 +100,110 @@ resource management problems?
 \bigskip
 
 Humans…
+
+%-------------------------------------------------------------------------------
+\section{The Cost of Modernity}
+
+With all these nice updates coming every three years, as \cpp{}
+developers we naturally wonder if we can use the most recent features
+or if we should stick with an older version.
+
+There is a trend amongst us to push toward using the most recent
+features, visible in online discussions or by the amount of libraries
+whose description is along the line of ``A \cpp{20} library to do
+something or something else''. This trend is called \emph{``modern''
+  \cpp{} programming}, where ``modern'' changes every day.
+
+It is tempting to go for the most recent features for several reasons:
+to benefit from the increasing performance and support from compilers,
+to write more straightforward code, to make a difference with the old
+conservative folks… And obviously because it is fun. As developers we
+are subject to a common disease: the refactoring, also known as ``just
+burn everything and rewrite from scratch''.
+
+On the other hand, using the bleeding-edge features has some
+downsides: their implementation did not go through as much testing
+than the old methods, and they may even not be available everywhere
+yet. Moreover, if we write libraries, we must take into account that
+not all projects can afford to use the most recent
+features\footnote{Specialized tooling, weird architectures, politics…
+  All of them may be valid explanations for inertia.}. Consequently,
+when we choose a recent standard, we explicitly exclude a bunch of
+project from using it.
+
+On this topic, I would like to share a short experience I had.
+
+\bigskip
+
+Near 2014 I had been working on mobile games developed in \cpp{} and
+available on iOS and Android (and unofficially on Linux and OSX for
+the developers). \cpp11 was ready since a long time when the first
+project was started so we naturally used it. Using
+\code{std::unordered\_map} and the likes was quite common in the
+projects.
+
+At some point the Android version of a game started to take forever to
+launch. It happened that the filling of a large
+\code{std::unordered\_set} was the issue, and after digging a bit I
+found why it was problematic only on Android. It turned out that the
+Android Native Development Kit (NDK) was using GCC 4.7, for which
+there was a bug that caused poor performance of the insertions in
+unordered maps and
+sets\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
+
+Actually we probably had poor performance everywhere these
+containers were used, but only some pathological case made it
+visible. At the time we managed to work around the issue by using the
+equivalent containers from Boost but the taste was bitter. We were
+stuck with a broken compiler for Android and the solution we chose was
+to tighten already questioned large dependency.
+
+\bigskip
+
+Could we have solved this problem by switching to a different or more
+recent compiler? Probably later, but not at the moment. There was
+indeed some experimental support for Clang in the NDK even though the
+official way to go native was via GCC, so we did try that, and it
+required a lot of work to compile a single part of the project. On the
+other hand, we were already using Boost so switching to their
+container was simple, plus it guaranteed equivalent performance on
+every platform.
+
+Regarding the standard in use, in 2014 \cpp14 was barely ready and
+certainly not available in the NDK. Moreover, to put things in
+perspective, consider that even at the dawn of 2021, \cpp17 was still
+not fully supported\footnote{The revision r21e released in January
+  lacks support for \code{std::filesystem}. This has been added in
+  revision r22b, released in March the same year. Note that the former
+  is a long term support (LTS) release, which means that it is
+  expected to not have full \cpp17 for a long time.}. So, for this
+platform at least, which I have heard is quite popular, pushing for
+the trending features is counter productive as it can actually prevent
+our tools to be used.
+
+So should we stay with the oldest tools for maximum support? Look fook
+example at Curl or zlib to name a few, they are here since forever and
+work perfectly, should we come back to the \emph{good old} C? Well,
+probably not, but I guess there is a compromise to make between
+cutting-edge and widely accepted.
+
+\begin{guideline}
+  There is an old saying going by ``use the right tool for the
+  job''. Even though it is nowadays used by programmers to dismiss the choices
+  other have made, there is some wisdom in it.
+
+  When facing the question of whether or not to use a feature from a
+  less-than-a-decade-old version of the language, take the time to
+  consider what it deprives you and your users it terms of
+  usability; then weight the benefit you gain from its usage.
+
+  Know that apart from some details, code written for all older
+  versions of \cpp{} are still valid in newer versions. On the
+  contrary, the more recent are the features you use, the less your
+  code can be imported into other projects.
+
+  So, if you chose \cpp14 just to be able to write \code{auto foo() ->
+    int \{\}} instead of \code{int foo() \{\}}, or if you chose \cpp20
+  just to be able to use a pair of concepts, please reconsider, as
+  these features have no benefit for the final product.
+\end{guideline}
