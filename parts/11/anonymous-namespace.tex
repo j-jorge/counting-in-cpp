@@ -13,15 +13,15 @@ Thanks to this keyword the same symbol (variable or function) could
 appear in multiple translation units without problems.
 
 However, this keyword is not applicable to type declarations. So what
-happened if you needed a class definition at file scope but happened
-to use the same name in different files, like with \code{struct foo}
+happened if we needed a class definition at file scope but happened to
+use the same name in different files, like with \code{struct foo}
 below?
 
 \lstinputlisting[title=foo.cpp]{examples/anonymous-namespace/foo.cpp}
 \lstinputlisting[title=main.cpp]{examples/anonymous-namespace/main.cpp}
 
-If you try to compile the these files for example with \code{g++
-  foo.cpp main.cpp} then run the program, you would expect to have the
+If we try to compile the these files for example with \code{g++
+  foo.cpp main.cpp} then run the program, we would expect to have the
 following output:
 
 \begin{lstlisting}{language=bash}
@@ -30,7 +30,7 @@ foo.cpp 1
 main.cpp 1
 \end{lstlisting}
 
-Instead, you may have the following output:
+Instead, we may have the following output:
 
 \begin{lstlisting}{language=bash}
 $ ./a.out
@@ -49,8 +49,7 @@ behavior.
 \Cpp11{} introduces the anonymous namespaces, which can totally solve
 this issue. Any symbol defined in an anonymous namespace has internal
 linkage. That means that it cannot conflict with anything defined
-outside the current compilation unit. Its usage is as you would
-expect:
+outside the current compilation unit. Its usage is as we would expect:
 
 \begin{lstlisting}
 // No identifier following the keyword.

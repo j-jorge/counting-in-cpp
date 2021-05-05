@@ -23,9 +23,8 @@ void foo()
 
 Fortunately, \cpp11 introduces the \code{std::begin()} and
 \code{std::end()} free functions which accepts a C-like
-array\footnote{as long as you include
-  \code{\textless{}array\textgreater}}. Now, this code will work in
-all cases:
+array\footnote{as long as we include \cppheader{array}}. Now, this
+code will work in all cases:
 
 \begin{lstlisting}
 template<typename Sequence, typename T>

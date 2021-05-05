@@ -1,7 +1,7 @@
 \subsection{Lambdas}
 \label{sec:lambda}
 
-How would you pass a custom comparator to \code{std::max\_element}
+How would we pass a custom comparator to \code{std::max\_element}
 before \cpp11, say to compare strings by increasing size? Certainly by
 writing a free or static function taking two strings as arguments and
 returning the result of the comparison.
@@ -26,9 +26,9 @@ largest_string_size(const std::vector<std::string>& strings)
 }
 \end{lstlisting}
 
-Now what if you needed a parameterized comparator, for example to call
+Now what if we needed a parameterized comparator, for example to call
 \code{std::find\_if} to search for a string of a specific size? The
-free function would not allow to store the size, so you would
+free function would not allow to store the size, so we would
 certainly write a functor object, i.e. a \code{struct} storing the
 size parameter and defining an \code{operator()} receiving a string
 and returning the result of the comparison.
@@ -58,8 +58,8 @@ bool has_string_of_size
 
 Having the comparators as independent objects or functions is nice if
 they are used in many places, but for a single use it is undoubtedly
-too verbose. And confusing too. Don't you think it would be clearer if
-the single-use comparator was declared next to where it is used?
+too verbose. And confusing too. Wouldn't it be clearer if the
+single-use comparator was declared next to where it is used?
 Hopefully this is something we can use with lambdas, starting with
 \cpp11:
 
@@ -107,7 +107,7 @@ struct something
 \end{lstlisting}
 
 Actually the compiler will create a unique type like this struct for
-every lambda you write.
+every lambda we write.
 
 More conceptually, the parts of a lambda are the following:
 
@@ -130,7 +130,7 @@ Where:
   reference to \code{b}.
 \item {\it arguments} are the arguments of the function.
 \item By default the variables captured by value cannot be assigned to
-  in the body, unless you put the mutable keyword in {\it
+  in the body, unless we put the mutable keyword in {\it
     specifier}. In effect, it removes the \code{const} from
   \code{operator()}.
 \item {\it return\_type} is the type of the value returned by this

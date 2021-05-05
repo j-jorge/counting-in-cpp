@@ -1,7 +1,7 @@
 \subsection{Functions}
 
 Storing functions in a variable in \cpp{} used to be a pain. For
-example, how would you implement \code{callable} such that the code
+example, how would we implement \code{callable} such that the code
 below works?
 
 \begin{lstlisting}
@@ -77,7 +77,7 @@ void test();
 
 As far as can tell there is only one downside to \code{std::function},
 it is that every call begins with a test checking if a function is
-set. If you care about performance, it can be an issue\footnote{This
+set. If we care about performance, it can be an issue\footnote{This
   test is used to throw an \code{std::bad\_function\_call} if the
   invocation is done on an empty instance. If you wonder why
   \code{std::function} does not reference by default a function that

@@ -3,9 +3,9 @@
 
 Copies! Copies everywhere! And dynamic allocations too!
 
-So was the world before \cpp11. In these old days, if you had to pass
+So was the world before \cpp11. In these old days, if we had to pass
 a large object to a function that needed its own instance of it, then
-you would certainly had created a copy of it.
+we would have certainly created a copy of it.
 
 \begin{lstlisting}
 struct foo
@@ -152,7 +152,7 @@ void baz()
   // Valid, b1 is unchanged in baz.
   foo_copy(b1);
 
-  // Valid, you can forget about b1 now.
+  // Valid, we can forget about b1 now.
   foo_copy(std::move(b1));
 
   bar b2;

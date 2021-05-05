@@ -53,7 +53,7 @@ void foo()
 One would typically want to forbid copies of \code{scoped\_listener} by
 disabling its copy constructor.
 
-Before \cpp11, one solution you would find here and there was to
+Before \cpp11, one solution we would find here and there was to
 declare the copy constructor and assignment operator as private. The
 problem was that it was still available for the class and its
 friends. So the programmer would then either implement an always

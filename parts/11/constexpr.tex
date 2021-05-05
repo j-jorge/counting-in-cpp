@@ -1,6 +1,6 @@
 \subsection{\code{constexpr}}
 
-Let's say you have some complex computation, like for example counting
+Let's say we have some complex computation, like for example counting
 the number of bits set to one in an integer:
 
 \begin{lstlisting}
@@ -10,7 +10,7 @@ int popcount(unsigned n)
 }
 \end{lstlisting}
 
-What happens when you want to be able to call this function both with
+What happens when we want to be able to call this function both with
 run-time values and compile-time constant as arguments? In the code
 below we would want the size of the array to be a constant, but as it
 is written its size will be computed at run-time, which makes it a non

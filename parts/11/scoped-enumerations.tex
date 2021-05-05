@@ -18,7 +18,7 @@ int main()
 }
 \end{lstlisting}
 
-While this is nice when you actually want the values of the
+While this is nice when we actually want the values of the
 enumeration to be an alias for integer constants, for example to store
 bit field flags, it can quickly become a mess when the entries of
 different enumerations share the same identifier in the same scope.
@@ -64,11 +64,11 @@ enum @\emcode{class}@ follower : @\emcode{char}@
 \end{lstlisting}
 
 With these declarations the values are scoped in their respective
-enumerations and do not conflict with each other; so if you want to
-access a value you must now prefix it with the name of the
-enumeration, like in \code{follower::fan}. Moreover, they are also not
-implicitly convertible to \code{int} anymore, which may or may not
-always be good thing.
+enumerations and do not conflict with each other; so if we want to
+access a value we must now prefix it with the name of the enumeration,
+like in \code{follower::fan}. Moreover, they are also not implicitly
+convertible to \code{int} anymore, which may or may not always be good
+thing.
 
 The fact that we can also define the type of their values allows for
 smaller memory consumption when needed, but also add the possibility

@@ -148,9 +148,9 @@ may also be accessed from two independent owners. In this case, the
 ownership of the resource is unclear, as it is \emph{shared}, so the
 idea is to keep the resource alive until all its owner release it.
 
-For example, let's say you have a function whose role is to dispatch a
+For example, let's say we have a function whose role is to dispatch a
 message to multiple listeners, whom will not process it right now. For
-some reason the message cannot be copied, so you cannot send a copy of
+some reason the message cannot be copied, so we cannot send a copy of
 it to everyone:
 
 \begin{lstlisting}

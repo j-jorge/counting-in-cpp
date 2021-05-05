@@ -1,9 +1,9 @@
 %-------------------------------------------------------------------------------
 \subsection{Delegated Constructors}
 
-Before \cpp11, constructors cannot call other constructors, so if you
-want to share initialization code between multiple constructors,
-like in the example below:
+Before \cpp11, constructors cannot call other constructors, so if we
+want to share initialization code between multiple constructors, like
+in the example below:
 
 \begin{lstlisting}
 struct foo
@@ -13,7 +13,7 @@ struct foo
       m_f(f),
       m_i(i)
   {}
-  
+
   foo(bar* b, int i)
     // can't I call foo(b, 0, i) directly?
     : m_bar(b),
@@ -28,7 +28,7 @@ private:
 };
 \end{lstlisting}
 
-Then you have to put it in some separate member function called by the
+Then we have to put it in some separate member function called by the
 constructor, like this:
 
 \begin{lstlisting}
@@ -38,7 +38,7 @@ struct foo
   {
     @\emcode{init}@(b, f, i);
   }
-  
+
   foo(bar* b, int i)
   {
     @\emcode{init}@(b, 0, i);
@@ -54,7 +54,7 @@ private:
 
   // We cannot make any of these member const anymore.
   bar* m_bar;
-  float m_f;  
+  float m_f;
   int m_i;
 };
 \end{lstlisting}
@@ -74,7 +74,7 @@ struct foo
       m_f(f),
       m_i(i)
   {}
-  
+
   foo(bar* b, int i)
     : @\emcode{foo}@(b, 0, i)
   {}

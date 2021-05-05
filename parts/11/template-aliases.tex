@@ -1,15 +1,15 @@
 %-------------------------------------------------------------------------------
 \subsection{Template Aliases}
 
-Before \cpp11, you could simply not declare a typedef with a
+Before \cpp11, we could simply not declare a typedef with a
 parameterized type. For example, the following did not work:
 
 \begin{lstlisting}
-// You can't do that.
+// We cannot do that.
 template<typename T>
 typedef std::vector<T> collection;
 
-// You can't do that either.
+// We cannot do that either.
 template<typename V>
 typedef std::map<std::string, V> string_map;
 \end{lstlisting}
@@ -33,11 +33,11 @@ Starting with \cpp11, the \code{using} keywork allows to declare
 templated type aliases:
 
 \begin{lstlisting}
-// You can do that.
+// We can do that.
 template<typename T>
 using collection = std::vector<T>;
 
-// You can also do that.
+// We can also do that.
 template<typename V>
 using string_map = std::map<std::string, V>;
 
