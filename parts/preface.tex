@@ -10,25 +10,28 @@ update in the language, also known as \cpp11, up to the most recent
 version of the standard, which is \cpp20 by the time I am writing
 this.
 
-These features are presented following a systematic format where the
-pre-\cpp11 way is reminded to the reader, with a short explanation of
-why it may have been problematic or inefficient, then the new way of
-doing things is presented.
+These features are for the most part presented following a format
+where the pre-\cpp11 way is reminded to the reader, with a short
+explanation of why it may have been problematic or inefficient, then
+the new way of doing things is presented.
 
-Some parts of the language will probably be silenced, mostly the parts
-for which I don't know much. Some parts will be presented with harsh
-critics, maybe even just based on my experience. Am I an authority on
-the subject? Probably not. Am I experimented? I tend to think I am,
-but you are the judge. Anyway, it is okay if you dismiss these
-critics, just know that there are pros and cons for anything.
+Some parts of the language will probably be silenced, mostly the ones
+for which I don't know much. Some will be presented with harsh
+critics, maybe even just based on my experience. It is okay if you
+dismiss these critics, just know that there are pros and cons for
+anything.
 
 This book won't go into the details and subtleties of any feature, nor
-into compiler-specific stuff. The reason being mostly time (I have a
-limited time to dedicate to this book) and space (it is already large
-enough). The reader is invited to satisfy his curiosity and complete
-is knowledge by reading other material. For example, the website
-\url{https://en.cppreference.com} has everything you need to know
-about any feature of the language.
+into compiler-specific stuff. The reason being mostly time (as far as
+I can tell I have a limited time in my life) and space (the book is
+already large enough). The reader is invited to satisfy his curiosity
+and complete is knowledge by reading other material. For example, the
+website \url{https://en.cppreference.com} has everything we need to
+know about any feature of the language.
+
+Finally, a basic knowledge of the language is preferable for the
+reader to enjoy this book, as some notions will be used without being
+explained.
 
 \bigskip
 
@@ -38,7 +41,8 @@ to become a programmer, a good programmer, I would suggest to rethink
 your plan and learn programming on a larger scale: computer
 architecture, algorithms, data structures, project management,
 packaging, dependency management, coding style, reviews, testing…
-There are many aspects to master in the life of a programmer.
+There are many aspects to be familiar with in the daily life of a
+programmer.
 
 As a good starting point, every programmer should read Code Complete
 \cite{code-complete}. This book goes in detail in all aspects of
@@ -56,30 +60,42 @@ the business.
 
 \bigskip
 
-Finally, remember these two steps of learning and mastering: read to
-acquire the experience of others, practice to build your own
-experience.
+Finally, remember that if reading is acquiring the experience of
+others, practicing is building our own experience.
 
 %-------------------------------------------------------------------------------
 \section{About the Author}
 
-Should you take this book's content at face? Maybe am I just some guy
-who write stuff not to think about the meaninglessness of
-existence. My intent here is not to compete nor to show of, but maybe
-are you wondering if I am relevant on the topics from this book? Judge
-by yourself.
+Should one take this book's content at face? Maybe the author is just
+some guy who just write useless stuff to forget about the
+meaninglessness of existence? If one is wondering if I am relevant on
+the topics from this book, I think this would help them to get an idea
+of my experience.
 
-I write code as a hobby since 1994, and professionally since 2005. I
-have at least 500'000 lines of \cpp{} behind me, just counting alive
-lines of code from past projects I could find. I did not go into the
-history of each project, so this does not include lines that have been
-overwritten.
+\bigskip
 
-I also have coded on Java projects, ActionScript ones, some Pascal and
-Delphi ones, Visual Basic too, BASIC a long time ago, on a Commodore
-128 and later under DOS. I did also a bit of Objective-C.
+First of all, I read a lot of code. Everyday. I read code on GitHub,
+on blogs, on StackOverflow, Reddit, and other forums. I read code
+written by me or others, from my personal projects, from my employer,
+or from random projects I find on the Internet. All this code is
+displayed either on my laptop, or in a terminal connected to a remote
+server, or on my phone. Reading is undoubtedly the main part of my
+programming activities.
+
+On the productive side, I write code as a hobby since 1994, and
+professionally since 2005. I have at least half a million of \cpp{}
+behind me, just counting alive lines of code from past projects I
+could find.
+
+I also have coded on Java projects, a bit of HTML and JavaScript, and
+many Bash scripts. Additionally, I coded some C\# programs, some
+ActionScript, some Pascal and Delphi ones, Visual Basic too, BASIC a
+long time ago, on a Commodore 128 and later under DOS. I did also a
+bit of Objective-C.
 
 Let's face it though, a good share of this code was crap.
+
+\bigskip
 
 Some code did end up well nonetheless. One project I am proud of is a
 mobile game written in \cpp, which was played by more than 500'000
@@ -88,13 +104,13 @@ took part on projects that were struggling to start and brought them
 into a viable product. So I guess I made stuff that do not suck.
 
 When I code I tend to think about long term and architecture. I try
-not to take any shortcut and to answer the problem without expecting
+not to take any shortcut and to answer the problem without attempting
 to solve the future. I code in small boxes, many, with the intent that
 they can be broken, removed, replaced, without changing everything.
 
 Finally, I am certainly not the type to rush for the new thing. I like
 tools and practices that have been well tested, so you probably won't
-hear me telling you to use this new thing from \cpp{}42 because it's
+hear me telling you to use this new thing from \cpp{42} because it's
 new and it will show that you are modern and blah blah blah.
 
 \bigskip
