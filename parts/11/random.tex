@@ -1,0 +1,39 @@
+\subsection{Random}
+
+Getting random numbers in \cpp{} was historically done by using
+functions from the C library. First we initialized the a global
+generator via a call to \code{srand()} then the values were generated
+via \code{rand()}.
+
+Unfortunately this generator was known for being a quite poor one.
+
+This has been greatly improved in \cpp11. For the initialization, we
+now have \code{std::random\_device} to access a hardware-based
+generator\footnote{If there is one, otherwise it would be
+  software-based.}, then there are many pseudo-random number
+generators, \code{std::mt19937} being a quite popular one.
+
+\begin{lstlisting}
+int main()
+{
+  // The random device will get a random value from the system. It is
+  // certainly the best random source we can have here.
+  std::random_device seed;
+
+  // This is a pseudo-random number generator, here initialized by
+  // a value obtained from the random device.
+  std::mt19937 generator(seed());
+
+  // Finally this distribution will project the random values in the
+  // [1, 24] range with equiprobability for each value.
+  std::uniform_int_distribution<int> range(1, 10);
+
+  for (int i = 0; i != 1000; ++i)
+    printf("%d\n", range(generator));
+}
+\end{lstlisting}
+
+Unfortunately the generators available in the standard library are
+known to be both inefficient and not very good at randomness. As an
+alternative, we can check for a permuted congruential generator (PCG)
+\cite{pcg}, at \url{https://www.pcg-random.org/}.

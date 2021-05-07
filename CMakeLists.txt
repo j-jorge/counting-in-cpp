@@ -174,6 +174,7 @@ add_latex_document(
   parts/11/nullptr.tex
   parts/11/override-and-final.tex
   parts/11/prev-next.tex
+  parts/11/random.tex
   parts/11/range-based-for-loops.tex
   parts/11/reference-wrapper.tex
   parts/11/rvalue-reference.tex
