@@ -1,0 +1,222 @@
+In the previous sections we saw many nice features from \cpp11. There
+are actually many more! As I did not use all of them, here come a
+short description for the missing ones.
+
+\subsection{Explicit Conversion Operators}
+
+Conversion operators can now be declared as explicit, to avoid
+unexpected conversions:
+
+\begin{lstlisting}
+// This struct wraps an 8 bits non-negative integer value.
+struct custom_uint8 { /* … */ };
+
+// This struct wraps a 64 bits signed integer value.
+struct custom_int64 { /* … */ };
+
+// This struct wraps a 32 bits integer value.
+struct custom_int32
+{
+  // This operator is explicit, as information may be lost when
+  // truncating to 8 bits. Thus we don't want it to happen silently.
+  @\emcode{explicit}@ operator custom_uint8() const
+  {
+    return custom_uint8(m_value);
+  }
+
+  // This operator is implicit, as all signed 32 bits values can be
+  // represented in a signed 64 bits.
+  operator custom_int64() const
+  {
+    return custom_int64(m_value);
+  }
+
+private:
+  int32_t m_value;
+};
+
+void foo()
+{
+  custom_uint8 i8;
+  custom_int32 i32;
+  custom_int64 i64;
+
+  // This is ok thanks to the implicit conversion operator.
+  i64 = i32;
+
+  // This won't work since there is an implicit conversion.
+  i8 = i32;
+
+  // Here the conversion is explicit, so it will work.
+  i8 = static_cast<custom_uint8>(i32);
+}
+\end{lstlisting}
+
+\subsection{Unrestricted Unions}
+
+Unions can now contain non-POD members. I do not know where it is
+useful but it can be done.
+
+\subsection{String Literals}
+
+New string literals have been introduced to represent UTF-8, UTF-16,
+UTF-32 strings, as well as raw strings:
+
+\begin{lstlisting}
+const char* utf_8 = @\emcode{u8}@"I'm UTF-8.";
+const char* utf_16 = @\emcode{u}@"I'm UTF-16.";
+const char* utf_32 = @\emcode{U}@"I'm UTF-32.";
+
+const char* raw = @\emcode{R"\_(}@This text is stored as is,
+line breaks included,
+  spaces included.
+It is thus a four-lines text.@\emcode{)\_}@";
+\end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{User Defined Literals}
+
+Have you ever mixed some units like in the declartion of \code{m} below?
+
+\begin{lstlisting}
+struct mass
+{
+  mass(float kg)
+    : kilograms(kg)
+  {}
+
+  float kilograms;
+};
+
+void foo()
+{
+  // A mass of 2000 grams.
+  mass m(2000);
+
+  // Oops, mass() takes the value in kilograms :(
+}
+\end{lstlisting}
+
+If you have already made this mistake, or just if you use this kind of
+code, you may be happy to learn that you can now use custom suffixes
+for literals, which may help to explicit the unit.
+
+\begin{lstlisting}
+// We define the 'g' suffix for float numbers, to represent grams.
+mass @\emcode{operator""g}@(float v)
+{
+  return mass(v / 1000);
+}
+
+void foo()
+{
+  // A mass of 2000 grams.
+  mass m = 2000@\emcode{\_g}@;
+
+  // m.kilograms is equal to 2, everything is fine.
+}
+\end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{Very Long Integers}
+
+Sometimes an \code{int} is a bit short to store large values. Then we
+switch to \code{long int}, but sometimes it is still not enough. Now
+with \cpp11 we can also switch to \code{long long int}\footnote{Also
+available as \code{long int long}, or \code{int long long},
+or \code{signed long int long}, or \code {long int signed long}, etc.}.
+
+This type is guaranteed to be made of at least 64 bits,
+while \code{int} and \code{long int} are made of at least 16 and 32
+bits respectively.
+
+Actually, I doubt I will ever use it, because when I need to store a
+value in at least $n$ bits, I usually choose \code{int$n$\_t} type
+from \cppheader{cstdint}.
+
+%-------------------------------------------------------------------------------
+\subsection{Size of Members}
+
+Computing the size of a struct member in the old days of \cpp{}
+required to use an instance of the struct, like in:
+
+\begin{lstlisting}
+struct foo
+{
+  int m;
+};
+
+int main()
+{
+  // There is no way to apply sizeof directly to m, so we "create"
+  // an instance just to get the member. Fortunately the expression
+  // on which sizeof is applied is not evaluated.
+  printf("%ld\n", sizeof(foo().m));
+}
+\end{lstlisting}
+
+This is doable for simple structs but clearlyl becomes difficult if
+the constructor needs arguments.
+
+In \cpp11 there is now a syntax to get the size of a member:
+
+\begin{lstlisting}
+int main()
+{
+  printf("%ld\n", sizeof(@\emcode{foo::m}@));
+}
+\end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{Type Alignment}
+
+If you are the kind of person who write allocators or who use
+placement new in a buffer, then you will be happy to learn
+about \code{alignas(T)}, which sets a type alignment to the
+value \code{T}, if it is an integer, or to match the alignment of the
+type \code{T} otherwise. Similarly, \code{alignof(T)} is the
+alignement of the type \code{T}.
+
+\begin{lstlisting}
+char buffer[1024];
+int consumed = 0;
+
+template<typename T>
+T* allocate()
+{
+  const int shift = consumed % @\emcode{alignof(T)}@;
+  const int offset = (shift == 0) ? 0 : (@\emcode{alignof(T)}@ - shift);
+
+  T* const result = new (buffer + consumed + offset) T();
+  consumed += offset + sizeof(T);
+
+  return result;
+}
+\end{lstlisting}
+
+%-------------------------------------------------------------------------------
+\subsection{Attributes}
+
+Maybe have you already seen the \code{\_\_attribute\_\_} token in
+some \cpp{} code? This is used to annotate the code with hints or
+directives about some code. Unfortunately it is a compiler extension,
+so it was not usable in portable code.
+
+Starting with \cpp11, we now have a standard way to specify attributes
+with the \code{[[some\_attribute]]} syntax. Their semantic is still
+implementation-defined but at least it is syntaxically portable.
+
+One of the only two well defined attributes in the \cpp11
+standard is \code{[[noreturn]]}, which tells that a function never
+returns to the caller:
+
+\begin{lstlisting}
+@\emcode{[[noreturn]]}@ void fatal_error(const char* m)
+{
+  printf("%s\n", m);
+  exit(1);
+}
+\end{lstlisting}
+
+The second one is \code{[[carries\_dependency]]} and I won't talk
+about it.

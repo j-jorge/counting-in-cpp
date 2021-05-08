@@ -170,6 +170,7 @@ add_latex_document(
   parts/11/hash-table.tex
   parts/11/initializer-list.tex
   parts/11/lambdas.tex
+  parts/11/miscellaneous.tex
   parts/11/move.tex
   parts/11/nullptr.tex
   parts/11/override-and-final.tex
