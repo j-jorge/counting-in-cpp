@@ -12,6 +12,7 @@
 \usepackage{bookmark}
 \usepackage[T1]{fontenc}
 \usepackage{mdframed}
+\usepackage[thicklines]{cancel}
 
 % Write C++XX using the format from cppreference.com: capital C, no
 % dash nor space.
@@ -22,7 +23,7 @@
 
 \newcommand{\aref}[1]{[\ref{#1}]}
 
-\title{Counting from 98 to 20 \\ in \Cpp{}}
+\title{Counting from 98 to \cancel{20} 11 \\ in \Cpp{}}
 \author{Julien Jorge}
 \newcommand{\version}{@CMAKE_PROJECT_VERSION@}
 
@@ -74,9 +75,9 @@
 \input{parts/cpp-general}
 \input{parts/11}
 
-\chapter{Nice Things from C++14}
-\chapter{Nice Things from C++17}
-\chapter{Nice Things from C++20}
+%\chapter{Nice Things from C++14}
+%\chapter{Nice Things from C++17}
+%\chapter{Nice Things from C++20}
 
 \chapter{Bibliography}
 \bibliographystyle{alpha}
