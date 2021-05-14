@@ -2,6 +2,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
+\definecolor{codehighlight}{rgb}{0.827,0.322,0.07}
+
 \newcommand{\lstinputlistinghl}[3][]{%
   \lstinputlisting[%
     belowskip=0pt,
@@ -12,7 +14,7 @@
   \lstinputlisting[%
     aboveskip=0pt,
     belowskip=0pt,
-    backgroundcolor=\color{blue!15},
+    backgroundcolor=\color{codehighlight!15},
     firstline=#2,
     lastline=#2
   ]{#3}
@@ -22,7 +24,7 @@
   ]{#3}
 }
 
-\newcommand{\emcode}[1]{\bfseries\color{blue}{#1}}
+\newcommand{\emcode}[1]{\bfseries\color{codehighlight}{#1}}
 
 \lstset{
 backgroundcolor=\color{black!5},
