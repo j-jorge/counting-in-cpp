@@ -6,11 +6,12 @@
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fontawesome}
-\usepackage[nomarginpar]{geometry}
+\usepackage[marginparwidth=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage[colorlinks=true,allcolors=Blue]{hyperref}
 \usepackage{bookmark}
 \usepackage[T1]{fontenc}
+\usepackage{marginnote}
 \usepackage{mdframed}
 \usepackage[thicklines]{cancel}
 
@@ -30,6 +31,16 @@
 \input{style/code-listings}
 
 \newcommand{\code}[1]{{\tt #1}}
+
+\newcommand{\marginheader}[1]{%
+  \marginnote{%
+    \begin{center}%
+      \includegraphics[width=0.5\linewidth]{assets/header-icon.pdf}
+
+      \footnotesize #1
+    \end{center}%
+  }[-2.2em]%
+}
 
 \newenvironment{guideline}
                {
