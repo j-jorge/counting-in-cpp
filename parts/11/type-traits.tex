@@ -1,0 +1,63 @@
+\subsection{Type Traits}
+
+Let's have a look at this small function:
+
+\begin{lstlisting}
+template<typename T>
+T mix(T a, T b, T r)
+{
+  return r * a + (1 - r) * b;
+}
+\end{lstlisting}
+
+This is a quite basic function that just combine two values with a
+weighted sum. Its implementation tells us that $r$ should probably be
+in $[0, 1]$, but most importantly, the computation makes sense only if
+T is a float-like type. If we want to prevent the compiler or the
+programmer to call this function with an incompatible type, we can add
+some SFINAE\footnote{Substitution Failure Is Not An Error, is a
+  principle in template instantiations according to which the compiler
+  must not emit an error if it fails to instantiate a
+  template. Instead it should try another template candidate. This
+  feature is often used and abused to provide multiple implementation
+  behind the same function signature.}, for example by introducing a
+type deduced from T that would not be defined if T is not a float-like
+type. In \cpp98 the implementation could have been similar to:
+
+\lstinputlistinghl{21}{examples/type-traits/mix-98.hpp}
+
+Aside from the fact that \code{long double} is not handled, does it
+work as expected?
+
+\begin{lstlisting}
+void test()
+{
+  // float and double are handled as expected.
+  printf("%f\n", mix(1.f, 3.f, 0.5f));
+  printf("%f\n", mix(1.d, 3.d, 0.5d));
+
+  // Using integers triggers an error, we can say that it fails successfully!
+  // printf("%d\n", mix(1, 3, 2));
+}
+\end{lstlisting}
+
+Typing custom type like \code{only\_if\_float\_like} for every use
+case is repetitive, so we would certainly end up splitting it into two
+types, that could be used like
+\code{only\_if<is\_float\_like<T>::value, T>::type}.
+
+\bigskip
+
+\marginheader{<type\_traits>}%
+%
+Lucky us, \cpp11 greatly simplify this work by introducing the
+required types, in the form of \code{std::enable\_if} and
+\code{std::is\_floating\_point\_type}. Using these types the whole
+implementation is reduced to the following:
+
+\lstinputlistinghl{4}{examples/type-traits/mix-11.hpp}
+
+There are many other predicates and operations added in
+\cppheader{type\_traits} in \cpp11, that can greatly help for
+metaprogramming. I can only suggest to have a look at them on a nice
+online reference.

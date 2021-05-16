@@ -103,6 +103,16 @@ add_example(
   STANDARD 11
   )
 add_example(
+  ROOT type-traits
+  FILES main-11.cpp
+  STANDARD 11
+  )
+add_example(
+  ROOT type-traits
+  FILES main-98.cpp
+  STANDARD 98
+  )
+add_example(
   ROOT uniform-initialization
   FILES struct.cpp
   STANDARD 11
@@ -144,6 +154,8 @@ add_latex_document(
   examples/nullptr/nullptr-98.cpp
   examples/static-assert/even_sized_array-11.cpp
   examples/static-assert/even_sized_array-98.cpp
+  examples/type-traits/mix-11.hpp
+  examples/type-traits/mix-98.hpp
   examples/variadic-template/dispatcher-11.hpp
   examples/variadic-template/dispatcher-98.hpp
   examples/variadic-template/dispatcher_impl_1.hpp
@@ -185,6 +197,7 @@ add_latex_document(
   parts/11/static-assert.tex
   parts/11/thread.tex
   parts/11/tuple.tex
+  parts/11/type-traits.tex
   parts/11/uniform-initialization.tex
   parts/11/using-parent-function.tex
   parts/11/variadic-template.tex
