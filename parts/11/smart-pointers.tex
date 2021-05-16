@@ -49,8 +49,10 @@ pointer will go out of scope then there will be no way to release the
 allocated memory.
 
 %-------------------------------------------------------------------------------
-\subsubsection{\code{std::unique\_ptr}}
+\subsubsection{Self-Deleting Non-Shared Pointer}
 
+\marginheader{<memory>}%
+%
 \Cpp11 introduces a pointer wrapper named \code{std::unique\_ptr},
 which has the merit of automatically calling \code{delete} on the
 pointer upon destruction. Applied to the previous example, it would
@@ -136,8 +138,10 @@ matter. What we have here is a simple robust way to attach a release
 function to an acquired resource.
 
 %-------------------------------------------------------------------------------
-\subsubsection{\code{std::shared\_ptr}}
+\subsubsection{Self-Deleting Shared Pointer}
 
+\marginheader{<memory>}%
+%
 I have a hard time trying to find a use case where
 \code{std::shared\_ptr} is the best solution, so let's just focus on a
 good-enough solution.
@@ -212,8 +216,10 @@ deletion from the release.
 \end{pitfall}
 
 %-------------------------------------------------------------------------------
-\subsubsection{\code{std::weak\_ptr}}
+\subsubsection{Shared Pointer Observer}
 
+\marginheader{<memory>}%
+%
 What happens when the instance pointed by a \code{std::shared\_ptr}
 owns a \code{std::shared\_ptr} pointing to the owner of the former?
 Then we have a cycle and none of the instances will be released.

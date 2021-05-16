@@ -19,6 +19,8 @@ std::pair<int, int&> pair_2 = std::make_pair(a, b);
 std::pair<int, int&> pair_3 = std::make_pair<int, int&>(a, b);
 \end{lstlisting}
 
+\marginheader{<utility>}%
+%
 The \code{std::ref()} function (as well as \code{std::cref()})
 introduced in \cpp11 will help us with this problem. They both create
 a reference wrapper for their argument (non const or const,

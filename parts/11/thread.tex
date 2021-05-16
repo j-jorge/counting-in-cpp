@@ -7,6 +7,8 @@ library that would do the system abstraction for us, like Boost.Thread.
 
 \bigskip
 
+\marginheader{<thread>}%
+%
 Thankfully, \cpp11 came with \code{std::thread}, which does the system
 abstraction for us and allows us to write portable threaded
 code\footnote{When the targeted platform supports it. I'm looking at
@@ -25,6 +27,9 @@ auto expensive_computation =
 // Here we go, the thread is running.
 \end{lstlisting}
 
+\marginheader{<mutex>,\\
+<condition\_variable>}%
+%
 With the threads come the mutexes, condition variables, and more, that
 will help us write synchronization points. Here is a more complete
 example with two threads accessing shared data:

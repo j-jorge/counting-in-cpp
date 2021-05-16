@@ -32,6 +32,8 @@ void baz(int n)
 }
 \end{lstlisting}
 
+\marginheader{<utility>}%
+%
 \Cpp11 introduces the move semantics and the \code{std::move()}
 function. In practice it means far fewer copies, as the instances data
 are transfered from one place to another.
@@ -203,6 +205,8 @@ universal reference? If it is deduced as an rvalue-reference, then
 \code{std::move()} should be used, otherwise it should be passed as
 is.
 
+\marginheader{<utility>}%
+%
 Fortunately \cpp11 provides \code{std::forward()} to do the check for
 us:
 
