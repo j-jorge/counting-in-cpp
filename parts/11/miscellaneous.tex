@@ -2,6 +2,20 @@ In the previous sections we saw many nice features from \cpp11. There
 are actually many more! As I did not use all of them, here come a
 short description for the missing ones.
 
+\subsection{Regular Expressions}
+
+\marginheader{\cppheader{regex}}%
+%
+Regular expressions are now first class citizen in the STL. We can
+finally easily write an HTML parser in a few lines
+of \cpp{}\footnote{Reference for the
+joke: \url{https://stackoverflow.com/a/1732454/1171783}. If you don't
+follow this link, just know that one cannot correctly parse random
+HTML with a regular expression.}!
+
+Interestingly, the format for the expressions can be of almost any
+existing syntax: ECMAScript, grep, awk…
+
 \subsection{Explicit Conversion Operators}
 
 Conversion operators can now be declared as explicit, to avoid
