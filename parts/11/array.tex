@@ -64,9 +64,9 @@ An \code{std::array} is as cheap as a raw array. It has no fancy
 constructor or any subtleties, and I can think of only two downsides
 to using it:
 \begin{enumerate}
-\item the cost of including an extra header \cite{compile-health}, not
-  negligible in this case as \cppheader{array} pulls
-  \cppheader{utility} and more,
+\item the cost of including an extra header \cite{compile-health}
+  \cite{stl-header-heft}, not negligible in this case as
+  \cppheader{array} pulls \cppheader{utility} and more,
 \item the need to carry the size as a template parameter.
 \end{enumerate}
 

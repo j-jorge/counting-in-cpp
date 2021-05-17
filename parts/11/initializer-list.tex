@@ -58,7 +58,9 @@ to which these values are assigned is, or can be constructed from, an
 In the example above, we can create a vector from the values because
 \code{std::vector} defines a constructor taking an
 \code{std::initializer\_list} as it sole argument. This constructor
-then copies the values from the list into the vector.
+then copies the values from the list into the vector\footnote{Check
+  \cite{beware-of-copies-initializer-list} for an illustration of the
+  problem.}.
 
 \bigskip
 
