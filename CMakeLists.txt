@@ -135,13 +135,13 @@ add_example(
   )
 
 add_latex_document(
-  c++-book.tex
+  counting-in-c++.tex
 
   BIBFILES
   bibliography.bib
 
   CONFIGURE
-  c++-book.tex
+  counting-in-c++.tex
 
   IMAGE_DIRS
   assets
