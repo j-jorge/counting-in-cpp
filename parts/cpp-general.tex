@@ -1,8 +1,8 @@
 %-------------------------------------------------------------------------------
 \chapter{The \Cpp{} Language and its Community}
 
-\Cpp is a quite old programming language: it was created by Bjarne Stroustrup
-in 1982. It initially thought as an improved C.
+\Cpp is a quite old programming language: it was created by Bjarne
+Stroustrup in 1982. It was initially thought as an improved C.
 
 The first official specifications were \emph{The C++ Programming
   Language} \cite{the-cpp-programming-language-1st}. This book was
@@ -68,38 +68,48 @@ Cue to the release of the aforementioned feature, and suddenly: ``The
 specs for {\em feature} in the standard prevent efficient
 implementations. One has to use {\em libfeature} for it.''
 
+From where I stand, it looks like people's demands are ignored, and
+they complain about it. Then they receive what they asked for, and
+they obviously still complain about it. To be fair, it is probably not
+the same people who complain in each situation. So I hope. Are they?
+
 The second behaviour is about build times. \Cpp{} is well known for
 being the language of quite long to compile programs, especially when
 the program contains templates or other metaprogramming
-techniques. This is a topic that regularly comes as a major pain; it
-was even listed as the second most frustrating thing in the 2021
+techniques. This is a topic that regularly comes out as a major pain;
+it was even listed as the second most frustrating thing in the 2021
 Annual C++ Developer Survey
-\cite{2021-annual-cpp-developer-survey}. Despite that, once we are on
-the field we meet developers being like ``Here's a header-only library
-for {\em feature} relying heavily on templates and metaprogramming
-stuff.'' Then we hear complaints like ``Compilation times are too
-long!  The committee should do something about that!''. And then, more
-developers continue asking for more header-only libraries because it
-is easy to integrate in a project\footnote{Dependency management in
-  \cpp{} is the main frustrating thing according to the aforementioned
-  survey.}.
+\cite{2021-annual-cpp-developer-survey}.
 
-\bigskip
+Despite that, once we are on the field we meet developers being like
+``Hey, here's a header-only library for {\em feature} relying heavily
+on templates and metaprogramming stuff.'' Simultaneously, we hear
+complaints like ``Compilation times are too long! The committee should
+do something about that!''. And still, more developers continue asking
+for more header-only libraries because it is easy to integrate in a
+project\footnote{Dependency management in \cpp{} is the main
+  frustrating thing according to the aforementioned survey.}.
 
-In the first case, people's demands are ignored and they complain about
-it. Then they receive what they asked for, and they still complain
-about it.
-
-The second case is more about resource management. People have a
-limited computing power, and they use every drop of it until it
-becomes unbearable. Then they ask others to solve their problem. They
-also buy even more computing power, and still use every drop of
-it. Doesn't it look suspiciously like some other real-life important
-resource management problems?
-
-\bigskip
+This is a problem of resource management. People have a limited
+computing power, and they use every drop of it to compile and
+recompile the same heavily template-based stuff again and again, until
+it becomes unbearable. At this point, instead of reviewing their work,
+they ask others (the committee, the standard, compiler vendors) to
+solve their problem. Eventually they may also even buy more computing
+power… only to push until using every drop of it. Doesn't it look
+suspiciously like some other real-life important resource management
+problems?
 
 Ah, humans…
+
+\bigskip
+
+Aside from these little problems, that are actually as much inherent
+to the language as they are the effect of human behaviour, there is a
+very large and diverse ecosystem surrounding \cpp. Many nice libraries
+and tools are published, often in a free software way, and every where
+we can see that people want to do their best. This is very
+stimulating.
 
 %-------------------------------------------------------------------------------
 \section{The Cost of Modernity}
@@ -112,7 +122,8 @@ There is a trend amongst us to push toward using the most recent
 features, visible in online discussions or by the amount of libraries
 whose description is along the line of ``A \cpp{20} library to do
 something or something else''. This trend is called \emph{``modern''
-  \cpp{} programming}, where ``modern'' changes every day.
+  \cpp{} programming}, where ``modern'' unfortunately changes almost
+every day.
 
 It is tempting to go for the most recent features for several reasons:
 to benefit from the increasing performance and support from compilers,
@@ -152,11 +163,11 @@ unordered maps and
 sets\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
 
 Actually we probably had poor performance everywhere these
-containers were used, but only some pathological case made it
+containers were used, but only one pathological case made it
 visible. At the time we managed to work around the issue by using the
 equivalent containers from Boost but the taste was bitter. We were
 stuck with a broken compiler for Android and the solution we chose was
-to tighten already questioned large dependency.
+to tighten an already questioned and large dependency.
 
 \bigskip
 
@@ -164,19 +175,19 @@ Could we have solved this problem by switching to a different or more
 recent compiler? Probably later, but not at the moment. There was
 indeed some experimental support for Clang in the NDK even though the
 official way to go native was via GCC, so we did try that, and it
-required a lot of work to compile a single part of the project. On the
-other hand, we were already using Boost so switching to their
-container was simple, plus it guaranteed equivalent performance on
-every platform.
+required a lot of work to compile the small shared common part of the
+project. On the other hand, we were already using Boost so switching
+to their container was simple, plus it guaranteed equivalent
+performance on every platform.
 
 Regarding the standard in use, in 2014 \cpp14 was barely ready and
 certainly not available in the NDK. Moreover, to put things in
 perspective, consider that even at the dawn of 2021, \cpp17 was still
-not fully supported\footnote{The revision r21e released in January
-  lacks support for \code{std::filesystem}. This has been added in
-  revision r22b, released in March the same year. Note that the former
-  is a long term support (LTS) release, which means that it is
-  expected to not have full \cpp17 for a long time.}. So, for this
+not fully supported by the NDK\footnote{The revision r21e released in
+  January lacks support for \code{std::filesystem}. This has been
+  added in revision r22b, released in March the same year. Note that
+  the former is a long term support (LTS) release, which means that it
+  is expected to not have full \cpp17 for a long time.}. So, for this
 platform at least, which I have heard is quite popular, pushing for
 the trending features is counter productive as it can actually prevent
 our tools to be used.
@@ -193,9 +204,9 @@ cutting-edge and widely accepted.
   other have made, there is some wisdom in it.
 
   When facing the question of whether or not to use a feature from a
-  less-than-a-decade-old version of the language, take the time to
-  consider what it deprives you and your users it terms of
-  usability; then weight the benefit you gain from its usage.
+  somewhat recent version of the language, take the time to consider
+  what it deprives you and your users it terms of usability; then
+  weight the benefit you gain from its usage.
 
   Know that apart from some details, code written for all older
   versions of \cpp{} are still valid in newer versions. On the
