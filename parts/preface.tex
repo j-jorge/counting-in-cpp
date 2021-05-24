@@ -4,30 +4,48 @@
 
 %-------------------------------------------------------------------------------
 \section{About this Book}
-The goal of this document is to list most, if not all, features
-introduced in the \cpp{} language since the first well-known deep
-update in the language, also known as \cpp11, up to the most recent
-version of the standard, which is \cpp20 by the time I am writing
-this.
+
+Once upon a time, as I was working on a large project with others
+\cpp{} programmers, I was asked to set up a series of talks about the
+language and especially about what has changed since the arrival of
+\cpp11. It was in 2020.
+
+So I started to write some slides with what seemed to be the key
+features from \cpp11, and quite soon I had to face the truth: it is a
+lot of content, and there was three additional major updates in the
+language that should be covered too.
+
+In the end I did not do the talks. However, I kept working on the
+slides, until eventually I decided to switch the format. It is
+probably too much material for a talk, but what about a small book?
+
+Hence this document.
+
+\bigskip
+
+The goal is to list many, if not all, essential features introduced in
+the \cpp{} language since its first well-known deep update, known as
+\cpp11, up to the most recent version of the standard, which is \cpp20
+by the time I am writing this.
 
 These features are for the most part presented following a format
 where the pre-\cpp11 way is reminded to the reader, with a short
 explanation of why it may have been problematic or inefficient, then
 the new way of doing things is presented.
 
-Some parts of the language will probably be silenced, mostly the ones
-for which I don't know much. Some will be presented with harsh
-critics, maybe even just based on my experience. It is okay if you
-dismiss these critics, just know that there are pros and cons for
-anything.
+Some parts of the language are silenced, mostly the ones for which I
+don't know much, other parts are more thoroughly presented. In any
+case, this book won't go into the details and subtleties of any
+feature, nor into compiler-specific stuff. The reason being mostly
+time (as far as I can tell I have a limited amount of that in my life)
+and space (the book is already large enough). The reader is invited to
+satisfy his curiosity and complete is knowledge by reading other
+material. For example, the website \url{https://en.cppreference.com}
+has everything we need to know about any feature of the language.
 
-This book won't go into the details and subtleties of any feature, nor
-into compiler-specific stuff. The reason being mostly time (as far as
-I can tell I have a limited time in my life) and space (the book is
-already large enough). The reader is invited to satisfy his curiosity
-and complete is knowledge by reading other material. For example, the
-website \url{https://en.cppreference.com} has everything we need to
-know about any feature of the language.
+Be advised that some critics may suddenly appear in these pages, about
+the language or the programmers. Keep in mind that those are personal
+opinions and may change suddenly!
 
 Finally, a basic knowledge of the language is preferable for the
 reader to enjoy this book, as some notions will be used without being
@@ -36,62 +54,66 @@ explained.
 \bigskip
 
 While this book is about \cpp, one should remember that \cpp{} itself
-is just a tool in the programmer's toolbox. If you are learning \cpp{}
-to become a programmer, a good programmer, I would suggest to rethink
-your plan and learn programming on a larger scale: computer
-architecture, algorithms, data structures, project management,
-packaging, dependency management, coding style, reviews, testing…
-There are many aspects to be familiar with in the daily life of a
-programmer.
+is just a tool in the programmer's toolbox. If you are focusing on
+learning \cpp{} to become a programmer, a good programmer, I would
+suggest to rethink your plan and learn programming on a larger scale:
+computer architecture, algorithms, data structures, project
+management, packaging, dependency management, coding style, reviews,
+testing…  There are many aspects to be familiar with in the daily life
+of a programmer, keep some place for them.
 
 As a good starting point, every programmer should read Code Complete
 \cite{code-complete}. This book goes in detail in all aspects of
-software development over decades of projects, so if you read it you
-will also gain part of the knowledge from these people who tried and
-failed before you.
+software development, backed up by data coming from over decades of
+real-life projects, so if you read it you will also gain part of the
+knowledge from these people who tried, failed, and succeeded before
+you.
 
 Clean Code \cite{clean-code} is a good second book to read, even
-though I would not approve all suggestions. For example, intensive
-factorization and the tendency to use object-oriented programming
-everywhere are rather things I have learnt use parsimoniously. Still,
-the book is a reference in software development, so you should read it
-at least to make yourself an opinion and to know what is going on in
-the business.
+though I would not approve all suggestions. For example, it pushes for
+intensive factorization and the use of object-oriented programming
+everywhere, which are rather things I have painfully learnt use
+parsimoniously. Still, the book is a reference in software
+development, so you should read it at least to make yourself an
+opinion and to know what is going on in the business.
 
 \bigskip
 
 Finally, remember that if reading is acquiring the experience of
-others, practicing is building our own experience.
+others, practicing is building our own experience. So I strongly
+recommend to find or start a side project, maybe even a rewrite of
+existing tools, just to try and get a grasp of the potential underlying
+complexity.
 
 %-------------------------------------------------------------------------------
 \section{About the Author}
 
-Should one take this book's content at face? Maybe the author is just
-some guy who just write useless stuff to forget about the
-meaninglessness of existence? If one is wondering if I am relevant on
-the topics from this book, I think this would help them to get an idea
-of my experience.
+Should one take this book's content at face? Is the author legit? It
+is normal to question the legitimacy of who pretend to give advice.
+So in order to help you gauging the credibility of this book, I think
+it is important to tell a bit about me.
 
 \bigskip
 
-First of all, I read a lot of code. Everyday. I read code on GitHub,
-on blogs, on StackOverflow, Reddit, and other forums. I read code
-written by me or others, from my personal projects, from my employer,
-or from random projects I find on the Internet. All this code is
-displayed either on my laptop, or in a terminal connected to a remote
-server, or on my phone. Reading is undoubtedly the main part of my
-programming activities.
+First of all, I read a lot of code. I read code almost everyday, on
+GitHub, on blogs, on StackOverflow, Reddit, and on other forums. I
+read code written by me or others, from my personal projects, from my
+employer, or from random projects I find on the Internet. All this
+code is displayed either on my laptop, or in a terminal connected to a
+remote server, or on my phone. Reading is undoubtedly the main part of
+my programming activities.
 
 On the productive side, I write code as a hobby since 1994, and
 professionally since 2005. I have at least half a million of \cpp{}
-behind me, just counting alive lines of code from past projects I
-could find.
+behind me, just counting the lines of code that survived in past
+projects I could find.
 
-I also have coded on Java projects, a bit of HTML and JavaScript, and
-many Bash scripts. Additionally, I coded some C\# programs, some
-ActionScript, some Pascal and Delphi ones, Visual Basic too, BASIC a
-long time ago, on a Commodore 128 and later under DOS. I did also a
-bit of Objective-C.
+I also have coded a lot of Bash, a good share of Java, a bit of HTML
+and a bit of JavaScript. Additionally, in a more anecdotal way, I
+coded some C\# programs, some ActionScript, some Pascal and Delphi
+ones, a small compiler in Eiffel, some pet projects in Visual Basic
+too, BASIC a long time ago, on a Commodore 128 and later under DOS. I
+also did a bit of Objective-C.
 
 Let's face it though, a good share of this code was crap.
 
@@ -100,13 +122,14 @@ Let's face it though, a good share of this code was crap.
 Some code did end up well nonetheless. One project I am proud of is a
 mobile game written in \cpp, which was played by more than 500'000
 people every day during more than three years. Aside from that, I also
-took part on projects that were struggling to start and brought them
-into a viable product. So I guess I made stuff that do not suck.
+took part in projects that were struggling to start and brought them
+into a viable product. So I guess I made stuff that does not suck.
 
 When I code I tend to think about long term and architecture. I try
 not to take any shortcut and to answer the problem without attempting
 to solve the future. I code in small boxes, many, with the intent that
-they can be broken, removed, replaced, without changing everything.
+they can be broken, removed, replaced, without changing everything. It
+wasn't always like that but that's how I work today.
 
 Finally, I am certainly not the type to rush for the new thing. I like
 tools and practices that have been well tested, so you probably won't
@@ -115,7 +138,7 @@ new and it will show that you are modern and blah blah blah.
 
 \bigskip
 
-That being said, I hope you will find something useful in this book :)
+Convinced? Anyway, I hope you will find something useful in this book :)
 
 %-------------------------------------------------------------------------------
 \section{License}
