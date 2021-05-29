@@ -8,8 +8,8 @@ struct even_sized_array
   typedef T type[N];
 };
 
-// So many less code <3
-void foo()
+// So much less code <3
+void test()
 {
   even_sized_array<int, 8>::type ok;
   even_sized_array<int, 9>::type nok;

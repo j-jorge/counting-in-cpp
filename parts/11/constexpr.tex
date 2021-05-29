@@ -31,7 +31,8 @@ via template classes and meta-programming:
 
 This implementation works but has two major problems: first it is
 incredibly verbose, second it forces us to implement the same
-algorithm twice, doubling the risk of bugs and errors.
+algorithm twice, respectively for run time and compile time
+computations, doubling the risk of bugs and errors.
 
 \bigskip
 
@@ -44,9 +45,4 @@ This keyword can be applied to a variable or a function to explicitly
 tell the compiler that it can and should be computed at compile-time
 when it appears in constant expressions. It is for example totally
 possible to call the \code{constexpr popcount()} function as a
-template argument, like in \code{popcount<popcount<42>>()}.
-
-Finally, as an extra bonus, while compilers typically put limits on
-the template instantiations depth, i.e. the number of times a template
-can be instantiated recursively, there is no such limit to
-constexpr functions.
+template argument, like in \code{popcount<popcount<42>{}>()}.

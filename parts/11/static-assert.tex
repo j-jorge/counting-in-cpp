@@ -3,8 +3,8 @@
 Compile-time assertions, declared with a \code{static\_assert}, are a
 way to verify a property at compile time.
 
-For example, the code below declares a type with an array whose size
-must be even:
+For example, the code below declares a type with an array whose size,
+with respect to the type's name, must be even:
 
 \begin{lstlisting}
 template<typename T, unsigned N>
@@ -20,7 +20,7 @@ that passing an odd value would instantiate an incomplete type.
 
 \lstinputlisting{examples/static-assert/even_sized_array-98.cpp}
 
-Not only is the code verbose, but these kind of template instantiation
+Not only this is verbose, but these kind of template instantiation
 errors are well known for producing kilometer-long unbearable error
 messages.
 

@@ -1,10 +1,10 @@
 \subsection{Type Deduction with \code{decltype}}
 \label{decltype}
 
-During the pre-\cpp11 every variable, member, argument, etc. has to be
-exactly typed. For example, if we were writing a template function
-receiving another function as an argument, how could we store the
-result of a call of this function in a local variable?
+During the pre-\cpp11 era every variable, member, argument, etc. has
+to be explicitly typed. For example, if we were writing a template
+function operating on a range, how could we declare a variable of the
+type of its items?
 
 \begin{lstlisting}
 template
@@ -60,3 +60,6 @@ void transform_if
   }
 }
 \end{lstlisting}
+
+In the example above, \code{decltype(*first)} is the type of the
+result of dereferencing \code{first}.

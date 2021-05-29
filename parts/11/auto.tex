@@ -31,10 +31,9 @@ bool has_string_of_size
 \subsubsection{Auto as a Type Placeholder}
 
 The \code{auto} keyword tells the compiler to deduce the actual type
-of a variable from whatever is assigned to it. It can be used every
-time a type should be typed, as long as there is an expression the
-compiler can use to find the type. It can be augmented with
-\code{const} or \code{\&}.
+of a variable from whatever is assigned to it. It can be used as long
+as there is an expression the compiler can use to find the type. It
+can be augmented with \code{const} or \code{\&}.
 
 A typical use is for iterating over an associative container in a for
 loop:
@@ -61,7 +60,7 @@ the one of a given expression, we can combine this with
 
 \begin{lstlisting}
 template<typename F>
-auto foo(F&& f) -> decltype(f())
+auto indirect_call(F&& f) -> decltype(f())
 {
   return f();
 }
@@ -78,8 +77,9 @@ is deduced.
 
 In practice, the use of this keyword has lead to very painful to read
 code, where nothing can be understood without going through every
-expression assigned to an \code{auto} variable. This is a very high
-load to pass to the next reader.
+expression assigned to an \code{auto} variable, and where entire
+functions have to be interpreted to eventually find the returned
+type. This is a very high load to pass to the next reader.
 
 \begin{guideline}
 Mind the next reader; write what you mean.

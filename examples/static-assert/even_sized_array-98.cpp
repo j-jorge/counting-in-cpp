@@ -20,7 +20,7 @@ struct even_sized_array
   type;
 };
 
-void foo()
+void test()
 {
   even_sized_array<int, 8>::type ok;
   even_sized_array<int, 9>::type nok;

@@ -69,6 +69,7 @@ bool has_string_of_size
 {
   // Only three lines for the equivalent of the type
   // declaration, definition and the instantiation.
+  // The third argument is a lambda.
   return std::find_if
     (strings.begin(), strings.end(),
      [=](const std::string& string) -> bool
@@ -93,12 +94,12 @@ A declaration like
 [a, b, c]( /* arguments */ ) -> T { /* statements */ }
 \end{lstlisting}
 
-is totally equivalent to
+is equivalent to
 
 \begin{lstlisting}
 struct something
 {
-  T operator( /* arguments */ ) const { /* statements */ }
+  T operator()( /* arguments */ ) const { /* statements */ }
 
   /* deduced type */ a;
   /* deduced type */ b;
@@ -124,9 +125,9 @@ Where:
 \item {\it capture} is a list of variables from the parent scope that
   must be accessible inside the lambda. Use \code{[=]} to tell the
   compiler to automatically copy any variable used by the lambda, or
-  \code{[\&]} to keep a reference to the used variables from the
-  parent scope. Variables can also be captured in a fine-grained way,
-  e.g. \code{[=a, \&b]} to copy the value of \code{a} but store a
+  \code{[\&]} to keep a reference to the corresponding variables from
+  the parent scope. Variables can also be captured in a fine-grained
+  way, e.g. \code{[=a, \&b]} to copy the value of \code{a} but store a
   reference to \code{b}.
 \item {\it arguments} are the arguments of the function.
 \item By default the variables captured by value cannot be assigned to

@@ -2,19 +2,19 @@
 
 An enumeration in pre-\cpp11 code is just like a C enumeration: a list
 of constants of type \code{int} in the scope containing the
-enumeration. For example, note how \code{foobar::foo} can be accessed
-directly and assigned to an integer in the code below:
+enumeration. For example, note how \code{appliance::fan} can be
+accessed directly and assigned to an integer in the code below:
 
 \begin{lstlisting}
-enum foobar
+enum appliance
 {
-  foo,
-  bar
+  fan,
+  oven
 };
 
 int main()
 {
-  int v = foo;
+  int v = fan;
 }
 \end{lstlisting}
 
@@ -33,14 +33,14 @@ enum appliance
 enum follower
 {
   fan,
-  anonymous
+  admirer
 };
 \end{lstlisting}
 
 The above code will fail to compile with a message along the lines of
 ``error: ‘fan’ conflicts with a previous declaration.'' Now the
 typical solution to that was to add a unique prefix to the enumerated
-values, but in the times of namespaces and so, is it really a a solution?
+values, but in the times of namespaces and so, is it really a solution?
 
 \bigskip
 
@@ -67,8 +67,8 @@ With these declarations the values are scoped in their respective
 enumerations and do not conflict with each other; so if we want to
 access a value we must now prefix it with the name of the enumeration,
 like in \code{follower::fan}. Moreover, they are also not implicitly
-convertible to \code{int} anymore, which may or may not always be good
-thing.
+convertible to \code{int} anymore, which may or may not always be a
+good thing.
 
 The fact that we can also define the type of their values allows for
 smaller memory consumption when needed, but also add the possibility

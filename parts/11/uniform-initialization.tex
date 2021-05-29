@@ -5,7 +5,7 @@ There are so many ways to initialize a variable in \cpp{} that it
 became a running gag, so it's natural that a new initialization syntax
 was added into \cpp11.
 
-Anyway, let's jump to the problem. The following code is a recurrent
+Anyway, let's jump to the problem. The following code is a recurring
 issue in \cpp{}, so much that even experimented programmers stumble
 upon it once in a while.
 
@@ -45,10 +45,11 @@ int main()
 }
 \end{lstlisting}
 
-This is not very convenient. Moreover it can quickly become hard to
-implement when a variable number of arguments are passed to
-\code{foobar} (e.g. by forwarding the arguments of a variadic macro,
-or a variadic template \ref{variadic-template}).
+This is not very convenient, and suddenly the scope is polluted by a
+useless variable. Moreover it can quickly become hard to implement
+when a variable number of arguments are passed to \code{foobar}
+(e.g. by forwarding the arguments of a variadic macro, or a variadic
+template \ref{variadic-template}).
 
 \bigskip
 
@@ -70,7 +71,7 @@ which is especially nice in a template context:
 
 \begin{lstlisting}
 template<typename T>
-void foo()
+void many_tees()
 {
   // If T is a class, calls the default constructor.
   // If T is a fundamental type (e.g. int), its value is
@@ -95,7 +96,7 @@ void foo()
 
 Consider the code below:
 
-\lstinputlistinghl{42}{examples/uniform-initialization/struct.cpp}
+\lstinputlistinghl{43}{examples/uniform-initialization/struct.cpp}
 
 What would be the output of this program? The highlighted line
 constructs a variant of \code{foo} with what looks like the aggregate
@@ -124,8 +125,9 @@ The last one is the worst. It creates an \code{std::initializer\_list}
 \footnote{See section~\ref{initializer-list} for details about that.}
 with the values, then pass it to the corresponding constructor.
 
-The so-called ``modern'' \cpp{} programming trend is pushing for using
-bracket initialization everywhere. I prefer to use it
+This is painfully ambiguous. Unfortunately, the so-called ``modern''
+\cpp{} programming trend is pushing for using bracket initialization,
+maintaining ambiguities everywhere. I prefer to use it
 parsimoniously. In particular, uses of \code{std::initializer\_list}
 should certainly be avoided as they lure the programmer into thinking
 that the assignment is an efficient aggregate initialization while it
@@ -148,15 +150,15 @@ specifying the type, for example to assign a variable or for the
 return statement of a function:
 
 \begin{lstlisting}
-struct bar
+struct interval
 {
-  bar();
-  bar(int a, int b);
+  interval();
+  interval(int a, int b);
 };
 
-bar foo(bool f)
+interval build_interval(bool f)
 {
-  bar b;
+  interval b;
 
   if (f)
     b = {23, 23};
@@ -164,6 +166,8 @@ bar foo(bool f)
   return {42, 32};
 }
 \end{lstlisting}
+
+This is terrible.
 
 \begin{guideline}
   Mind the next reader, write what you mean.

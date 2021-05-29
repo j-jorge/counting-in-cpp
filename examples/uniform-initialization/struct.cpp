@@ -25,7 +25,8 @@ struct foo_initializer_list
     : a(v2), b(v1)
   {}
 
-  // We will come back to std::initializer list later :)
+  // An initializer list allows to construct an object using an aggregate-like
+  // syntax. We will come back to it in @\ref{initializer-list}@ :)
   foo_initializer_list(const std::initializer_list<int>& i)
     // Note that the fields are set to the same value.
     : a(*i.begin()),
