@@ -53,12 +53,12 @@ endfunction()
 
 add_example(
   ROOT anonymous-namespace
-  FILES foo.cpp main.cpp
+  FILES sound_system.cpp main.cpp
   STANDARD 98
   )
 add_example(
   ROOT anonymous-namespace
-  FILES foo-anonymous.cpp main-anonymous.cpp
+  FILES sound_system-anonymous.cpp main-anonymous.cpp
   STANDARD 11
   )
 add_example(

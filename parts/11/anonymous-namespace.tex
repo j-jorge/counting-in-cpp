@@ -14,41 +14,48 @@ appear in multiple translation units without problems.
 
 However, this keyword is not applicable to type declarations. So what
 happened if we needed a class definition at file scope but happened to
-use the same name in different files, like with \code{struct foo}
+use the same name in different files, like with \code{struct system}
 below?
 
-\lstinputlisting[title=foo.cpp]{examples/anonymous-namespace/foo.cpp}
+\lstinputlisting[title=sound\_system.cpp]
+                {examples/anonymous-namespace/sound_system.cpp}
 \lstinputlisting[title=main.cpp]{examples/anonymous-namespace/main.cpp}
 
 If we try to compile the these files for example with \code{g++
-  foo.cpp main.cpp} then run the program, we would expect to have the
-following output:
+  sound\_system.cpp main.cpp} then run the program, we would expect to
+have the following output:
 
 \begin{lstlisting}{language=bash}
 $ ./a.out
-foo.cpp 1
-main.cpp 1
+sound system
+main system
 \end{lstlisting}
 
 Instead, we may have the following output:
 
 \begin{lstlisting}{language=bash}
 $ ./a.out
-foo.cpp 1
-foo.cpp 1
+sound system
+sound system
 \end{lstlisting}
 
 I say ``may'' because this program violates the one definition rule,
 which states that a symbol cannot have more than one definition in the
-program. Here, however, the \code{struct foo} has two definitions, one
-in each cpp file. We are thus entering the territory of undefined
-behavior.
+program. Here, however, the \code{struct system} has two definitions,
+one in each cpp file. We are thus entering the territory of undefined
+behavior\footnote{An undefined behavior is the result of an ill-formed
+program, where the programmer wrote something explicitly forbidden by
+the standard. Typical examples of undefined behavior are: comparing
+iterators on different containers, overflowing a signed integer,
+creating a reference to nullptr, or defining two different types with
+the same name. The compiler can and does consider that such situations
+cannot occur, and will optimize the binary accordingly.}.
 
 \bigskip
 
-\Cpp11{} introduces the anonymous namespaces, which can totally solve
-this issue. Any symbol defined in an anonymous namespace has internal
-linkage. That means that it cannot conflict with anything defined
+With the anonymous namespaces from \cpp11, we can totally solve this
+issue. Any symbol defined in an anonymous namespace has internal
+linkage; which means that it cannot conflict with anything defined
 outside the current compilation unit. Its usage is as we would expect:
 
 \begin{lstlisting}
@@ -64,10 +71,10 @@ Concretely, when the code above is modified as follows, the program
 is well defined and the output matches the expectations.
 
 \lstinputlisting[
-  title=foo-anonymous.cpp,
+  title=sound\_system-anonymous.cpp,
   emph=namespace
 ]{%
-  examples/anonymous-namespace/foo-anonymous.cpp%
+  examples/anonymous-namespace/sound_system-anonymous.cpp%
 }
 
 \lstinputlisting[

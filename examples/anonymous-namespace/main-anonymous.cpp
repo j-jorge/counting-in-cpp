@@ -2,19 +2,19 @@
 
 namespace
 {
-  struct foo
+  struct system
   {
-    foo(int i)
+    system()
     {
-      printf("main.cpp %d\n", i);
+      printf("main system\n");
     }
   };
 }
 
-void build_foo(int i);
+void init_sound_system();
 
-int main(int argc, char** argv)
+int main()
 {
-  build_foo(argc);
-  foo f(argc);
+  init_sound_system();
+  system main_system;
 }
