@@ -23,7 +23,6 @@ compiler cannot distinguish it from an integer. Thus the error.
 As an answer to this problem, \cpp11 introduces the \code{nullptr}
 keyword, which exactly represents a zero pointer. Its type is
 \code{std::nullptr\_t} and it is implicitly convertible to any
-pointer. Consequently, the previous code, if converted as below,
-compiles as expected.
+pointer. Consequently, the code below compiles as expected.
 
 \lstinputlisting[emph=nullptr]{examples/nullptr/nullptr-11.cpp}

@@ -6,11 +6,11 @@ Before \cpp11, if someone wanted to iterate over a container, he had
 to construct an iterator, of the correct type with respect to the
 container, and write the loop with the classical three steps:
 initialization (get an iterator on the begining of the container),
-stopping condition (the iterator is not at the end), and the loop
-increment.
+stopping condition (the iterator has not reached the end), and the
+loop increment.
 
 \begin{lstlisting}
-void foo(std::vector<int>& v, int c)
+void multiply(std::vector<int>& v, int c)
 {
   // I'm going to iterate over v, so I need an iterator.
   typedef std::vector<int>::iterator it_t;
@@ -26,7 +26,7 @@ containers. Starting from \cpp11, all this administrative stuff can be
 avoided by using a ranged-based for loop.
 
 \begin{lstlisting}
-void foo(std::vector<int>& v, int c)
+void multiply(std::vector<int>& v, int c)
 {
   // Just get all entries from v.
   for (int& vi : v)
@@ -35,6 +35,6 @@ void foo(std::vector<int>& v, int c)
 \end{lstlisting}
 
 This format uniformizes iteration over anything having a begining and
-an end. Moreover, it handles the typical subtelties of for loops for
+an end. Moreover, it handles the typical subtleties of for loops for
 you: the end of the container is guaranteed to be computed only once
 and the increment use the preincrement operator.
