@@ -117,7 +117,7 @@ for literals, which may help to explicit the unit.
 
 \begin{lstlisting}
 // We define the 'g' suffix for float numbers, to represent grams.
-mass @\emcode{operator""g}@(float v)
+mass @\emcode{operator"" \_g}@(float v)
 {
   return mass(v / 1000);
 }
