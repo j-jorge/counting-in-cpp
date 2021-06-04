@@ -8,68 +8,74 @@ a large object to a function that needed its own instance of it, then
 we would have certainly created a copy of it.
 
 \begin{lstlisting}
-struct foo
+struct catalog
 {
-  foo(const std::vector<bar>& bars)
-    // Here we have one allocaction,
+  catalog(const std::vector<item>& entries)
+    // Here we have one allocaction, for the storage,
     // plus copies of the vector elements.
-    : m_bars(bars)
+    : m_entries(entries)
   {}
 
 private:
-  std::vector<bar> m_bars;
+  std::vector<item> m_entries;
 };
 
-void baz(int n)
+void create_catalog(int n)
 {
-  // One allocation of n bars, plus their initialization.
-  std::vector<bar> bars(n);
+  // One allocation of n items, plus their initialization.
+  std::vector<item> entries(n);
 
   // ...
 
-  foo f(bars);
-  // I don't need the bars anymore, but they are still here.
+  catalog c(entries);
+  // I don't need the entries anymore, but they are still here.
 }
 \end{lstlisting}
 
 \marginheader{<utility>}%
 %
 \Cpp11 introduces the move semantics and the \code{std::move()}
-function. In practice it means far fewer copies, as the instances data
-are transfered from one place to another.
+function. In practice it means far fewer copies, as the instances'
+data is transfered from one place to another.
 
 \begin{lstlisting}
-struct foo
+struct catalog
 {
-  // Note the pass-by-value
-  foo(std::vector<bar> bars)
-    // Explicit transfer into m_bars, no allocation.
-    : m_bars(@\emcode{std::move}@(bars))
+  // Note the pass-by-value for the argument.
+  catalog(std::vector<item> entries)
+    // Explicit transfer into m_entries, no allocation.
+    : m_entries(@\emcode{std::move}@(entries))
   {}
 
 private:
-  std::vector<bar> m_bars;
+  std::vector<item> m_entries;
 };
 
-void baz(int n)
+void create_catalog(int n)
 {
   // The single allocation in this program.
-  std::vector<bar> bars(n);
+  std::vector<item> entries(n);
 
   // ...
 
-  // I don't need the bars anymore, so I transfer them.
-  foo f(@\emcode{std::move}@(bars));
+  // I don't need the entries anymore, so I transfer them.
+  catalog c(@\emcode{std::move}@(entries));
 }
 \end{lstlisting}
+
+In the example above, there is only one allocation, for the vector of
+entries in \code{create\_catalog()}, and zero copies. The ownership of
+the allocated space is actually transfered from one vector to another
+every time \code{std::move()} is used, until it ends up
+in \code{m\_entries}.
 
 %-------------------------------------------------------------------------------
 \subsection{The Move Constructor and Assignment Operator}
 
-In order to have this working, a new type of reference was added to
-the language, and classes can use this reference in constructors and
+In order to make it work, a new type of reference was added to
+the language; and classes can use this reference in constructors and
 assignment operators to implement the actual transfer of data from one
-instance to another.
+instance to another. So to mark an argument as moveable, use \&\&:
 
 \begin{lstlisting}
 struct foo
@@ -99,7 +105,7 @@ f = std::move(g);
 
 The parameter of such functions is considered a temporary on the call
 site. They are actually not restricted to constructors or assignment
-operators and can be used in any function.
+operators, and can be used in any function.
 
 The semantics of such arguments must be interpreted as ``I {\em may}
 steal your data''. The {\em may} is important here, as there is no
