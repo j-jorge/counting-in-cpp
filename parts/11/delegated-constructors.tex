@@ -1,9 +1,8 @@
 %-------------------------------------------------------------------------------
 \subsection{Delegated Constructors}
 
-Before \cpp11, constructors cannot call other constructors, so if we
-want to share initialization code between multiple constructors, like
-in the example below:
+Before \cpp11, constructors could not call other
+constructors. Consider the example below:
 
 \begin{lstlisting}
 struct foo
@@ -28,7 +27,8 @@ private:
 };
 \end{lstlisting}
 
-Then we have to put it in some separate member function called by the
+If we want to share initialization code between multiple constructors,
+then we have to put it in some separate member function called by the
 constructor, like this:
 
 \begin{lstlisting}
@@ -52,7 +52,7 @@ private:
     m_i = i;
   }
 
-  // We cannot make any of these member const anymore.
+  // We cannot make any of these members const anymore.
   bar* m_bar;
   float m_f;
   int m_i;
@@ -61,8 +61,10 @@ private:
 
 This approach was kind of error-prone. Stuff may happen before and
 after the call to the \code{init()} function, and actually nothing
-prevent it to be called at any point in the life of the
+prevents it to be called at any point in the life of the
 instance. Finally, this is incompatible with \code{const} members.
+
+\bigskip
 
 Starting from \cpp11, a constructor can call another constructor:
 

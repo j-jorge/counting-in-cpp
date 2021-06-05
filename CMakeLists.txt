@@ -78,7 +78,7 @@ add_example(
   )
 add_example(
   ROOT extern-template
-  FILES main.cpp  bar-11.cpp foo-11.cpp some_template-11.cpp
+  FILES main.cpp  bar-11.cpp foo-11.cpp factorial-11.cpp
   STANDARD 11
   )
 add_example(
@@ -149,8 +149,8 @@ add_latex_document(
   INPUTS
   ${latex_example_files}
 
-  examples/extern-template/some_template-11.hpp
-  examples/extern-template/some_template-98.hpp
+  examples/extern-template/factorial-11.hpp
+  examples/extern-template/factorial-98.hpp
   examples/nullptr/nullptr-98.cpp
   examples/static-assert/even_sized_array-11.cpp
   examples/static-assert/even_sized_array-98.cpp

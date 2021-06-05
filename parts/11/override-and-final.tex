@@ -12,9 +12,10 @@ struct abstract_concrete_base
 
 Down the hierarchy we have some class that overrides the
 \code{consume()} function\footnote{You may also find versions of this
-  pattern in the wild where the \code{virtual} keyword is repeated in
-  the derived classes, so the reader can tell that it is an overridden
-  function without looking at the declaration of the parent class.}:
+pattern in the wild where the \code{virtual} keyword is repeated in
+the derived classes, so the reader can suppose that it is an
+overridden function without looking at the declaration of the parent
+class.}:
 
 \begin{lstlisting}
 struct serious_business : abstract_concrete_base
@@ -45,7 +46,7 @@ private:
 };
 \end{lstlisting}
 
-Good. Everything compiles well but all derived classes are broken. It
+Nice. Everything compiles well but all derived classes are broken. It
 turns out that since \code{do\_consume()} is not a pure virtual
 function, there is no problem to instantiate the class. All derived
 will use the default \code{do\_consume()} and their old

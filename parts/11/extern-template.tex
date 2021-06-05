@@ -4,13 +4,13 @@ External templates are one of my favorite features from \cpp11.
 
 When we were writing template code before \cpp11, for example a
 template function, then every time the code was included in a
-compilation unit then the compiler would instantiate all used
+compilation unit the compiler would instantiate all used
 symbols. Check for example the header below:
 
 \lstinputlisting[%
-  title=some\_template-98.hpp%
+  title=factorial-98.hpp%
 ]{%
-  examples/extern-template/some_template-98.hpp%
+  examples/extern-template/factorial-98.hpp%
 }
 
 If this header was included in two .cpp files, and its function
@@ -38,11 +38,11 @@ $ nm bar-98.cpp.o foo-98.cpp.o
 
 bar-98.cpp.o:
 000000000000001b T foo(int)
-@\emcode{0000000000000036 W int some\_template<int>(int)}@
+@\emcode{0000000000000036 W int factorial<int>(int)}@
 
 foo-98.cpp.o:
 000000000000001b T bar(int)
-@\emcode{0000000000000036 W int some\_template<int>(int)}@
+@\emcode{0000000000000036 W int factorial<int>(int)}@
 \end{lstlisting}
 
 Not only does this consume space (54 bytes per file here) but it also
@@ -62,28 +62,29 @@ could get a more powerful computer. Again.
 
 Thankfully the \code{extern template} from \cpp11 allows us to skip
 all this useless work. First we have to tell the compiler not to
-instantiate the template by adding a single line to our header:
+instantiate the template for a subset of valid types by adding a
+single line to our header:
 
 \lstinputlistinghl[%
-  title=some\_template-11.hpp%
+  title=factorial-11.hpp%
 ]{14}{%
-  examples/extern-template/some_template-11.hpp%
+  examples/extern-template/factorial-11.hpp%
 }
 
 This line tells the compiler not to instantiate
-\code{some\_template()} when \code{T = int}. Then we add a .cpp file
+\code{factorial()} when \code{T = int}. Then we add a .cpp file
 where we explicitly ask for the instantiation:
 
 \lstinputlisting[%
-  title=some\_template-11.cpp%
+  title=factorial-11.cpp%
 ]{%
-  examples/extern-template/some_template-11.cpp%
+  examples/extern-template/factorial-11.cpp%
 }
 
 That's it. Let's check with \code{nm}:
 
 \begin{lstlisting}[language=bash]
-$ nm bar-11.cpp.o foo-11.cpp.o some_template.cpp
+$ nm bar-11.cpp.o foo-11.cpp.o factorial.cpp
 
 bar-11.cpp.o:
 000000000000001b T bar(int)
@@ -91,18 +92,17 @@ bar-11.cpp.o:
 foo-11.cpp.o:
 000000000000001b T foo(int)
 
-some_template-11.cpp.o:
-0000000000000036 W int some_template<int>(int)
+factorial-11.cpp.o:
+0000000000000036 W int factorial<int>(int)
 \end{lstlisting}
 
 The template function is indeed compiled in a single file, and absent
-from the others.
-
-We can push even further in this case, by having the whole body of
-\code{some\_template()} in the .cpp file and only its signature in the
-header. It would not only avoid the parsing of the code but, more
-importantly, allow to remove from the header all include directives
-related to implementation details.
+from the others\footnote{We can push even further in this case, by
+having the whole body of \code{factorial()} in the .cpp file and only
+its signature in the header. It would not only avoid the parsing of
+the code but, more importantly, allow to remove from the header all
+include directives related to implementation details. Note that in
+this case the extern keyword can even be omitted.}.
 
 \begin{guideline}
 If you are writing template code for which you know some or all

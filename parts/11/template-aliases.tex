@@ -35,12 +35,14 @@ templated type aliases:
 \begin{lstlisting}
 // We can do that.
 template<typename T>
-using collection = std::vector<T>;
+@\emcode{using}@ collection = std::vector<T>;
 
 // We can also do that.
 template<typename V>
-using string_map = std::map<std::string, V>;
+@\emcode{using}@ string_map = std::map<std::string, V>;
 
 // Looks like a first-class type.
 string_map<int> string_to_int;
 \end{lstlisting}
+
+The using keyword is also a replacement for typedef in general.

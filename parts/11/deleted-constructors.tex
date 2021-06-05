@@ -58,8 +58,8 @@ declare the copy constructor and assignment operator as private. The
 problem was that it was still available for the class and its
 friends. So the programmer would then either implement an always
 failing body for this constructor, emitting an error at run time, or
-just don't implement the constructor, thus emitting an error at link
-time.
+would just not implement the constructor, thus triggering an error at
+link time.
 
 These solutions were kind of weak, in the sense that the error, if
 any, was presented quite late for the programmer, and with a not

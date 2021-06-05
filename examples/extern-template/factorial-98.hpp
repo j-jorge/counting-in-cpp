@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename T>
-T some_template(T n)
+T factorial(T n)
 {
   T r = 1;
 

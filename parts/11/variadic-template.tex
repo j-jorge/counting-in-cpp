@@ -14,9 +14,9 @@ kind of function, we must accept from zero to $n$ arguments.
 A typical solution for that would have been to declare the type with
 multiple template parameters and to default these parameters to a type
 representing the state of not being used. Then the actual
-implementation is selected by template specialization of a super
-type. In order to keep this example short we are going to limit our
-implementation to functions with up to two arguments.
+implementation would have been selected by template specialization of
+a super type. In order to keep this example short we are going to
+limit our implementation to functions with up to two arguments.
 
 Here is the dispatcher with the defaulted parameters.
 
@@ -53,8 +53,8 @@ to this problem.
 
 \lstinputlistinghl[firstline=5]{6}{examples/variadic-template/dispatcher-11.hpp}
 
-Here we have a single implementation that accepts any number of
-arguments, and thus covers all use cases from the previous
+Here we have a single implementation accepting any number of
+arguments, and thus covering all use cases from the previous
 implementation and more.
 
 \bigskip
@@ -68,7 +68,7 @@ non-pack template arguments, as in \code{template<typename Head,
   typename... Tail>}.
 
 When an expression containing a parameter pack ends with an ellipsis,
-it replaced by a comma-separated repetition of the same expression
+it is replaced by a comma-separated repetition of the same expression
 applied to each type from the pack. For example:
 
 \begin{lstlisting}
@@ -83,7 +83,7 @@ void invoke(F&& f, Args&&... args)
 }
 \end{lstlisting}
 
-Or, as an other example, here is a function creating an array of the
+Or, for another example, here is a function creating an array of the
 names of the types passed as template parameters:
 
 \begin{lstlisting}
