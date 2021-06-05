@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(
   counting-in-c++
   LANGUAGES CXX
-  VERSION 0
+  VERSION 1
   )
 
 set(
