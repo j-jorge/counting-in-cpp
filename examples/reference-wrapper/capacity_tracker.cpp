@@ -44,4 +44,6 @@ int main()
 
   printf
     ("remaining capacity: %d, overflow with %d\n", tracker.capacity, *overflow);
+
+  return 0;
 }

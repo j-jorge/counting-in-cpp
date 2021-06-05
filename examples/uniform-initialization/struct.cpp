@@ -50,4 +50,6 @@ int main()
   build_foo<foo_struct>(24, 42);
   build_foo<foo_constructor>(24, 42);
   build_foo<foo_initializer_list>(24, 42);
+
+  return 0;
 }

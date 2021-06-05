@@ -29,4 +29,6 @@ int main()
   zero.dispatch();
   one.dispatch("hello");
   two.dispatch("hello", "world");
+
+  return 0;
 }

@@ -9,4 +9,6 @@ int main(int argc, char**)
 {
   int array[popcount(45)];
   printf("%d\n", popcount(argc));
+
+  return 0;
 }

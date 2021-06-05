@@ -17,4 +17,6 @@ int main()
 {
   init_sound_system();
   system main_system;
+
+  return 0;
 }

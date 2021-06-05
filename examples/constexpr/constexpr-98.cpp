@@ -27,4 +27,6 @@ int main(int argc, char**)
 {
   int array[popcount_t<45>::value];
   printf("%d\n", popcount(argc));
+
+  return 0;
 }

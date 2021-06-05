@@ -13,4 +13,6 @@ void collect_type_names()
 int main()
 {
   collect_type_names<int, float, std::string>();
+
+  return 0;
 }

@@ -51,4 +51,6 @@ int main()
   // in our case as nothing breaks outside the infinite loops.
   increase.join();
   decrease.join();
+
+  return 0;
 }

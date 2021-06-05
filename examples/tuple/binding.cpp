@@ -104,4 +104,6 @@ int main()
 
   // And now we can call print with the provided arguments.
   f();
+
+  return 0;
 }

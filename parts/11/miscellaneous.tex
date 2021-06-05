@@ -166,6 +166,8 @@ int main()
   // an instance just to get the member. Fortunately the expression
   // on which sizeof is applied is not evaluated.
   printf("%ld\n", sizeof(foo().m));
+
+  return 0;
 }
 \end{lstlisting}
 
@@ -178,6 +180,7 @@ In \cpp11 there is now a syntax to get the size of a member:
 int main()
 {
   printf("%ld\n", sizeof(@\emcode{foo::m}@));
+  return 0;
 }
 \end{lstlisting}
 
