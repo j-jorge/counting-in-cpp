@@ -162,6 +162,7 @@ add_latex_document(
   examples/variadic-template/dispatcher_impl_2.hpp
 
   parts/11.tex
+  parts/14.tex
   parts/cpp-general.tex
   parts/license.tex
   parts/preface.tex
