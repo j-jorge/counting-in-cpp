@@ -1,0 +1,28 @@
+\subsection{Number separator}
+
+Long numbers are hard to read. Check how long you need to get the
+numbers in this \cpp11 code:
+
+\begin{lstlisting}
+int wisconsin_population = 5822434;
+int california_population = 39512223;
+\end{lstlisting}
+
+My guess is that you grouped the digits by three in your mind in order
+to get the numbers right. Didn't you? Usually when we write large
+numbers like that, we group the digits with a separator to make the
+numbers easier to read, like in 1'234'567. Since \cpp14 we can use
+this syntax in the code:
+
+\begin{lstlisting}
+int wisconsin_population = 5'822'434;
+int california_population = 39'512'223;
+
+// It works with float numbers too.
+const float f = 1'111.222'222;
+
+// And also with for non-decimal numbers. Funny thing, the quote can
+// appear anywhere between two digits.
+
+const unsigned mask = 0xfff'0'00'ea;
+\end{lstlisting}
