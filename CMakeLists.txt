@@ -203,6 +203,7 @@ add_latex_document(
   parts/11/using-parent-function.tex
   parts/11/variadic-template.tex
 
+  parts/14/binary-literals.tex
   parts/14/number-separator.tex
 
   style/code-listings.tex

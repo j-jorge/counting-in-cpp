@@ -1,0 +1,41 @@
+\subsection{Binary Suffix}
+
+In \cpp11 and before, we used to declare bit patterns as hexadecimal
+values, or shifts. For example, if one wanted to access the flags
+stored in the packed fields from the image descriptor of a GIF 87a
+file \cite{gif87a}, the code could have been similar to:
+
+\begin{lstlisting}
+void parse_image_descriptor_fields(std::uint8_t packed_fields)
+{
+  // Bitmask with shifts.
+  const bool use_local_color_table = packed_fields & (1 << 7);
+
+  // Bitmasks with hexadecimal values.
+  const bool is_interlaced = packed_fields & 0x40;
+  const std::int8_t bits_for_color_palette_size_minus_one =
+    packed_fields & 0x07;
+}
+\end{lstlisting}
+
+While not really obscure, this syntax requires some effort from the
+reader, and a good understanding of the binary representation of
+numbers. What if we could directly write the binary?
+
+\bigskip
+
+That's possible with \cpp14. Just like the 0x prefix introduces an
+hexadecimal value, 0b introduces a binary value:
+
+\begin{lstlisting}
+void parse_image_descriptor_fields(std::uint8_t packed_fields)
+{
+  // Bitmask with binary literal.
+  const bool use_local_color_table = packed_fields & @\emcode{0b10000000}@;
+
+  // Note that we can use the number separator @\aref{number-separator}@ to split the mask.
+  const bool is_interlaced = packed_fields & @\emcode{0b0100'0000}@;
+  const std::int8_t bits_for_color_palette_size_minus_one =
+    packed_fields & @\emcode{0b0111}@;
+}
+\end{lstlisting}
