@@ -1,0 +1,21 @@
+language: cpp
+
+dist: focal
+
+before_install:
+  - sudo apt-get install --assume-yes
+    cmake
+    texlive-fonts-extra
+    texlive-fonts-extra-links
+    texlive-fonts-recommended
+    texlive-latex-base
+    texlive-latex-extra
+    texlive-latex-recommended
+    texlive-plain-generic
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - mv counting-in-c++.pdf counting-in-c++-wip-$(git rev-parse --short HEAD).pdf
