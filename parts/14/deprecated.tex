@@ -1,0 +1,53 @@
+\subsection{\code{[[deprecated]]} Attribute}
+
+As code evolves, some parts naturally become obsolete. Most of the time,
+obsolete code can be simply removed, but when it is published as a
+public API, great care must be taken in order not to break client
+code.
+
+In such situation, the publisher would typically provide both the old
+and the new API for a period of time long enough for the clients to
+migrate. Which they may do only if they know which parts are obsolete!
+
+So the issue here is actually to pass the information to the
+developers that the code is going to be deleted. How can we do that?
+Maybe by adding a paragraph in the release notes? I've heard that some
+people read them. Or maybe a warning in the header? Here we are going
+to rely on compiler-specific features, and the warning will be
+displayed as soon as the file is included, even if the deprecated code
+is not called. What about printing the deprecation message at run
+time, when the code is executed\footnote{Please don't.}?
+
+\bigskip
+
+Starting with \cpp14, the \code{[[deprecated]]} attribute can be used
+to target a specific symbol for deprecation, with an explicit message
+that will be displayed to the user, if and only if the symbol is used.
+
+\begin{lstlisting}
+[[@\emcode{deprecated}@("Use the button class instead.")]]
+class toggle_button
+{
+  /* … */
+};
+
+class button
+{
+public:
+  [[@\emcode{deprecated}@("Use set_font(const font&) instead.")]]
+  void set_font(const std::string& font_name);
+};
+
+void create_buttons()
+{
+  // This line will trigger a deprecation warning.
+  toggle_button toggle;
+
+  // This one doesn't.
+  button b;
+
+  // But calling the deprecated method will trigger the warning.
+  b.set_font("sans");
+}
+\end{lstlisting}
+
