@@ -2,6 +2,10 @@ language: cpp
 
 dist: focal
 
+branches:
+  except:
+    - continuous
+
 before_install:
   - sudo apt-get install --assume-yes
     cmake
@@ -13,9 +17,32 @@ before_install:
     texlive-latex-recommended
     texlive-plain-generic
 
+before_script:
+  - export SHORT_COMMIT=$(git rev-parse --short HEAD)
+
 script:
   - mkdir build
   - cd build
   - cmake ..
   - make
-  - mv counting-in-c++.pdf counting-in-c++-wip-$(git rev-parse --short HEAD).pdf
+  - mv counting-in-c++.pdf counting-in-c++-wip.pdf
+
+before_deploy:
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; fi
+  - git config --local user.name "Travis CI"
+  - git config --local user.email "builds@example.com"
+  - git remote add origin-oauth
+    $(git config remote.origin.url | sed "s/\(https:\/\/\)/\1$GITHUB_TOKEN@/")
+  - git tag --force continuous
+  - git push origin-oauth --tags --force
+
+deploy:
+  provider: releases
+  token: $GITHUB_TOKEN
+  edge: true
+  file: counting-in-c++-wip.pdf
+  overwrite: true
+  release_notes:
+    - This version is created automatically from the latest commit on master.
+  on:
+    branch: master
