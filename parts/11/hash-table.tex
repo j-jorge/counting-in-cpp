@@ -24,6 +24,10 @@ struct color
   // Does it make sense to say that a color is less than another color?
   bool operator<(const color& that) const
   {
+    // Note that in @\cpp@11 we could have used std::tie() to create a
+    // tuple from the fields @\aref{tuple}@, then used
+    // std::tuple::operator<() to compare them lexicographically.
+
     if (red != that.red)
       return red < that.red;
 

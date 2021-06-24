@@ -32,7 +32,7 @@ Sorry, I inadvertently switched the rant-mode button on\footnote{That
 
 Generalizing this structure to any number of fields/types was quite
 complex, as before the arrival of variadic templates
-\ref{variadic-template} in \cpp11 we had to go through some type lists
+\aref{variadic-template} in \cpp11 we had to go through some type lists
 and other metaprogramming dances.
 
 \marginheader{<tuple>}%
@@ -41,23 +41,47 @@ Thanks to their introduction, generalizing \code{std::pair} to any
 number of elements is now somewhat simpler, and it is already done in
 the STL via \code{std::tuple}. Additionally, \code{std::make\_tuple()}
 is a utility function that can create a tuple from its values,
-deducing the actual tuple type from its arguments. Finally, the last
-key function when using tuples is \code{std::get()}, which allows to
-access a tuple element by its index.
+deducing the actual tuple type from its arguments. Finally, the main
+companion function to \code{std::tuple} is \code{std::get()}, which
+allows to access a tuple element by its index.
 
 \begin{lstlisting}
 // Creating a tuple explicitly.
 std::tuple<int, float, bool> t(24, 42.f, true);
 
 // Creating a tuple from its values.
-t = std::make_tuple(24, 42.f, true);
+t = std::make_tuple(42, 24.f, false);
 
 // Accessing the elements in a tuple.
 printf("%f\n", std::get<1>(t));
 std::get<2>(t) = false;
 \end{lstlisting}
 
-Using tuple in a \cpp{} program typically happen for few reasons:
+Additionally, \code{std::tie()} is a helper function which creates a
+tuple whose elements are references to the arguments passed to the
+function.
+
+\begin{lstlisting}
+// Swap the first mismatching elements from two vectors.
+void swap_first_mismatch(std::vector<int>& v1, std::vector<int>& v2)
+{
+  using iterator = std::vector<int>::iterator;
+
+  iterator it_v1;
+  iterator it_v2;
+
+  // std::mismatch() returns a pair of iterators. We assign this pair
+  // to a tuple whose elements are references to the two variables
+  // declared above, meaning that we actually assign the variables.
+  std::tie(it_v1, it_v2) = std::mismatch(v1.begin(), v1.end(), v2.begin());
+
+  std::swap(*it_v1, *it_v2);
+}
+\end{lstlisting}
+
+\bigskip
+
+Declaring a tuple in a \cpp{} program typically happen for few reasons:
 \begin{itemize}
 \item By laziness where a struct could have been used\footnote{Don't
   do that.},
