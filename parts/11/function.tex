@@ -18,7 +18,8 @@ void test();
   std::vector<callable> scheduled;
 
   scheduled.push_back(&foo);
-  scheduled.push_back(std::bind(&5));
+  // bar with arg = 5.
+  scheduled.push_back(std::bind(&bar, 5));
 
   some_object c;
   scheduled.push_back(std::bind(&some_object::some_method, &c));
