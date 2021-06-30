@@ -52,16 +52,6 @@ function(add_example)
 endfunction()
 
 add_example(
-  ROOT anonymous-namespace
-  FILES sound_system.cpp main.cpp
-  STANDARD 98
-  )
-add_example(
-  ROOT anonymous-namespace
-  FILES sound_system-anonymous.cpp main-anonymous.cpp
-  STANDARD 11
-  )
-add_example(
   ROOT constexpr
   FILES constexpr-98.cpp
   STANDARD 98
@@ -168,7 +158,6 @@ add_latex_document(
   parts/preface.tex
   parts/title-page.tex
 
-  parts/11/anonymous-namespace.tex
   parts/11/array.tex
   parts/11/auto.tex
   parts/11/bind.tex
