@@ -1,0 +1,129 @@
+\subsection{Generic Lambdas}
+
+The introduction of lambdas \ref{sec:lambda} in \cpp11 unlocked many
+possibilities for the programmer. Despite that, some use cases are
+still a bit difficult to tackle. Take for example a unique predicate
+that should be applied to two collections of different types, as in
+the example below:
+
+\begin{lstlisting}
+#include <vector>
+#include <algorithm>
+
+bool same_count_by_sign
+(const std::vector<int>& ints, const std::vector<float>& floats)
+{
+  if (ints.size() != floats.size())
+    return false;
+
+  const auto non_positive_integer =
+    [](int v) -> bool
+    {
+      return v <= 0;
+    };
+  const auto non_positive_float =
+    [](float v) -> bool
+    {
+      // This is the same body as above. Do I really need two lambdas?
+      return v <= 0;
+    };
+
+  const std::size_t count_ints =
+    std::count_if(ints.begin(), ints.end(), non_positive_integer);
+  const std::size_t count_floats =
+    std::count_if(floats.begin(), floats.end(), non_positive_float);
+
+  return count_ints == count_floats;
+}
+\end{lstlisting}
+
+It is a bit disappointing to have two lambdas with the same
+body. Intuitively, one would want to templatize it. Unfortunately
+template lambdas do not exist, so we have to switch back to the
+pre-\cpp11 way with free functions or function objects.
+
+\begin{lstlisting}
+#include <vector>
+#include <algorithm>
+
+namespace
+{
+  // There we go, a simple predicate function declared far from its use.
+  template<typename T>
+  bool non_positive(T v)
+  {
+    return v <= 0;
+  }
+}
+
+bool same_count_by_sign
+(const std::vector<int>& ints, const std::vector<float>& floats)
+{
+  if (ints.size() != floats.size())
+    return false;
+
+  const std::size_t count_ints =
+    std::count_if(ints.begin(), ints.end(), &non_positive<int>);
+  const std::size_t count_floats =
+    std::count_if(floats.begin(), floats.end(), &non_positive<float>);
+
+  return count_ints == count_floats;
+}
+\end{lstlisting}
+
+It works, for sure, but it is not what we expect. Moreover, as soon as
+a variable has to be captured, we are back to the extremely verbose
+functor objects.
+
+\bigskip
+
+Enters \cpp14 and the generic lambdas. By declaring the lambda's
+arguments as \code{auto}, we can declare what is effectively the
+equivalent of a template lambda.
+
+\begin{lstlisting}
+#include <vector>
+#include <algorithm>
+
+bool same_count_by_sign
+(const std::vector<int>& ints, const std::vector<float>& floats)
+{
+  if (ints.size() != floats.size())
+    return false;
+
+  const auto non_positive =
+    [](@\emcode{auto}@ v) -> bool
+    {
+      return v <= 0;
+    };
+
+  // It's the same predicate in both calls.
+  const std::size_t count_ints =
+    std::count_if(ints.begin(), ints.end(), non_positive);
+  const std::size_t count_floats =
+    std::count_if(floats.begin(), floats.end(), non_positive);
+
+  return count_ints == count_floats;
+}
+\end{lstlisting}
+
+We saw in \ref{sec:lambda} what was the equivalent function object of
+a lambda. Here the corresponding transformation, given a lambda
+declaration like
+
+\begin{lstlisting}
+[](auto a1, …, auto an ) -> /* return type */ { /* statements */ }
+\end{lstlisting}
+
+would be something like
+
+\begin{lstlisting}
+struct something
+{
+  template<typename T1, …, typename Tn>
+  /* return type */ operator()(T1 a1, …, Tn an) const { /* statements */ }
+};
+\end{lstlisting}
+
+Note that the type of the arguments are not related. Each use of
+\code{auto} here corresponds to a single template parameter.
