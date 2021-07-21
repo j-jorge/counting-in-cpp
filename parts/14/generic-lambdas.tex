@@ -1,6 +1,6 @@
 \subsection{Generic Lambdas}
 
-The introduction of lambdas \ref{sec:lambda} in \cpp11 unlocked many
+The introduction of lambdas \aref{sec:lambda} in \cpp11 unlocked many
 possibilities for the programmer. Despite that, some use cases are
 still a bit difficult to tackle. Take for example a unique predicate
 that should be applied to two collections of different types, as in
@@ -126,4 +126,23 @@ struct something
 \end{lstlisting}
 
 Note that the type of the arguments are not related. Each use of
-\code{auto} here corresponds to a single template parameter.
+\code{auto} here corresponds to a single template parameter. Also, it
+is totally possible to use declare a parameter pack
+\aref{variadic-template}, for example by using the \code{auto…}
+syntax.
+
+\begin{guideline}
+Mandatory \code{auto}-related notice: mind the next reader; write what
+you mean.
+
+\bigskip
+
+As usual with the \code{auto} keyword, one may be tempted to use it to
+not have to think about the actual needed type, or because it looks
+``generic'' or ``future proof''. Don't do that.
+
+The \code{auto} keyword is here to tell the compiler and the reader
+that the variable can be of many types. If we use it even when a
+single type is expected, it loses its meaning, and the code becomes
+harder to understand.
+\end{guideline}
