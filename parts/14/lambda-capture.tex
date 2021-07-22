@@ -1,0 +1,82 @@
+\subsection{Lambda Capture Expressions}
+
+When we are defining a lambda, we have the possibility to capture
+variables of the enclosing scope such that they become available in
+the body of the lambda \aref{lambdas-internals}. In practice, such
+variables are either copied (like \code{var1} below, due to the
+\code{=} syntax), or referenced (like \code{var2} below, with the
+\code{\&} syntax).
+
+\begin{lstlisting}
+const auto foo = [=var1, &var2]() -> void {};
+\end{lstlisting}
+
+Unfortunately there is no other variant of the capture, which leads to
+situations like this:
+
+\begin{lstlisting}
+void wait_for_new_players(const std::string& group)
+{
+  std::string display_label = group + ": ";
+
+  // Copies are striking again. Here display_label is copied into a
+  // field of the function object associated with this lambda; not
+  // moved nor initialized on construction.
+  auto add_player_to_list =
+    [display_label](player_id id, const std::string& player alias)
+    {
+      m_player_list->add(id, display_label + alias);
+    };
+
+  m_team_service.wait_for_players(group, add_player_to_list);
+}
+\end{lstlisting}
+
+In the above example, we would want to avoid the copy of the display
+label into the equivalent member variable of the lambda. In \cpp11
+there is only two ways to achieve that: either by creating the display
+label in the callback's body, thus creating a new string on each
+call\footnote{We would also have a copy of the captured group variable
+anyway.}, or by using a custom function object, \cpp98-style.
+
+Additionally, we can note that this behavior prevent any use of a
+move-only type for a captured variable, such as
+\code{std::unique\_ptr}. Indeed, there is no way to move the variable
+from the outer scope into the lambda.
+
+\bigskip
+
+In \cpp14, capture lists have been extended to allow the initialization
+of a variable by an expression. We can use that to initialize the
+display label with the final string directly:
+
+\begin{lstlisting}
+void wait_for_new_players(std::string group)
+{
+  // display_label is initialized directly in the construction of the
+  // lambda, thus saving a copy.
+  auto add_player_to_list =
+    [@\emcode{display\_label = group + ": "}@]
+    (player_id id, const std::string& alias)
+    {
+      m_player_list.add(id, display_label + alias);
+    };
+
+  m_team_service.wait_for_players(group, add_player_to_list);
+}
+\end{lstlisting}
+
+This also solve the move-only type situation since we can not move the
+variable:
+
+\begin{lstlisting}
+void apply_filter(std::vector<int>& values, std::unique_ptr<filter> filter)
+{
+  std::for_each
+    (values.begin(), values.end(),
+     [@\emcode{f = std::move(filter)}@](int& v) -> void
+     {
+       v = f->transform(v);
+     });
+}
+\end{lstlisting}
