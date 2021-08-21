@@ -197,6 +197,7 @@ add_latex_document(
   parts/14/generic-lambdas.tex
   parts/14/lambda-capture.tex
   parts/14/number-separator.tex
+  parts/14/return-type-deduction.tex
 
   style/code-listings.tex
   )

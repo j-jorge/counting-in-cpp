@@ -1,0 +1,63 @@
+\subsection{Return Type Deduction}
+
+The \code{decltype} specifier was added in \cpp11 to identify the type
+of an expression \aref{decltype}. One of its typical use cases is the
+declaration of the return type in a template function whose result
+type must be deduced from the template arguments.
+
+\begin{lstlisting}
+// This function is a proxy to call a given function with the given
+// arguments. Its return type depends on the provided function.
+template<typename F, typename... Args>
+auto invoke(F&& f, Args&&... args) -> decltype(f(std::forward<Args>(args)...))
+{
+  return f(std::forward<Args>(args)...);
+}
+\end{lstlisting}
+
+Note how the expression passed to \code{decltype} is exactly the body
+of the function.
+
+\bigskip
+
+To avoid this verbosity, \cpp14 allows to omit the trailing return
+type to let the compiler deduce the type from the function's body.
+
+\begin{lstlisting}
+template<typename F, typename... Args>
+auto invoke(F&& f, Args&&... args)
+{
+  return f(std::forward<Args>(args)...);
+}
+\end{lstlisting}
+
+An excellent use case for this feature is a function returning a
+lambda \aref{sec:lambda}. Have you ever tried to write one?
+
+\begin{lstlisting}
+auto make_comparator(int v) -> /* what should I write here? */
+{
+  return [v](int c) -> bool
+  {
+    return v == c;
+  };
+}
+\end{lstlisting}
+
+As far as I know there is no way to write such a function in
+\cpp11. In \cpp14, though, we can simply drop the return type and let
+the compiler deduce it from the body.
+
+\begin{guideline}
+One could be tempted to always omit the return type under the false
+assumption that less code is more readable. Don't do that.
+
+Whenever we omit the return type, the reader has to parse the whole
+body to find the actual type. This is needlessly complex and makes
+painful code reviews. What should be more readable actually requires
+to process more code.
+
+Implied information are bad in programming. Don't follow the ``modern
+\cpp{}'' trend which pushes for using every new feature everywhere;
+use them only when you need them.
+\end{guideline}
