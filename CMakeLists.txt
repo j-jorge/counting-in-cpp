@@ -123,6 +123,18 @@ add_example(
   FILES collect_type_names.cpp
   STANDARD 11
   )
+add_example(
+  TARGET variable-template-11
+  ROOT variable-template
+  FILES main-11.cpp
+  STANDARD 11
+  )
+add_example(
+  TARGET variable-template-14
+  ROOT variable-template
+  FILES main-14.cpp
+  STANDARD 14
+  )
 
 add_latex_document(
   counting-in-c++.tex
@@ -198,6 +210,7 @@ add_latex_document(
   parts/14/lambda-capture.tex
   parts/14/number-separator.tex
   parts/14/return-type-deduction.tex
+  parts/14/variable-templates.tex
 
   style/code-listings.tex
   )
