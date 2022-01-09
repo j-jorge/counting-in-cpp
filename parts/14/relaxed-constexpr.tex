@@ -1,0 +1,50 @@
+\subsection{Relaxed \code{constexpr}}
+
+The introduction of \code{constexpr} in \cpp11 \aref{sec:constexpr}
+greatly simplified some compile-time complex computations, even though
+they were some limitations. The most frustrating of which was
+certainly the constraint that \code{constexpr} functions should
+contain a single statement (a \code{return} statement). In practice
+this means no variable, no branch or control flow other than the
+ternary \code{?:} operator and using recursion for any loop-based
+algorithm. See for example this implementation of \code{popcount()} we
+wrote in section \aref{sec:constexpr}:
+
+\lstinputlisting{examples/constexpr/constexpr-11.cpp}
+
+In \cpp14, these restrictions are lifted and we can implement this
+function in a less convoluted way\footnote{Not that recursion is
+inherently convoluted. Some algorithms work very well when
+implemented in a recursive way, both regarding the readability and the
+performance, but even though any programmer worth is money must be
+know the practice I would argue that most code, i.e. the code we are
+familiar with, is non-recursive.}:
+
+\lstinputlisting{examples/constexpr/constexpr-14.cpp}
+
+A subtle change in the transition from \cpp11 to \cpp14 is that
+\code{constexpr} used on a member function does not implies
+\code{const} anymore. For example, this code would not compile in
+\cpp11 but does in \cpp14:
+
+\begin{lstlisting}
+struct s
+{
+  int value;
+
+  constexpr int increment(int v)
+  {
+    // Can't do that in C++11 as the function signature is actually
+    //
+    //   constexpr int increment(int) const.
+    //
+    // Okay in C++14, where the function signature is as declared.
+    return value += v;
+  }
+};
+\end{lstlisting}
+
+This can come as a surprise when switching to a newer standard since
+calling a \code{constexpr}-only member function on a \code{const}
+instance will suddenly trigger errors like ``passing ‘const x’ as
+‘this’ argument discards qualifiers''.

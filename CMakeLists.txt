@@ -62,6 +62,11 @@ add_example(
   STANDARD 11
   )
 add_example(
+  ROOT constexpr
+  FILES constexpr-14.cpp
+  STANDARD 14
+  )
+add_example(
   ROOT extern-template
   FILES main.cpp bar-98.cpp foo-98.cpp
   STANDARD 98
@@ -210,6 +215,7 @@ add_latex_document(
   parts/14/generic-lambdas.tex
   parts/14/lambda-capture.tex
   parts/14/number-separator.tex
+  parts/14/relaxed-constexpr.tex
   parts/14/return-type-deduction.tex
   parts/14/variable-templates.tex
 
