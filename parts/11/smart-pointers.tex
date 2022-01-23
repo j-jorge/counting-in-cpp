@@ -50,6 +50,7 @@ allocated memory.
 
 %-------------------------------------------------------------------------------
 \subsubsection{Self-Deleting Non-Shared Pointer}
+\label{sec:unique_ptr}
 
 \marginheader{<memory>}%
 %
@@ -133,9 +134,9 @@ void foo(const char* path)
 With this approach, the format context will be released via a call to
 \code{detail::close\_format\_context} as soon as
 \code{context\_pointer} leaves the scope. Do we know if the memory
-pointed by \code{raw\_context\_pointer}? We do not, and it does not
-matter. What we have here is a simple robust way to attach a release
-function to an acquired resource.
+pointed by \code{raw\_context\_pointer} is dynamically allocated? We
+do not, and it does not matter. What we have here is a simple robust
+way to attach a release function to an acquired resource.
 
 %-------------------------------------------------------------------------------
 \subsubsection{Self-Deleting Shared Pointer}

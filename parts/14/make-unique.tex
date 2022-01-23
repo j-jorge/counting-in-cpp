@@ -1,0 +1,50 @@
+\subsection{\code{make\_unique}}
+%
+\marginheader{<memory>}%
+%
+\Cpp11 introduced smart pointers in the standard library, with
+\code{std::unique\_ptr} and \code{std::shared\_ptr}. For the latter
+the idiomatic creation code would use \code{std::make\_shared}, which
+would have the benefit to create storage for the control block and the
+actual object into a single allocation. On the other hand,
+\code{std::unique\_ptr} has no control block, so it made sense at the
+time not to have specialized creation functions for it.
+
+There is another use case though, where such function can help:
+
+\begin{lstlisting}
+create_form
+  (std::unique_ptr<widget>(new label("Everything is fine.")),
+   std::unique_ptr<widget>(new icon("resources/alert.png")));
+\end{lstlisting}
+
+See, since there is no guarantee on the order of evaluation of
+function arguments, the compiler is free to sequence them as follows:
+
+\begin{enumerate}
+\item \code{new label(…)}
+\item \code{new icon(…)}
+\item \code{std::unique\_ptr(…)}
+\item \code{std::unique\_ptr(…)}
+\end{enumerate}
+
+Now, if the constructor of \code{icon} throws an exception, then the
+\code{label} won't ever be destroyed, nor its memory released during
+the program execution. This can be solved by wrapping the allocation
+in a function, a function provided by the standard library for
+example.
+
+\begin{lstlisting}
+create_form
+  (std::make_unique<label>("Everything is fine."),
+   std::make_unique<icon>("resources/alert.png"));
+\end{lstlisting}
+
+With this code, the order of evaluation does not matter. If the first
+argument is built before the second, then its memory already managed
+by the smart pointer, so even if the construction of the second
+argument throws, the object will be destroyed and the memory will be
+released. The reasoning is the same if the second argument is built
+before the first.
+
+As a bonus, this is also less verbose.

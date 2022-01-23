@@ -1,5 +1,8 @@
 \chapter{Nice Things from C++14}
 
+% Changes between C++11 and C++14
+% http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1319r0.html
+
 \Cpp14 is frequently qualified as a bugfix version of \cpp11, indeed
 most features are improvements or extensions of things introduced in
 the latter.
@@ -18,11 +21,11 @@ it. Let's see.
 \input{parts/14/decltype-auto}
 \input{parts/14/relaxed-constexpr}
 
-% [[deprecated]]
-% new/delete elision
+% Mergeable allocations are left out as I could not find a compiler
+% where this optimization is implemented.
 
 \section{In the Standard Library}
-% make_unique
+\input{parts/14/make-unique}
 % integer_sequence
 % exchange
 % tuple addressing by type
