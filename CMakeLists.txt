@@ -213,6 +213,7 @@ add_latex_document(
   parts/14/decltype-auto.tex
   parts/14/deprecated.tex
   parts/14/generic-lambdas.tex
+  parts/14/integer-sequence.tex
   parts/14/lambda-capture.tex
   parts/14/make-unique.tex
   parts/14/number-separator.tex

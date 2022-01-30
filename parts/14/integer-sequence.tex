@@ -1,0 +1,57 @@
+\subsection{Compile-time Integer Sequences}%
+%
+\marginheader{<utility>}%
+%
+If you start playing with parameter packs \aref{parameter-pack} and
+tuples \aref{sec:tuple}, you will soon encounter a case where you will
+need to so something ``for each item in the tuple''.
+
+A typical use case consists in calling a function with its arguments
+taken from a tuple, something we already tried in the previous pages
+\aref{example:argument-binding}, in an argument-bindings example. Go
+check, and see how much code we wrote to store an sequence of integers
+in a type.
+
+\bigskip
+
+Starting with \cpp14, this code can be replaced by
+\code{std::integer\_sequence<typename T, T... Ints>} and
+\code{std::make\_integer\_sequence<typename T, T N>}. Writing a
+function that runs a function with its arguments taken from a tuple is
+approximately as simple as this:
+
+\begin{lstlisting}
+// The call_helper will help us to get the elements of a tuple, because we
+// cannot get them by type due to possibly duplicate types.
+template<typename IntegerSequence>
+struct call_helper;
+
+template<unsigned... I>
+struct call_helper<@\emcode{std::integer\_sequence}@<std::size_t, I...>>
+{
+  template<typename F, typename... Args>
+  static void call(F&& function, std::tuple<Args...>&& arguments)
+  {
+    // Here we unpack I... to get the arguments from the tuple.
+    // See @\aref{variadic-template}@.
+    //
+    // Note that it does not work with member functions, as they require another
+    // call syntax. This is still left as an exercise for the reader.
+    function(std::get<I>(arguments)...);
+  }
+};
+
+template<typename F, typename... Args>
+decltype(auto) apply(F&& function, std::tuple<Args...>&& arguments)
+{
+  return call_helper
+    <
+      @\emcode{std::make\_integer\_sequence}@<std::size_t, sizeof...(Args)>
+    >::call(std::forward<F>(function), std::move(arguments));
+}
+\end{lstlisting}
+
+Isn't it clean? Hold on, we'll soon be able to remove this code too
+\aref{sec:apply}\footnote{And it will be for the best, as this example
+code misses many features, like calling member functions, accepting
+a const tuple as argument, and probably more.}!

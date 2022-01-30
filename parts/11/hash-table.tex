@@ -25,7 +25,7 @@ struct color
   bool operator<(const color& that) const
   {
     // Note that in @\cpp@11 we could have used std::tie() to create a
-    // tuple from the fields @\aref{tuple}@, then used
+    // tuple from the fields @\aref{sec:tuple}@, then used
     // std::tuple::operator<() to compare them lexicographically.
 
     if (red != that.red)
@@ -157,7 +157,7 @@ For the map version, since the entries are instances of
 list, as the compiler would not know where the constructor arguments
 for \code{std::pair::first} would end and where the ones for
 \code{std::pair::second} would start. Consequently, we must use tuples
-\aref{tuple} and the piecewise constructor:
+\aref{sec::tuple} and the piecewise constructor:
 
 \begin{lstlisting}
 std::unordered_map<color, unsigned> color_count;

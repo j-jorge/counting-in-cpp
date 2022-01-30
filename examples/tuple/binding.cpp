@@ -3,7 +3,7 @@
 
 // This structure is here to "store" a sequence of integers in its template
 // parameters. There is nothing like that in C++11 but it is already available
-// in C++14 @\ref{integer-sequence}@.
+// in C++14 @\ref{sec:integer-sequence}@.
 template<unsigned... I>
 struct integer_sequence {};
 
