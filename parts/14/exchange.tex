@@ -1,0 +1,51 @@
+\subsection{\code{std::exchange}}%
+%
+\marginheader{<utility>}%
+%
+If you are reading this, you certainly had to write a move constructor
+at some point. When doing so, the programmer has to ``steal'' the
+resources from an instance, and leave the aforementioned instance in a
+valid state. In the example from section \ref{sec:move-constructor},
+copied below for convenience, the resource from \code{that} is
+transferred to \code{this}, then the field from \code{that} is set to
+\code{nullptr}.
+
+\begin{lstlisting}
+struct foo
+{
+  foo(foo&& that)
+    : m_resource(that.m_resource)
+  {
+    that.m_resource = nullptr;
+  }
+};
+\end{lstlisting}
+
+As a move constructor grows with the number of fields, the distance
+between the transfer of the resource in the constructor's initializer
+list and the reset in the constructor's body increases. This blurs the
+relationship between the two statements, which actually form a single
+semantic operation. This is also error-prone, as one may easily forget
+one of the two instructions.
+
+\bigskip
+
+Hopefully \cpp14 introduces a nice small utility with
+\code{std::exchange} to solve this issue.
+
+\begin{lstlisting}
+struct foo
+{
+  foo(foo&& that)
+    // Assign that.m_resource to m_resource and set that.m_resource to
+    // nullptr, in a single statement.
+    : m_resource(@\emcode{std::exchange}@(that.m_resource, nullptr))
+  {}
+};
+\end{lstlisting}
+
+The \code{std::exchange} function assigns its second parameter to its
+first parameter, then returns the previous value of its first
+parameter. Yes, there is no actual exchange here… As with
+\code{std::move}, the name does not carry the meaning very well, but
+at least it solves a problem.
