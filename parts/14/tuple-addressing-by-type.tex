@@ -1,0 +1,66 @@
+\subsection{Tuple Addressing By Type}
+
+\Cpp11 introduced tuples \aref{sec:tuple} which are quite handy if
+you are too lazy to write a struct, or if you come from toy languages
+like Python or JavaScript.
+
+In order to access an element in a tuple, one must know the index of
+the element to pass to \code{std::get}. This is a bit problematic if
+we add an entry in the tuple; then we have to update all
+accesses to match the new indices\footnote{Something that would have
+not happen if only we used a struct. Let that sink in!}.
+
+In a metaprogramming context this can also be very limiting. Check for
+example this map allowing to store values of different types with a
+key (this is just an aggregate of maps whose key and value types are
+passed as template arguments):
+
+\begin{lstlisting}
+#include <unordered_map>
+
+template<typename K, typename... V>
+class heterogeneous_map
+{
+public:
+  template<typename T>
+  void set(const K& k, const T& v)
+  {
+    // What should I use for the index?
+    std::get</* index of T in V... */>(m_maps)[k] = v;
+  }
+
+private:
+  std::tuple<std::unordered_map<K, V>...> m_maps;
+};
+\end{lstlisting}
+
+In \cpp11 one would have to write a helper to find the index of a type
+in a parameter pack, which is not very difficult but still a lot of
+work compared with doing nothing.
+
+\bigskip
+
+In \cpp11, The \code{std::get} function has been extended and now
+accepts a type as its template arguments, allowing to address a tuple
+element by its type. This only works if the tuple declaration has a
+single entry of the given type, which is good enough:
+
+\begin{lstlisting}
+#include <unordered_map>
+#include <tuple>
+
+template<typename K, typename... V>
+class heterogeneous_map
+{
+public:
+  template<typename T>
+  void set(const K& k, const T& v)
+  {
+    // No index needed!
+    std::get<@\emcode{std::unordered\_map<K, T>}@>(m_maps)[k] = v;
+  }
+
+private:
+  std::tuple<std::unordered_map<K, V>...> m_maps;
+};
+\end{lstlisting}
