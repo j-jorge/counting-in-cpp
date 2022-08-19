@@ -7,9 +7,7 @@ template function, then every time the code was included in a
 compilation unit the compiler would instantiate all used
 symbols. Check for example the header below:
 
-\lstinputlisting[%
-  title=factorial-98.hpp%
-]{%
+\lstinputlisting{%
   examples/extern-template/factorial-98.hpp%
 }
 
@@ -19,15 +17,11 @@ file of each .cpp; something we can check with \code{nm}.
 
 Following the example, let's compile the two files below:
 
-\lstinputlisting[%
-  title=foo-98.cpp%
-]{%
+\lstinputlisting{%
   examples/extern-template/foo-98.cpp%
 }
 
-\lstinputlisting[%
-  title=bar-98.cpp%
-]{%
+\lstinputlisting{%
   examples/extern-template/bar-98.cpp%
 }
 
@@ -65,9 +59,7 @@ all this useless work. First we have to tell the compiler not to
 instantiate the template for a subset of valid types by adding a
 single line to our header:
 
-\lstinputlistinghl[%
-  title=factorial-11.hpp%
-]{14}{%
+\lstinputlistinghl{15}{%
   examples/extern-template/factorial-11.hpp%
 }
 
@@ -75,9 +67,7 @@ This line tells the compiler not to instantiate
 \code{factorial()} when \code{T = int}. Then we add a .cpp file
 where we explicitly ask for the instantiation:
 
-\lstinputlisting[%
-  title=factorial-11.cpp%
-]{%
+\lstinputlisting{%
   examples/extern-template/factorial-11.cpp%
 }
 
