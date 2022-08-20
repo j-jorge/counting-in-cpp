@@ -1,5 +1,7 @@
 \subsection{Rvalue References}
 
+\problemtitle
+
 In the function \code{build\_widget()} below, a temporary string is
 created by the code \code{label + "def"}, then a reference to this
 string is passed to the constructor of \code{widget}, where it is then
@@ -29,7 +31,7 @@ in the example above, the purpose of the result of \code{label +
 copy? It would be more efficient to just pass the instance created by
 the concatenation directly to the final variable.
 
-\bigskip
+\solutiontitle
 
 To solve this problem, \cpp11 introduces the concept of rvalue
 references, which are, to put it simply, references to

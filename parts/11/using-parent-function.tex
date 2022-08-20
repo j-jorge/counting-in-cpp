@@ -1,5 +1,7 @@
 \subsection{Using parent functions}
 
+\problemtitle
+
 Here is an actual problem I encountered when developing mobile games
 in \cpp{}. When targeting Android devices, the application has to do
 some calls from the \cpp{} part to the Java part. These calls are done
@@ -81,9 +83,9 @@ a constructor in \code{static\_method\textless{}jint\textgreater} is
 to be pass its argument to the parent class. Wouldn't it be better if
 we could just say ``reuse the constructor from the parent''?
 
-\bigskip
+\solutiontitle
 
-This is possible thanks to the \code{using} keyword from \cpp{}:
+This is possible thanks to the \code{using} keyword from \cpp11:
 
 \begin{lstlisting}
 template< typename R >

@@ -2,6 +2,8 @@
 \subsection{Range-based For Loops}
 \label{range-based-for-loops}
 
+\problemtitle
+
 Before \cpp11, if someone wanted to iterate over a container, he had
 to construct an iterator, of the correct type with respect to the
 container, and write the loop with the classical three steps:
@@ -20,6 +22,8 @@ void multiply(std::vector<int>& v, int c)
     *it *= c;
 }
 \end{lstlisting}
+
+\solutiontitle
 
 All of this was quite verbose and repetitive when using standard
 containers. Starting from \cpp11, all this administrative stuff can be

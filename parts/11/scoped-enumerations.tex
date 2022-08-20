@@ -1,5 +1,7 @@
 \subsection{Scoped Enumerations}
 
+\problemtitle
+
 An enumeration in pre-\cpp11 code is just like a C enumeration: a list
 of constants of type \code{int} in the scope containing the
 enumeration. For example, note how \code{appliance::fan} can be
@@ -43,7 +45,7 @@ The above code will fail to compile with a message along the lines of
 typical solution to that was to add a unique prefix to the enumerated
 values, but in the times of namespaces and so, is it really a solution?
 
-\bigskip
+\solutiontitle
 
 A scoped enumeration as introduced in \cpp11 is declared by adding the
 \code{class} or \code{struct} keyword between \code{enum} and the

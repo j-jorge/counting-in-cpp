@@ -1,5 +1,7 @@
 \subsection{Iterator Successors and Predecessors}
 
+\problemtitle
+
 There are many kind of iterators: forward iterators, that can be
 incremented one step at a time with \code{operator++}, bidirectional
 iterators, that can additionally be decremented with
@@ -25,28 +27,58 @@ void every_n_items
 \end{lstlisting}
 
 \code{std::advance()} accepts a negative distance, in which case it
-will advance… hum… backwards.
+will advance… hum… backwards. Note that the function modifies its
+argument, so using it to get another iterator from a given one is
+cumbersome:
+
+\begin{lstlisting}
+template<typename Iterator>
+void inplace_adjacent_sums(Iterator first, const Iterator& last)
+{
+  if (first == last)
+    return;
+
+  // Two steps to get an iterator on the second element. Ideally we
+  // would have wanted to limit its scope to the loop too.
+  Iterator second = first;
+  std::advance(second, 1);
+
+  for (; second != last; )
+  {
+    *first += *second;
+    first = second;
+    std::advance(second, 1);
+  }
+}
+\end{lstlisting}
+
+\solutiontitle
 
 \marginheader{<iterator>}%
 %
 \Cpp11 introduces the replacement functions \code{std::prev()} and
-\code{std::next()}, which are mostly here to make things clear. The
-former is to be used to move the iterator backwards, while the latter
-is used to move it forward. If no distance is passed, then it defaults
-to one.
+\code{std::next()}, which are mostly here to make things clear and
+more convenient. The former is to be used to move the iterator
+backwards, while the latter is used to move it forward. If no distance
+is passed, then it defaults to one.
 
 Note that they return a copy of the new iterator, instead of modifying
-the one received as a parameter.
+its argument.
 
 \begin{lstlisting}
-template<typename Iterator, typename F>
-void every_n_items
-(Iterator it, std::size_t count, std::size_t step, F f)
+template<typename Iterator>
+void inplace_adjacent_sums(Iterator first, const Iterator& last)
 {
-  for (; count > step; count -= step)
+  if (first == last)
+    return;
+
+  // Here we can initialize the second iterator in the loop, reducing
+  // its scope.
+  for (Iterator second = @\emcode{std::next}@(first); second != last; )
   {
-    f(*it);
-    it = @\emcode{std::next}@(it, step);
+    *first += *second;
+    first = second;
+    std::advance(second, 1);
   }
 }
 \end{lstlisting}

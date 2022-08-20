@@ -1,5 +1,7 @@
 \subsection{Relaxed \code{constexpr}}
 
+\problemtitle
+
 The introduction of \code{constexpr} in \cpp11 \aref{sec:constexpr}
 greatly simplified some compile-time complex computations, even though
 they were some limitations. The most frustrating of which was
@@ -11,6 +13,8 @@ algorithm. See for example this implementation of \code{popcount()} we
 wrote in section \aref{sec:constexpr}:
 
 \lstinputlisting{examples/constexpr/constexpr-11.cpp}
+
+\solutiontitle
 
 In \cpp14, these restrictions are lifted and we can implement this
 function in a less convoluted way\footnote{Not that recursion is

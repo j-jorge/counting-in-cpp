@@ -1,6 +1,8 @@
 \subsection{Lambdas}
 \label{sec:lambda}
 
+\problemtitle
+
 How would we pass a custom comparator to \code{std::max\_element}
 before \cpp11, say to compare strings by increasing size? Certainly by
 writing a free or static function taking two strings as arguments and
@@ -55,6 +57,8 @@ bool has_string_of_size
       != strings.end();
 }
 \end{lstlisting}
+
+\solutiontitle
 
 Having the comparators as independent objects or functions is nice if
 they are used in many places, but for a single use it is undoubtedly
@@ -114,8 +118,10 @@ More conceptually, the parts of a lambda are the following:
 
 \bigskip
 
-\indent [{\it capture}]({\it arguments}) {\it specifier} -\textgreater
+\begin{center}
+[{\it capture}]({\it arguments}) {\it specifier} -\textgreater
         {\it return\_type} \{ {\it body} \}
+\end{center}
 
 \bigskip
 

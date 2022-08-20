@@ -1,5 +1,7 @@
 \subsection{Lambda Capture Expressions}
 
+\problemtitle
+
 When we are defining a lambda, we have the possibility to capture
 variables of the enclosing scope such that they become available in
 the body of the lambda \aref{lambdas-internals}. In practice, such
@@ -44,7 +46,7 @@ move-only type for a captured variable, such as
 \code{std::unique\_ptr}. Indeed, there is no way to move the variable
 from the outer scope into the lambda.
 
-\bigskip
+\solutiontitle
 
 In \cpp14, capture lists have been extended to allow the initialization
 of a variable by an expression. We can use that to initialize the

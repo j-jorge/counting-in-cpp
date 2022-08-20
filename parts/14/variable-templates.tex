@@ -1,5 +1,7 @@
 \subsection{Variable Templates}
 
+\problemtitle
+
 Up to \cpp11, the only things that could be templated were types and
 functions. So if you had a variable whose value was dependent on a
 template parameter, you had to wrap the variable in a type. Take for
@@ -7,6 +9,8 @@ example this code that computes the number of bits set to 1 in a
 constant at compile time:
 
 \lstinputlisting{examples/variable-template/main-11.cpp}
+
+\solutiontitle
 
 Starting with \cpp14, all the types in the above code can be removed
 and replaced by a much more concise template variable, which also

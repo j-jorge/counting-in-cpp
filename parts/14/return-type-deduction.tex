@@ -1,6 +1,8 @@
 \subsection{Return Type Deduction}
 \label{sec:return-type-deduction}
 
+\problemtitle
+
 The \code{decltype} specifier was added in \cpp11 to identify the type
 of an expression \aref{decltype}. One of its typical use cases is the
 declaration of the return type in a template function whose result
@@ -19,7 +21,7 @@ auto invoke(F&& f, Args&&... args) -> decltype(f(std::forward<Args>(args)...))
 Note how the expression passed to \code{decltype} is exactly the body
 of the function.
 
-\bigskip
+\solutiontitle
 
 To avoid this verbosity, \cpp14 allows to omit the trailing return
 type to let the compiler deduce the type from the function's body.

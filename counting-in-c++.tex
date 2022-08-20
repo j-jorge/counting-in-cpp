@@ -39,12 +39,14 @@
 \newcommand{\marginheader}[1]{%
   \marginnote{%
     \begin{center}%
-      \includegraphics[width=0.5\linewidth]{assets/header-icon.pdf}
-
+      \includegraphics[width=0.5\linewidth]{assets/header-icon.pdf} \\
       \footnotesize #1
     \end{center}%
-  }[-2.2em]%
+  }[-1.5em]%
 }
+
+\newcommand{\problemtitle}{\subsubsection{What was the problem}}
+\newcommand{\solutiontitle}{\subsubsection{How the Problem is Solved}}
 
 \newenvironment{guideline}
                {

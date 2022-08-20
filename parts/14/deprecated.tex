@@ -1,5 +1,7 @@
 \subsection{\code{[[deprecated]]} Attribute}
 
+\problemtitle
+
 As code evolves, some parts naturally become obsolete. Most of the time,
 obsolete code can be simply removed, but when it is published as a
 public API, great care must be taken in order not to break client
@@ -18,7 +20,7 @@ displayed as soon as the file is included, even if the deprecated code
 is not called. What about printing the deprecation message at run
 time, when the code is executed\footnote{Please don't.}?
 
-\bigskip
+\solutiontitle
 
 Starting with \cpp14, the \code{[[deprecated]]} attribute can be used
 to target a specific symbol for deprecation, with an explicit message

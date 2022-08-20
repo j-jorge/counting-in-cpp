@@ -1,6 +1,8 @@
 \subsection{\code{constexpr}}
 \label{sec:constexpr}
 
+\problemtitle
+
 Let's say we have some complex computation, like for example counting
 the number of bits set to one in an integer:
 
@@ -37,7 +39,7 @@ incredibly verbose, second it forces us to implement the same
 algorithm twice, respectively for run time and compile time
 computations, doubling the risk of bugs and errors.
 
-\bigskip
+\solutiontitle
 
 The \code{constexpr} keyword introduced in \cpp11 allows us to use the
 same implementation for both compile-time and run-time computations.

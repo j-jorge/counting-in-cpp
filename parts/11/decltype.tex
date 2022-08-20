@@ -1,6 +1,8 @@
 \subsection{Type Deduction with \code{decltype}}
 \label{decltype}
 
+\problemtitle
+
 During the pre-\cpp11 era every variable, member, argument, etc. has
 to be explicitly typed. For example, if we were writing a template
 function operating on a range, how could we declare a variable of the
@@ -30,6 +32,7 @@ void transform_if
 }
 \end{lstlisting}
 
+\solutiontitle
 Getting the correct type to put in place of \code{some\_type} was not
 obvious, and required a fair share of template metaprogramming. Now,
 with the \code{decltype} specifier introduced in \cpp11, the

@@ -1,5 +1,7 @@
 \subsection{Tuple Addressing By Type}
 
+\problemtitle
+
 \Cpp11 introduced tuples \aref{sec:tuple} which are quite handy if
 you are too lazy to write a struct, or if you come from toy languages
 like Python or JavaScript.
@@ -38,9 +40,9 @@ In \cpp11 one would have to write a helper to find the index of a type
 in a parameter pack, which is not very difficult but still a lot of
 work compared with doing nothing.
 
-\bigskip
+\solutiontitle
 
-In \cpp11, The \code{std::get} function has been extended and now
+In \cpp14, The \code{std::get} function has been extended and now
 accepts a type as its template arguments, allowing to address a tuple
 element by its type. This only works if the tuple declaration has a
 single entry of the given type, which is good enough:

@@ -1,5 +1,7 @@
 \subsection{\code{decltype(auto)}}
 
+\problemtitle
+
 We saw in \aref{sec:return-type-deduction} that we can now omit the
 return type of a function. So can you tell why the assert won't pass
 in the code below?
@@ -51,7 +53,7 @@ auto auto_value = reference;
 static_assert(std::is_same<int, decltype(auto_value)>::value, "");
 \end{lstlisting}
 
-\bigskip
+\solutiontitle
 
 Most of the time, \code{auto} can be replaced by a more explicit type,
 but in the case of the \code{invoke} function the explicit version

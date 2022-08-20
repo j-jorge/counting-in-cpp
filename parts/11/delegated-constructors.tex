@@ -1,6 +1,8 @@
 %-------------------------------------------------------------------------------
 \subsection{Delegated Constructors}
 
+\problemtitle
+
 Before \cpp11, constructors could not call other
 constructors. Consider the example below:
 
@@ -64,7 +66,7 @@ after the call to the \code{init()} function, and actually nothing
 prevents it to be called at any point in the life of the
 instance. Finally, this is incompatible with \code{const} members.
 
-\bigskip
+\solutiontitle
 
 Starting from \cpp11, a constructor can call another constructor:
 

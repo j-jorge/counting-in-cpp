@@ -1,6 +1,8 @@
 %-------------------------------------------------------------------------------
 \subsection{Template Aliases}
 
+\problemtitle
+
 Before \cpp11, we could simply not declare a typedef with a
 parameterized type. For example, the following did not work:
 
@@ -28,6 +30,8 @@ struct string_map
 // Easy to use, isn't it?
 string_map<int>::type string_to_int;
 \end{lstlisting}
+
+\solutiontitle
 
 Starting with \cpp11, the \code{using} keywork allows to declare
 templated type aliases:
