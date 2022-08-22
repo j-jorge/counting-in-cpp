@@ -177,6 +177,76 @@ void baz()
 }
 \end{lstlisting}
 
+Note that the rules above do not apply directly for functions that
+assign an existing resource, like a setter. In this case, always
+passing by value may be a pessimization if the caller does not pass an
+rvalue and the member assigned to releases its resource before taking
+the one from the argument.
+
+\begin{lstlisting}
+// This example does not consider small string optimization.
+
+class foo
+{
+  std::string name;
+
+public:
+  void set_name_value(std::string n)
+  {
+    // The internals of the name member are released, then the resources from
+    // n are transfered.
+    name = std::move(n);
+  }
+
+  void set_name_reference(const std::string& n)
+  {
+    // The value in n is copied in this->name. No allocation is done if there
+    // is enough room for it.
+    name = n;
+  }
+};
+
+void test_foo()
+{
+  // Set up.
+  foo f;
+  f.set_name_value("abc");
+
+  // Behind the following call:
+  // 1. allocate a temporary std::string on the stack.
+  // 2. allocate the internal buffer of the temporary in the heap.
+  // 3. copy "def" in the internal buffer.
+  // 4. swap f.name's internals with the ones of the temporary.
+  // 5. release the temporary's internals (previously f.name's).
+  f.set_name_value("def");
+
+  // Behind the following call:
+  // 1. allocate a temporary std::string on the stack.
+  // 2. allocate the internal buffer of the temporary in the heap.
+  // 3. copy "ghi" in the internal buffer.
+  // 4. copy the temporary's internals into f.name.
+  // 5. release the temporary's internals.
+  f.set_name_reference("ghi");
+
+  // Behind the following call:
+  // 1. allocate a temporary std::string on the stack.
+  // 2. allocate the internal buffer of the temporary in the heap.
+  // 3. copy the internals of name in the temporary's internals.
+  // 4. swap f.name's internals with the ones of the temporary.
+  // 5. release the internals of the temporary (previously f.name's).
+  f.set_name_value(name);
+
+  // Behind the following call:
+  // 1. check that f.name is large enough for name, realloc if needed.
+  // 2. copy the internals of name in f.name.
+  f.set_name_reference(name)
+}
+\end{lstlisting}
+
+In all cases in the example above, it is better to pass by address. If
+the allocation of the temporaries is an issue, one can decide to
+override the setter to take an rvalue reference.
+
 %-------------------------------------------------------------------------------
 \subsection{\code{std::forward} and Universal References}
 
