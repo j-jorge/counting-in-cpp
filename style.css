@@ -1,0 +1,119 @@
+:root {
+    --gray-1: #3f3f3f;
+    --gray-2: #32353a;
+    --gray-3: #25282c;
+    --gray-4: #151618;
+    --gray-5: #151618;
+    --gray-6: #111111;
+    --white-1: #eeeeee;
+    --white-2: #a9abb3;
+}
+
+html {
+    color: var(--white-2);
+    background-color: var(--gray-6);
+    line-height: 180%;
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+.FontAwesome--fontawesomethree- {
+    font-size: 180%;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 880px;
+    text-align: justify;
+    hyphens: auto;
+}
+
+header, h1, h2, h3, h4, h5, h6 {
+    text-align: left;
+    hyphens: none;
+    font-size: 2rem;
+}
+
+header {
+  font-size: 4rem;
+  font-weight: bolder;
+  line-height: 110%;
+  color: var(--white-1);
+  padding: 2rem 0 4rem 0;
+}
+
+code {
+    padding: 0;
+}
+
+pre {
+    background: var(--gray-3) !important;
+    font-family: "JetBrains Mono", monospace;
+    padding: 1.3rem 1.3rem;
+    margin-bottom: 1.75rem;
+    line-height: 125%;
+}
+
+img {
+    cursor: auto;
+}
+
+ul {
+    margin-left: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+ol {
+    margin-left: 1.75rem;
+    margin-bottom: 1.75rem;
+}
+
+ol * ol,
+ul * ul {
+    margin-left: 1rem;
+    margin-bottom: 0;
+}
+
+footer {
+    font-size: 80%;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: cyan;
+    border-bottom: 1px solid cyan;
+    text-decoration: none;
+}
+
+.mdframed {
+    background-color: var(--gray-6);
+    color: var(--white-2);
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    border-left: 3px solid;
+    padding-left: 0.5rem;
+}
+
+.footnotes {
+    border-top: 1px solid;
+
+}
+
+.highlighted-code {
+    border: 1px solid var(--white-2);
+    background-color: var(--gray-2);
+}
+
+/* comment */
+.pcrro8t-x-x-90 {
+    color: #75715e;
+}
+
+/* keyword */
+.pcrb8t-x-x-90 {
+    color: #66d9ef;
+}
+
+.string {
+    color: #e6db74;
+}

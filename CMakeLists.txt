@@ -11,6 +11,8 @@ set(
   ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/modules/"
   )
 
+add_subdirectory(html-cleanup)
+
 include(UseLATEX)
 find_package(Threads)
 
@@ -225,3 +227,33 @@ add_latex_document(
 
   style/code-listings.tex
   )
+
+find_program(tidy NAMES tidy REQUIRED)
+
+add_custom_target(latex2html
+  COMMAND make4ht
+    --format html5
+    --config ${CMAKE_CURRENT_LIST_DIR}/make4ht.cfg
+    --output-dir counting-in-cpp
+    counting-in-c++.tex
+    fn-in,4
+
+  DEPENDS  counting-in-c++.pdf
+)
+
+add_custom_target(html-preclean
+  COMMAND echo Preclean
+  COMMAND "${CMAKE_CURRENT_LIST_DIR}/html-preclean.sh"
+  DEPENDS latex2html
+)
+
+add_custom_target(html-book
+  COMMAND echo Customization
+  COMMAND "${html_cleanup}" counting-in-cpp/*.html
+  COMMAND cp "${CMAKE_CURRENT_LIST_DIR}/style.css" counting-in-cpp/
+
+  DEPENDS
+    html-preclean
+    html-cleanup
+    "${CMAKE_CURRENT_LIST_DIR}/style.css"
+)
