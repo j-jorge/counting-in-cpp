@@ -1,10 +1,10 @@
-# Counting from 98 to ~~20~~ 11 in C++
+# Counting from 98 to 14 in C++
 
 This book is a (quite opinionated) overview of many features added in
 the C++ language and the standard library since the huge major update
 called C++11.
 
-[Get the PDF here.](https://github.com/j-jorge/counting-in-cpp/releases/tag/continuous)
+[Get the PDF here.](https://github.com/j-jorge/counting-in-cpp/releases/tag/continuous), or [read it online](https://julien.jorge.st/counting-in-cpp/).
 
 My hope is that the reader will find here an intermediate view on the
 language, between the cold factual description from the standard and
