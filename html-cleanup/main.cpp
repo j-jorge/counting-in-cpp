@@ -303,9 +303,15 @@ static xmlNodePtr process_body(xmlNodePtr node)
             }
         }
       else if (xmlStrEqual(child->name, "p"_xml))
-        child = process_p(child);
+        {
+          child = process_p(child);
+          last_pre = nullptr;
+        }
       else if (xmlStrEqual(child->name, "br"_xml))
-        child = remove_node(child);
+        {
+          child = remove_node(child);
+          last_pre = nullptr;
+        }
       else
         {
           const xml_ptr<const xmlChar> css_class
