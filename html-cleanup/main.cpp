@@ -308,10 +308,7 @@ static xmlNodePtr process_body(xmlNodePtr node)
           last_pre = nullptr;
         }
       else if (xmlStrEqual(child->name, "br"_xml))
-        {
-          child = remove_node(child);
-          last_pre = nullptr;
-        }
+        child = remove_node(child);
       else
         {
           const xml_ptr<const xmlChar> css_class
